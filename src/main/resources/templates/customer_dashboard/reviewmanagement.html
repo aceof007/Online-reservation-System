@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxStay - Reviews Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === GENERAL STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #333;
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #d4af37;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #c49f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-outline:hover {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #d4af37;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* === HEADER STYLES === */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .logo-text span {
+            color: #d4af37;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        .menu li a {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .menu li a:hover {
+            color: #d4af37;
+        }
+
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #d4af37;
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .menu li a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* === PAGE HEADER === */
+        .page-header {
+            background-color: #f9f9f9;
+            padding: 120px 0 60px;
+            margin-bottom: 40px;
+        }
+
+        .page-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            color: #666;
+        }
+
+        .breadcrumb li {
+            margin-right: 10px;
+        }
+
+        .breadcrumb li:after {
+            content: '/';
+            margin-left: 10px;
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        .breadcrumb a:hover {
+            color: #d4af37;
+        }
+
+        /* === REVIEWS MANAGEMENT === */
+        .reviews-management {
+            padding: 40px 0 80px;
+        }
+
+        .review-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 30px;
+        }
+
+        .review-tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .review-tab.active {
+            border-bottom-color: #d4af37;
+            color: #222;
+        }
+
+        .review-content {
+            display: none;
+        }
+
+        .review-content.active {
+            display: block;
+        }
+
+        /* === REVIEW SUBMISSION === */
+        .review-submission {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .review-property {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .property-image {
+            width: 120px;
+            height: 90px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-info h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .property-info p {
+            color: #666;
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e6f7ee;
+            color: #00a859;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .verified-badge i {
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        .rating-section {
+            margin-bottom: 30px;
+        }
+
+        .rating-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .rating-stars {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .star {
+            font-size: 28px;
+            color: #ddd;
+            margin-right: 5px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .star.active {
+            color: #ffc107;
+        }
+
+        .category-ratings {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .category-rating {
+            margin-bottom: 15px;
+        }
+
+        .category-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .category-name {
+            font-weight: 600;
+        }
+
+        .category-stars {
+            display: flex;
+        }
+
+        .category-star {
+            font-size: 16px;
+            color: #ddd;
+            margin-left: 3px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .category-star.active {
+            color: #ffc107;
+        }
+
+        .review-form {
+            margin-top: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            min-height: 150px;
+            font-size: 16px;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .char-count.warning {
+            color: #e74c3c;
+        }
+
+        .tag-section {
+            margin-bottom: 25px;
+        }
+
+        .tag-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .tag-option {
+            padding: 8px 15px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tag-option.selected {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        .traveler-type {
+            margin-bottom: 25px;
+        }
+
+        .type-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .type-option {
+            padding: 10px 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .type-option.selected {
+            border-color: #d4af37;
+            background-color: #fffcf5;
+        }
+
+        .type-option i {
+            margin-right: 8px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        /* === PREVIOUS REVIEWS === */
+        .previous-reviews {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .review-list {
+            list-style: none;
+        }
+
+        .review-item {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .review-item:hover {
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .review-meta {
+            display: flex;
+            align-items: center;
+        }
+
+        .review-property-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .review-property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .review-property-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .review-date {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .review-status {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-published {
+            background-color: #e6f7ee;
+            color: #00a859;
+        }
+
+        .status-pending {
+            background-color: #fff8e6;
+            color: #ff9500;
+        }
+
+        .status-rejected {
+            background-color: #fee;
+            color: #e74c3c;
+        }
+
+        .review-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .review-stars {
+            color: #ffc107;
+            margin-right: 10px;
+        }
+
+        .review-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .review-category {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .review-category span {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .review-text {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .review-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .review-tag {
+            padding: 4px 10px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .review-traveler-type {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+
+        .review-traveler-type i {
+            margin-right: 5px;
+            color: #666;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-primary {
+            background-color: #d4af37;
+            color: white;
+            border: none;
+        }
+
+        .action-primary:hover {
+            background-color: #c49f2f;
+        }
+
+        .action-secondary {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+
+        .action-secondary:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+
+        .action-danger {
+            background-color: transparent;
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+
+        .action-danger:hover {
+            background-color: #fee;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .footer-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-logo-text span {
+            color: #d4af37;
+        }
+
+        .footer-desc {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #aaa;
+        }
+
+        .footer-social {
+            display: flex;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #d4af37;
+            transform: translateY(-3px);
+        }
+
+        .footer-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 40px;
+            background-color: #d4af37;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #d4af37;
+            padding-left: 5px;
+        }
+
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .contact-icon {
+            color: #d4af37;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .contact-text {
+            color: #aaa;
+        }
+
+        .footer-form {
+            position: relative;
+        }
+
+        .footer-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-input:focus {
+            outline: none;
+            background-color: #444;
+        }
+
+        .footer-bottom {
+            background-color: #1a1a1a;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-bottom-text {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* === MEDIA QUERIES === */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 0;
+            }
+
+            .menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 40px;
+                transition: all 0.3s ease;
+            }
+
+            .menu.active {
+                left: 0;
+            }
+
+            .menu li {
+                margin: 0 0 20px 0;
+            }
+
+            .menu li a {
+                font-size: 18px;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .review-property {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .property-image {
+                margin-bottom: 15px;
+                margin-right: 0;
+            }
+
+            .review-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .review-actions {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="/api/placeholder/40/40" alt="LuxStay Logo">
+                    <div class="logo-text">Lux<span>Stay</span></div>
+                </div>
+                <ul class="menu">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Destinations</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <div class="user-actions">
+                    <a href="#" class="btn btn-outline">Login</a>
+                    <a href="#" class="btn">Sign Up</a>
+                </div>
+                <button class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <div>
+                    <h1 class="section-title">Reviews Management</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">My Account</a></li>
+                        <li>Reviews</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Management -->
+    <section class="reviews-management">
+        <div class="container">
+            <div class="review-tabs">
+                <button class="review-tab active" data-tab="submit">Submit a Review</button>
+                <button class="review-tab" data-tab="previous">My Reviews</button>
+            </div>
+
+            <!-- Review Submission -->
+            <div class="review-content active" id="submit">
+                <div class="review-submission">
+                    <div class="review-property">
+                        <div class="property-image">
+                            <img src="/2.png" alt="Grand Plaza Hotel">
+                        </div>
+                        <div class="property-info">
+                            <h3>Grand Plaza Hotel</h3>
+                            <p>Paris, France • May 15-20, 2025</p>
+                            <div class="verified-badge">
+                                <i class="fas fa-check-circle"></i>
+                                Verified Stay
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="rating-section">
+                        <div class="rating-title">Overall Rating</div>
+                        <div class="rating-stars">
+                            <div class="star" data-rating="1"><i class="fas fa-star"></i></div>
+                            <div class="star" data-rating="2"><i class="fas fa-star"></i></div>
+                            <div class="star" data-rating="3"><i class="fas fa-star"></i></div>
+                            <div class="star" data-rating="4"><i class="fas fa-star"></i></div>
+                            <div class="star" data-rating="5"><i class="fas fa-star"></i></div>
+                            <span style="margin-left: 10px; color: #666;">Select your rating</span>
+                        </div>
+
+                        <div class="category-ratings">
+                            <div class="category-rating">
+                                <div class="category-label">
+                                    <span class="category-name">Cleanliness</span>
+                                    <span class="rating-value">0/5</span>
+                                </div>
+                                <div class="category-stars">
+                                    <div class="category-star" data-rating="1"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="2"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="3"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="4"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="5"><i class="fas fa-star"></i></div>
+                                </div>
+                            </div>
+                            <div class="category-rating">
+                                <div class="category-label">
+                                    <span class="category-name">Service</span>
+                                    <span class="rating-value">0/5</span>
+                                </div>
+                                <div class="category-stars">
+                                    <div class="category-star" data-rating="1"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="2"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="3"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="4"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="5"><i class="fas fa-star"></i></div>
+                                </div>
+                            </div>
+                            <div class="category-rating">
+                                <div class="category-label">
+                                    <span class="category-name">Location</span>
+                                    <span class="rating-value">0/5</span>
+                                </div>
+                                <div class="category-stars">
+                                    <div class="category-star" data-rating="1"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="2"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="3"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="4"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="5"><i class="fas fa-star"></i></div>
+                                </div>
+                            </div>
+                            <div class="category-rating">
+                                <div class="category-label">
+                                    <span class="category-name">Value</span>
+                                    <span class="rating-value">0/5</span>
+                                </div>
+                                <div class="category-stars">
+                                    <div class="category-star" data-rating="1"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="2"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="3"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="4"><i class="fas fa-star"></i></div>
+                                    <div class="category-star" data-rating="5"><i class="fas fa-star"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="review-form">
+                        <div class="form-group">
+                            <label for="reviewText" class="form-label">Your Review</label>
+                            <textarea id="reviewText" class="form-textarea" placeholder="Share details of your experience at this property... (minimum 50 characters)"></textarea>
+                            <div class="char-count">0/50 characters</div>
+                        </div>
+
+                        <div class="tag-section">
+                            <div class="form-label">What stood out?</div>
+                            <div class="tag-options">
+                                <div class="tag-option">Comfortable Beds</div>
+                                <div class="tag-option">Great Location</div>
+                                <div class="tag-option">Friendly Staff</div>
+                                <div class="tag-option">Excellent Amenities</div>
+                                <div class="tag-option">Beautiful Views</div>
+                                <div class="tag-option">Good Value</div>
+                            </div>
+                        </div>
+
+                        <div class="traveler-type">
+                            <div class="form-label">Traveler Type</div>
+                            <div class="type-options">
+                                <div class="type-option">
+                                    <i class="fas fa-briefcase"></i> Business
+                                </div>
+                                <div class="type-option selected">
+                                    <i class="fas fa-heart"></i> Couple
+                                </div>
+                                <div class="type-option">
+                                    <i class="fas fa-users"></i> Family
+                                </div>
+                                <div class="type-option">
+                                    <i class="fas fa-user-friends"></i> Friends
+                                </div>
+                                <div class="type-option">
+                                    <i class="fas fa-user"></i> Solo
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="btn action-secondary">Cancel</button>
+                            <button class="btn action-primary">Submit Review</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previous Reviews -->
+            <div class="review-content" id="previous">
+                <div class="previous-reviews">
+                    <h2 class="section-title">My Submitted Reviews</h2>
+                    
+                    <ul class="review-list">
+                        <!-- Review 1 -->
+                        <li class="review-item">
+                            <div class="review-header">
+                                <div class="review-meta">
+                                    <div class="review-property-image">
+                                        <img src="/2.png" alt="Grand Plaza Hotel">
+                                    </div>
+                                    <div class="review-property-info">
+                                        <h4>Grand Plaza Hotel</h4>
+                                        <div class="review-date">Reviewed on May 25, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="review-status status-published">Published</div>
+                            </div>
+                            
+                            <div class="review-rating">
+                                <div class="review-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span style="margin-left: 5px;">4.5</span>
+                                </div>
+                            </div>
+                            
+                            <div class="review-categories">
+                                <div class="review-category">Cleanliness <span>5.0</span></div>
+                                <div class="review-category">Service <span>4.0</span></div>
+                                <div class="review-category">Location <span>5.0</span></div>
+                                <div class="review-category">Value <span>4.0</span></div>
+                            </div>
+                            
+                            <div class="review-text">
+                                The Grand Plaza Hotel exceeded our expectations in every way. The room was immaculate with stunning views of the Eiffel Tower. Staff were exceptionally friendly and helpful throughout our stay. The location couldn't be better - right in the heart of Paris but surprisingly quiet at night.
+                            </div>
+                            
+                            <div class="review-tags">
+                                <div class="review-tag">Comfortable Beds</div>
+                                <div class="review-tag">Great Location</div>
+                                <div class="review-tag">Friendly Staff</div>
+                            </div>
+                            
+                            <div class="review-traveler-type">
+                                <i class="fas fa-heart"></i> Couple
+                            </div>
+                            
+                            <div class="review-actions">
+                                <button class="action-btn action-primary">Edit</button>
+                                <button class="action-btn action-danger">Delete</button>
+                            </div>
+                        </li>
+                        
+                        <!-- Review 2 -->
+                        <li class="review-item">
+                            <div class="review-header">
+                                <div class="review-meta">
+                                    <div class="review-property-image">
+                                        <img src="/2.png" alt="Oceanview Resort">
+                                    </div>
+                                    <div class="review-property-info">
+                                        <h4>Oceanview Resort</h4>
+                                        <div class="review-date">Reviewed on Mar 20, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="review-status status-published">Published</div>
+                            </div>
+                            
+                            <div class="review-rating">
+                                <div class="review-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span style="margin-left: 5px;">4.0</span>
+                                </div>
+                            </div>
+                            
+                            <div class="review-categories">
+                                <div class="review-category">Cleanliness <span>4.0</span></div>
+                                <div class="review-category">Service <span>3.0</span></div>
+                                <div class="review-category">Location <span>5.0</span></div>
+                                <div class="review-category">Value <span>4.0</span></div>
+                            </div>
+                            
+                            <div class="review-text">
+                                Beautiful resort with breathtaking ocean views. The pool area was fantastic and the beach access was very convenient. However, we did experience some issues with room service being slow and our room wasn't cleaned properly on one day. The management did apologize and compensate us for the inconvenience.
+                            </div>
+                            
+                            <div class="review-tags">
+                                <div class="review-tag">Beautiful Views</div>
+                                <div class="review-tag">Excellent Amenities</div>
+                            </div>
+                            
+                            <div class="review-traveler-type">
+                                <i class="fas fa-users"></i> Family
+                            </div>
+                            
+                            <div class="review-actions">
+                                <button class="action-btn action-secondary" disabled>Edit Expired</button>
+                                <button class="action-btn action-danger">Delete</button>
+                            </div>
+                        </li>
+                        
+                        <!-- Review 3 -->
+                        <li class="review-item">
+                            <div class="review-header">
+                                <div class="review-meta">
+                                    <div class="review-property-image">
+                                        <img src="/2.png" alt="Mountain Retreat">
+                                    </div>
+                                    <div class="review-property-info">
+                                        <h4>Mountain Retreat</h4>
+                                        <div class="review-date">Submitted on Jan 12, 2025</div>
+                                    </div>
+                                </div>
+                                <div class="review-status status-pending">Pending Approval</div>
+                            </div>
+                            
+                            <div class="review-rating">
+                                <div class="review-stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span style="margin-left: 5px;">5.0</span>
+                                </div>
+                            </div>
+                            
+                            <div class="review-text">
+                                Absolutely perfect getaway! The cabin was cozy yet luxurious with a stunning mountain view. The staff went above and beyond to make our anniversary special. We'll definitely be returning next year!
+                            </div>
+                            
+                            <div class="review-actions">
+                                <button class="action-btn action-primary">Edit</button>
+                                <button class="action-btn action-danger">Delete</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <img src="/api/placeholder/40/40" alt="LuxStay Logo">
+                        <div class="footer-logo-text">Lux<span>Stay</span></div>
+                    </div>
+                    <p class="footer-desc">
+                        LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Hotels</a></li>
+                        <li><a href="#">Destinations</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cancellation Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            123 Luxury Avenue, New York, NY 10001, USA
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            +1 (555) 123-4567
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            info@luxstay.com
+                        </div>
+                    </div>
+                    <div class="footer-form">
+                        <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
+                        <button class="btn">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-bottom-text">
+                    &copy; 2025 LuxStay. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // === Header Scroll Effect ===
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // === Mobile Menu Toggle ===
+        const hamburger = document.querySelector('.hamburger');
+        const menu = document.querySelector('.menu');
+
+        hamburger.addEventListener('click', function() {
+            menu.classList.toggle('active');
+            hamburger.innerHTML = menu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // === Tab Switching ===
+        const tabBtns = document.querySelectorAll('.review-tab');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                document.querySelectorAll('.review-tab').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.review-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                this.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // === Star Rating ===
+        const stars = document.querySelectorAll('.star');
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                
+                // Update all stars up to the clicked one
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // === Category Star Rating ===
+        const categoryStars = document.querySelectorAll('.category-star');
+        categoryStars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                const categoryContainer = this.closest('.category-stars');
+                const starsInCategory = categoryContainer.querySelectorAll('.category-star');
+                const valueDisplay = this.closest('.category-rating').querySelector('.rating-value');
+                
+                // Update all stars in this category
+                starsInCategory.forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+                
+                // Update the rating value display
+                valueDisplay.textContent = `${rating}/5`;
+            });
+        });
+
+        // === Character Count ===
+        const reviewText = document.getElementById('reviewText');
+        const charCount = document.querySelector('.char-count');
+        
+        reviewText.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = `${count}/50 characters`;
+            
+            if (count < 50) {
+                charCount.classList.add('warning');
+            } else {
+                charCount.classList.remove('warning');
+            }
+        });
+
+        // === Tag Selection ===
+        const tagOptions = document.querySelectorAll('.tag-option');
+        tagOptions.forEach(tag => {
+            tag.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+
+        // === Traveler Type Selection ===
+        const typeOptions = document.querySelectorAll('.type-option');
+        typeOptions.forEach(type => {
+            type.addEventListener('click', function() {
+                typeOptions.forEach(t => t.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        // === Review Actions ===
+        const editButtons = document.querySelectorAll('.review-actions .action-primary');
+        editButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (!this.disabled) {
+                    alert('Edit functionality would open the review in edit mode');
+                }
+            });
+        });
+
+        const deleteButtons = document.querySelectorAll('.review-actions .action-danger');
+        deleteButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this review? This action cannot be undone.')) {
+                    const reviewItem = this.closest('.review-item');
+                    reviewItem.style.opacity = '0';
+                    reviewItem.style.height = '0';
+                    reviewItem.style.padding = '0';
+                    reviewItem.style.margin = '0';
+                    reviewItem.style.border = 'none';
+                    reviewItem.style.overflow = 'hidden';
+                    reviewItem.style.transition = 'all 0.3s ease';
+                    
+                    setTimeout(() => {
+                        reviewItem.remove();
+                    }, 300);
+                }
+            });
+        });
+
+        // === Form Submission ===
+        const submitButton = document.querySelector('.review-form .action-primary');
+        submitButton.addEventListener('click', function() {
+            const reviewText = document.getElementById('reviewText').value;
+            
+            if (reviewText.length < 50) {
+                alert('Please write at least 50 characters for your review');
+                return;
+            }
+            
+            if (!document.querySelector('.star.active')) {
+                alert('Please provide an overall rating');
+                return;
+            }
+            
+            // In a real implementation, this would submit to your backend
+            alert('Thank you for your review! It will be published after moderation.');
+            
+            // Switch to the previous reviews tab
+            document.querySelector('.review-tab[data-tab="previous"]').click();
+        });
+
+        // === Animation on Scroll ===
+        // Simple function to check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.bottom >= 0
+            );
+        }
+
+        // Elements to animate
+        const animateItems = document.querySelectorAll('.review-item, .rating-section, .review-form');
+        
+        // Add animation class when elements are in viewport
+        function animateOnScroll() {
+            animateItems.forEach(item => {
+                if (isInViewport(item) && !item.classList.contains('animated')) {
+                    item.classList.add('animated');
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            });
+        }
+
+        // Run on scroll and on load
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>

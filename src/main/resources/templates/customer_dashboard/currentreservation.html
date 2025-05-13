@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxStay - Current Reservations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === GENERAL STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #333;
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #d4af37;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #c49f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-outline:hover {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #d4af37;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* === HEADER STYLES === */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .logo-text span {
+            color: #d4af37;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        .menu li a {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .menu li a:hover {
+            color: #d4af37;
+        }
+
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #d4af37;
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .menu li a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* === PAGE HEADER === */
+        .page-header {
+            background-color: #f9f9f9;
+            padding: 120px 0 60px;
+            margin-bottom: 40px;
+        }
+
+        .page-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            color: #666;
+        }
+
+        .breadcrumb li {
+            margin-right: 10px;
+        }
+
+        .breadcrumb li:after {
+            content: '/';
+            margin-left: 10px;
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        .breadcrumb a:hover {
+            color: #d4af37;
+        }
+
+        /* === CURRENT RESERVATIONS === */
+        .current-reservations {
+            padding: 40px 0 80px;
+        }
+
+        .reservation-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .reservation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .reservation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #eee;
+        }
+
+        .reservation-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .reservation-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-confirmed {
+            background-color: #e6f7ee;
+            color: #00a859;
+        }
+
+        .status-pending {
+            background-color: #fff8e6;
+            color: #ff9500;
+        }
+
+        .countdown {
+            display: flex;
+            align-items: center;
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .countdown i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        .reservation-body {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .reservation-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .reservation-dates {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            background-color: #fafafa;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .check-in, .check-out {
+            margin-bottom: 20px;
+        }
+
+        .date-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .date-value {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .time-value {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .days-remaining {
+            font-size: 14px;
+            color: #d4af37;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .reservation-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 576px) {
+            .reservation-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .detail-group {
+            margin-bottom: 15px;
+        }
+
+        .detail-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .property-image {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .reservation-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-primary {
+            background-color: #d4af37;
+            color: white;
+            border: none;
+        }
+
+        .action-primary:hover {
+            background-color: #c49f2f;
+        }
+
+        .action-secondary {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+
+        .action-secondary:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+
+        .action-danger {
+            background-color: transparent;
+            border: 1px solid #e74c3c;
+            color: #e74c3c;
+        }
+
+        .action-danger:hover {
+            background-color: #fee;
+        }
+
+        /* === TRAVEL INFORMATION === */
+        .travel-info {
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        .info-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            border-bottom-color: #d4af37;
+            color: #d4af37;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .events-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .event-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .event-date {
+            font-size: 14px;
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .event-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .event-location {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .transport-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .transport-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #d4af37;
+        }
+
+        .transport-details {
+            flex: 1;
+        }
+
+        .transport-type {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .transport-info {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .directions-map {
+            width: 100%;
+            height: 300px;
+            background-color: #eee;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .directions-map img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .map-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .share-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .share-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .share-btn:hover {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .footer-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-logo-text span {
+            color: #d4af37;
+        }
+
+        .footer-desc {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #aaa;
+        }
+
+        .footer-social {
+            display: flex;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #d4af37;
+            transform: translateY(-3px);
+        }
+
+        .footer-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 40px;
+            background-color: #d4af37;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #d4af37;
+            padding-left: 5px;
+        }
+
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .contact-icon {
+            color: #d4af37;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .contact-text {
+            color: #aaa;
+        }
+
+        .footer-form {
+            position: relative;
+        }
+
+        .footer-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-input:focus {
+            outline: none;
+            background-color: #444;
+        }
+
+        .footer-bottom {
+            background-color: #1a1a1a;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-bottom-text {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* === MEDIA QUERIES === */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 0;
+            }
+
+            .menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 40px;
+                transition: all 0.3s ease;
+            }
+
+            .menu.active {
+                left: 0;
+            }
+
+            .menu li {
+                margin: 0 0 20px 0;
+            }
+
+            .menu li a {
+                font-size: 18px;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .reservation-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="/api/placeholder/40/40" alt="LuxStay Logo">
+                    <div class="logo-text">Lux<span>Stay</span></div>
+                </div>
+                <ul class="menu">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Hotels</a></li>
+                    <li><a href="#">Destinations</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+                <div class="user-actions">
+                    <a href="#" class="btn btn-outline">Login</a>
+                    <a href="#" class="btn">Sign Up</a>
+                </div>
+                <button class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <div>
+                    <h1 class="section-title">Current Reservations</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">My Account</a></li>
+                        <li>Current Reservations</li>
+                    </ul>
+                </div>
+                <a href="#" class="btn">Book New Stay</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Reservations -->
+    <section class="current-reservations">
+        <div class="container">
+            <!-- Reservation Card 1 -->
+            <div class="reservation-card">
+                <div class="reservation-header">
+                    <div class="reservation-title">Grand Plaza Hotel, Paris</div>
+                    <div>
+                        <span class="reservation-status status-confirmed">Confirmed</span>
+                        <div class="countdown">
+                            <i class="far fa-clock"></i>
+                            <span id="countdown1">14 days, 6 hours remaining</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reservation-body">
+                    <div class="reservation-dates">
+                        <div class="check-in">
+                            <div class="date-label">Check-in</div>
+                            <div class="date-value">May 15, 2025</div>
+                            <div class="time-value">3:00 PM</div>
+                        </div>
+                        <div class="check-out">
+                            <div class="date-label">Check-out</div>
+                            <div class="date-value">May 20, 2025</div>
+                            <div class="time-value">11:00 AM</div>
+                        </div>
+                        <div class="days-remaining">5 nights</div>
+                    </div>
+                    <div class="reservation-details">
+                        <div>
+                            <div class="property-image">
+                                <img src="/2.png" alt="Grand Plaza Hotel">
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Room Type</div>
+                                <div class="detail-value">Deluxe King Room</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Guests</div>
+                                <div class="detail-value">2 Adults</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="detail-group">
+                                <div class="detail-label">Confirmation Number</div>
+                                <div class="detail-value">LX12345678</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Payment Status</div>
+                                <div class="detail-value">Paid in Full</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Cancellation Policy</div>
+                                <div class="detail-value">Free cancellation until May 10</div>
+                            </div>
+                            <div class="reservation-actions">
+                                <button class="action-btn action-primary">Modify</button>
+                                <button class="action-btn action-danger">Cancel</button>
+                                <button class="action-btn action-secondary">Contact Hotel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="travel-info">
+                    <div class="info-tabs">
+                        <button class="tab-btn active" data-tab="events">Local Events</button>
+                        <button class="tab-btn" data-tab="transport">Transportation</button>
+                        <button class="tab-btn" data-tab="directions">Directions</button>
+                    </div>
+                    <div class="tab-content active" id="events">
+                        <h3>Events During Your Stay</h3>
+                        <div class="events-list">
+                            <div class="event-card">
+                                <div class="event-date">May 16, 2025</div>
+                                <div class="event-title">Paris Jazz Festival</div>
+                                <div class="event-location">Parc Floral de Paris</div>
+                            </div>
+                            <div class="event-card">
+                                <div class="event-date">May 17, 2025</div>
+                                <div class="event-title">Night at the Louvre</div>
+                                <div class="event-location">Louvre Museum</div>
+                            </div>
+                            <div class="event-card">
+                                <div class="event-date">May 18, 2025</div>
+                                <div class="event-title">Seine River Cruise</div>
+                                <div class="event-location">Bateaux Parisiens</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="transport">
+                        <h3>Transportation Options</h3>
+                        <div class="transport-option">
+                            <div class="transport-icon">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <div class="transport-details">
+                                <div class="transport-type">From Charles de Gaulle Airport</div>
+                                <div class="transport-info">Taxi: ~45 min, €50-70 | RER B: ~50 min, €11</div>
+                            </div>
+                        </div>
+                        <div class="transport-option">
+                            <div class="transport-icon">
+                                <i class="fas fa-subway"></i>
+                            </div>
+                            <div class="transport-details">
+                                <div class="transport-type">Metro Station</div>
+                                <div class="transport-info">Closest: Opéra (Line 3, 7, 8) - 5 min walk</div>
+                            </div>
+                        </div>
+                        <div class="transport-option">
+                            <div class="transport-icon">
+                                <i class="fas fa-taxi"></i>
+                            </div>
+                            <div class="transport-details">
+                                <div class="transport-type">Ride Services</div>
+                                <div class="transport-info">Uber, Bolt, and local taxis available</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="directions">
+                        <h3>Directions to Property</h3>
+                        <div class="directions-map">
+                            <img src="/2.png" alt="Map to Grand Plaza Hotel">
+                            <div class="map-overlay">
+                                <i class="fas fa-map-marker-alt" style="color: #e74c3c;"></i> Your hotel
+                            </div>
+                        </div>
+                        <div class="detail-group">
+                            <div class="detail-label">Address</div>
+                            <div class="detail-value">12 Rue de la Paix, 75002 Paris, France</div>
+                        </div>
+                        <div class="share-options">
+                            <div class="share-btn">
+                                <i class="fas fa-share-alt"></i>
+                            </div>
+                            <div class="share-btn">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="share-btn">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reservation Card 2 -->
+            <div class="reservation-card">
+                <div class="reservation-header">
+                    <div class="reservation-title">Beachfront Villas, Bali</div>
+                    <div>
+                        <span class="reservation-status status-pending">Pending Payment</span>
+                        <div class="countdown">
+                            <i class="far fa-clock"></i>
+                            <span id="countdown2">28 days, 12 hours remaining</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="reservation-body">
+                    <div class="reservation-dates">
+                        <div class="check-in">
+                            <div class="date-label">Check-in</div>
+                            <div class="date-value">June 10, 2025</div>
+                            <div class="time-value">2:00 PM</div>
+                        </div>
+                        <div class="check-out">
+                            <div class="date-label">Check-out</div>
+                            <div class="date-value">June 17, 2025</div>
+                            <div class="time-value">11:00 AM</div>
+                        </div>
+                        <div class="days-remaining">7 nights</div>
+                    </div>
+                    <div class="reservation-details">
+                        <div>
+                            <div class="property-image">
+                                <img src="/2.png" alt="Beachfront Villas">
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Room Type</div>
+                                <div class="detail-value">Ocean View Villa with Pool</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Guests</div>
+                                <div class="detail-value">2 Adults, 2 Children</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="detail-group">
+                                <div class="detail-label">Confirmation Number</div>
+                                <div class="detail-value">LX87654321</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Payment Status</div>
+                                <div class="detail-value">Deposit Paid (Balance Due May 20)</div>
+                            </div>
+                            <div class="detail-group">
+                                <div class="detail-label">Cancellation Policy</div>
+                                <div class="detail-value">Free cancellation until May 25</div>
+                            </div>
+                            <div class="reservation-actions">
+                                <button class="action-btn action-primary">Complete Payment</button>
+                                <button class="action-btn action-danger">Cancel</button>
+                                <button class="action-btn action-secondary">Contact Hotel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <img src="/api/placeholder/40/40" alt="LuxStay Logo">
+                        <div class="footer-logo-text">Lux<span>Stay</span></div>
+                    </div>
+                    <p class="footer-desc">
+                        LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Hotels</a></li>
+                        <li><a href="#">Destinations</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cancellation Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            123 Luxury Avenue, New York, NY 10001, USA
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            +1 (555) 123-4567
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            info@luxstay.com
+                        </div>
+                    </div>
+                    <div class="footer-form">
+                        <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
+                        <button class="btn">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-bottom-text">
+                    &copy; 2025 LuxStay. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // === Header Scroll Effect ===
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // === Mobile Menu Toggle ===
+        const hamburger = document.querySelector('.hamburger');
+        const menu = document.querySelector('.menu');
+
+        hamburger.addEventListener('click', function() {
+            menu.classList.toggle('active');
+            hamburger.innerHTML = menu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // === Countdown Timers ===
+        function updateCountdowns() {
+            // Paris reservation (May 15, 2025)
+            const parisDate = new Date('2025-05-15T00:00:00').getTime();
+            updateSingleCountdown(parisDate, 'countdown1');
+            
+            // Bali reservation (June 10, 2025)
+            const baliDate = new Date('2025-06-10T00:00:00').getTime();
+            updateSingleCountdown(baliDate, 'countdown2');
+        }
+
+        function updateSingleCountdown(targetDate, elementId) {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById(elementId).textContent = "Check-in date passed";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            document.getElementById(elementId).textContent = `${days} days, ${hours} hours remaining`;
+        }
+
+        // Update countdowns immediately and then every hour
+        updateCountdowns();
+        setInterval(updateCountdowns, 3600000);
+
+        // === Tab Switching ===
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                this.classList.add('active');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // === Share Functionality ===
+        const shareBtns = document.querySelectorAll('.share-btn');
+        shareBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // In a real implementation, this would use the Web Share API or specific social media APIs
+                alert('Share functionality would be implemented here');
+            });
+        });
+
+        // === Notification Preferences ===
+        // This would be connected to backend in a real implementation
+        function toggleNotifications() {
+            const notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false';
+            localStorage.setItem('notificationsEnabled', !notificationsEnabled);
+            
+            if (!notificationsEnabled && Notification.permission !== 'granted') {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        alert('Notification preferences updated! You will receive reminders before your stay.');
+                    }
+                });
+            } else {
+                alert(`Notification preferences updated! Notifications ${!notificationsEnabled ? 'enabled' : 'disabled'}`);
+            }
+        }
+
+        // === Animation on Scroll ===
+        // Simple function to check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.bottom >= 0
+            );
+        }
+
+        // Elements to animate
+        const animateItems = document.querySelectorAll('.reservation-card');
+        
+        // Add animation class when elements are in viewport
+        function animateOnScroll() {
+            animateItems.forEach(item => {
+                if (isInViewport(item) && !item.classList.contains('animated')) {
+                    item.classList.add('animated');
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            });
+        }
+
+        // Run on scroll and on load
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>
