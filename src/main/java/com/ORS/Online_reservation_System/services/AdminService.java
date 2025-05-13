@@ -1,1 +1,5 @@
-// AdminService.java - to be implemented
+package com.ORS.Online_reservation_System.services;
+
+public class AdminService {
+
+}

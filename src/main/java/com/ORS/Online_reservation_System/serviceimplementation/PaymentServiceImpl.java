@@ -1,1 +1,5 @@
-// PaymentServiceImpl.java - to be implemented
+package com.ORS.Online_reservation_System.serviceimplementation;
+
+public class PaymentServiceImpl {
+
+}

@@ -1,1 +1,5 @@
-// BookingRepository.java - to be implemented
+package com.ORS.Online_reservation_System.repositories;
+
+public class BookingRepository {
+
+}
