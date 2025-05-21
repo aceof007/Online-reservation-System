@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -186,7 +186,7 @@
         /* === HERO SECTION === */
         .page-hero {
             height: 400px;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/api/placeholder/1920/1080') no-repeat center center;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/statics/assets/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg') no-repeat center center;
             background-size: cover;
             display: flex;
             align-items: center;
@@ -894,19 +894,18 @@
         <div class="container">
             <nav class="navbar">
                 <div class="logo">
-                    <img src="/api/placeholder/40/40" alt="LuxStay Logo">
+                    <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
                     <div class="logo-text">Lux<span>Stay</span></div>
                 </div>
                 <ul class="menu">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Hotels</a></li>
-                    <li><a href="#">Destinations</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a th:href="@{#}">Home</a></li>
+                    <li><a th:href="@{#}">Hotels</a></li>
+                    <li><a th:href="@{#}">Destinations</a></li>
+                    <li><a th:href="@{#}">About Us</a></li>
                 </ul>
                 <div class="user-actions">
-                    <a href="#" class="btn btn-outline">Login</a>
-                    <a href="#" class="btn">Sign Up</a>
+                    <a th:href="@{#}" class="btn btn-outline">Login</a>
+                    <a th:href="@{#}" class="btn">Sign Up</a>
                 </div>
                 <button class="hamburger">
                     <i class="fas fa-bars"></i>
@@ -968,59 +967,60 @@
             <div class="team-grid">
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/2.png" alt="Sarah Johnson">
+                        <img th:src="@{/../statics/assets/images/olexandr-ignatov-w72a24brINI-unsplash.jpg}" alt="Sarah Johnson">
                     </div>
                     <div class="member-info">
                         <h4 class="member-name">Sarah Johnson</h4>
                         <p class="member-position">Founder & CEO</p>
                         <p class="member-bio">With over 25 years in the hospitality industry, Sarah founded LuxStay with a vision to redefine luxury travel experiences.</p>
                         <div class="member-social">
-                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}"  class="social-link"><i class="fab fa-twitter"></i></a>
                         </div>
                     </div>
                 </div>
                 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/2.png" alt="Michael Chen">
+                        <img th:src="@{/../statics/assets/images/jonas-allert-ZApUkahPK7c-unsplash.jpg}" alt="Michael Chen">
                     </div>
                     <div class="member-info">
                         <h4 class="member-name">Michael Chen</h4>
                         <p class="member-position">Chief Operating Officer</p>
                         <p class="member-bio">Michael oversees global operations, ensuring seamless experiences across all LuxStay properties worldwide.</p>
                         <div class="member-social">
-                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a th:href="@{#}"  class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}"  class="social-link"><i class="fab fa-twitter"></i></a>
                         </div>
                     </div>
                 </div>
                 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/2.png" alt="Elena Rodriguez">
+                        <img th:src="@{/../statics/assets/images/rod-long-2P_ifaetDm0-unsplash.jpg}" alt="Elena Rodriguez">
                     </div>
                     <div class="member-info">
                         <h4 class="member-name">Elena Rodriguez</h4>
                         <p class="member-position">Chief Marketing Officer</p>
                         <p class="member-bio">Elena leads our global marketing efforts and brand strategy, sharing the LuxStay story with the world.</p>
                         <div class="member-social">
-                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
                         </div>
                     </div>
                 </div>
                 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/2.png" alt="David Wilson">
+                        <img th:src="@{/../statics/assets/images/mr-junaid--3ohj90OT8o-unsplash.jpg}" alt="David Wilson">
                     </div>
                     <div class="member-info">
                         <h4 class="member-name">David Wilson</h4>
                         <p class="member-position">VP of Hospitality</p>
                         <p class="member-bio">David ensures that every LuxStay property meets our exacting standards for service and guest experience.</p>
                         <div class="member-social">
-                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
                         </div>
                     </div>
                 </div>
@@ -1104,7 +1104,7 @@
                 <div class="partner-logo">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original-wordmark.svg" alt="Google">
                 </div>
-                
+
                 <div class="partner-logo">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoft/microsoft-original-wordmark.svg" alt="Microsoft">
                 </div>
@@ -1281,7 +1281,7 @@
                         <p>All LuxStay properties offer premium amenities including:</p>
                         <ul style="margin-left: 20px; margin-bottom: 15px;">
                             <li>Luxury bedding and bath products</li>
-                            <li>High-speed WiFi</li>
+                            <li>High-speed Wi-Fi</li>
                             <li>24/7 concierge service</li>
                             <li>Fitness centers</li>
                             <li>At least one dining option</li>
@@ -1359,19 +1359,18 @@
                         LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
                     </p>
                     <div class="footer-social">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
                     <h3 class="footer-title">Quick Links</h3>
                     <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Hotels</a></li>
-                        <li><a href="#">Destinations</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><a th:href="@{/about.html}">About Us</a></li>
+                        <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
+                        <li><a th:href="@{/destination.html}">Destinations</a></li>
                         <li><a href="#">Contact Us</a></li>
                     </ul>
                 </div>

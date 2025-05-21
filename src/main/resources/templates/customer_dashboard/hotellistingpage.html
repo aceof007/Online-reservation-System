@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LuxStay - Hotel Listings</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css}">
     <style>
         /* === GENERAL STYLES === */
         * {
@@ -886,19 +886,18 @@
         <div class="container">
             <nav class="navbar">
                 <div class="logo">
-                    <img src="/api/placeholder/40/40" alt="LuxStay Logo">
+                    <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
                     <div class="logo-text">Lux<span>Stay</span></div>
                 </div>
                 <ul class="menu">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#" class="active">Hotels</a></li>
-                    <li><a href="#">Destinations</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a th:href="@{/homepage.html}">Home</a></li>
+                    <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
+                    <li><a th:href="@{/destination.html}">Destinations</a></li>
+                    <li><a th:href="@{/about.html}">About Us</a></li>
                 </ul>
                 <div class="user-actions">
-                    <a href="#" class="btn btn-outline">Login</a>
-                    <a href="#" class="btn">Sign Up</a>
+                    <a th:href="@{/registrationpage.html}" class="btn btn-outline">Login</a>
+                    <a th:href="@{/registrationpage.html}" class="btn">Sign Up</a>
                 </div>
                 <button class="hamburger">
                     <i class="fas fa-bars"></i>
