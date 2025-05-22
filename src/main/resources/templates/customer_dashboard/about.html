@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LuxStay - About Us & Contact</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
     <style>
         /* === GENERAL STYLES === */
         * {
@@ -145,6 +146,7 @@
             font-weight: 600;
             color: #333;
             transition: color 0.3s ease;
+            cursor: pointer;
         }
 
         .menu li a:hover {
@@ -163,6 +165,14 @@
         }
 
         .menu li a:hover::after {
+            width: 100%;
+        }
+
+        .menu li.active a {
+            color: #d4af37;
+        }
+
+        .menu li.active a::after {
             width: 100%;
         }
 
@@ -186,7 +196,7 @@
         /* === HERO SECTION === */
         .page-hero {
             height: 400px;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/statics/assets/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg') no-repeat center center;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/statics/images/sasha-kaunas-Fk9d0cxYqC4-unsplash.jpg') no-repeat center center;
             background-size: cover;
             display: flex;
             align-items: center;
@@ -563,7 +573,7 @@
             margin-top: 20px;
         }
 
-        .social-link {
+        .social-links .social-link {
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -575,7 +585,7 @@
             transition: all 0.3s ease;
         }
 
-        .social-link:hover {
+        .social-links .social-link:hover {
             background-color: #d4af37;
             transform: translateY(-3px);
         }
@@ -678,6 +688,15 @@
             margin-bottom: 15px;
         }
 
+        /* Page visibility controls */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
         /* === FOOTER === */
         footer {
             background-color: #222;
@@ -723,7 +742,7 @@
             display: flex;
         }
 
-        .social-link {
+        .footer-social .social-link {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -736,7 +755,7 @@
             transition: all 0.3s ease;
         }
 
-        .social-link:hover {
+        .footer-social .social-link:hover {
             background-color: #d4af37;
             transform: translateY(-3px);
         }
@@ -778,18 +797,18 @@
             padding-left: 5px;
         }
 
-        .contact-item {
+        .footer-contact .contact-item {
             display: flex;
             margin-bottom: 15px;
         }
 
-        .contact-icon {
+        .footer-contact .contact-icon {
             color: #d4af37;
             margin-right: 10px;
             font-size: 16px;
         }
 
-        .contact-text {
+        .footer-contact .contact-text {
             color: #aaa;
         }
 
@@ -828,11 +847,11 @@
             .mission-vision {
                 flex-direction: column;
             }
-            
+
             .contact-container {
                 flex-direction: column;
             }
-            
+
             .contact-info, .contact-form {
                 flex: none;
                 width: 100%;
@@ -873,15 +892,15 @@
             .hamburger {
                 display: block;
             }
-            
+
             .hero-title {
                 font-size: 36px;
             }
-            
+
             .hero-subtitle {
                 font-size: 20px;
             }
-            
+
             .page-hero {
                 height: 300px;
             }
@@ -889,33 +908,36 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">
-                    <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
-                    <div class="logo-text">Lux<span>Stay</span></div>
-                </div>
-                <ul class="menu">
-                    <li><a th:href="@{#}">Home</a></li>
-                    <li><a th:href="@{#}">Hotels</a></li>
-                    <li><a th:href="@{#}">Destinations</a></li>
-                    <li><a th:href="@{#}">About Us</a></li>
-                </ul>
-                <div class="user-actions">
-                    <a th:href="@{#}" class="btn btn-outline">Login</a>
-                    <a th:href="@{#}" class="btn">Sign Up</a>
-                </div>
-                <button class="hamburger">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </nav>
-        </div>
-    </header>
+<!-- Header -->
+<header>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
+                <div class="logo-text">Lux<span>Stay</span></div>
+            </div>
+            <ul class="menu">
+                <li><a th:href="@{/homepage.html}">Home</a></li>
+                <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
+                <li><a th:href="@{/destination.html}" >Destinations</a></li>
+                <li class="active"><a href="#" onclick="showPage('about')">About Us</a></li>
+                <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+            </ul>
+            <div class="user-actions">
+                <a th:href="@{/login}" class="btn btn-outline">Login</a>
+                <a th:href="@{/register}" class="btn">Sign Up</a>
+            </div>
+            <button class="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </div>
+</header>
 
+<!-- About Page Content -->
+<div id="about-page" class="page-section active">
     <!-- About Page Hero -->
-    <section class="page-hero" id="about-hero">
+    <section class="page-hero">
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Our Story</h1>
@@ -931,23 +953,23 @@
                 <h2 class="section-title">About LuxStay</h2>
                 <p class="section-subtitle">Redefining luxury hospitality since 2010</p>
             </div>
-            
+
             <div class="about-content">
                 <p class="about-text">
                     Founded in 2010, LuxStay began with a simple vision: to create unforgettable travel experiences by combining luxurious accommodations with personalized service. What started as a single boutique hotel in Paris has grown into a global collection of exceptional properties, each offering a unique sense of place and unparalleled hospitality.
                 </p>
-                
+
                 <p class="about-text">
                     Today, LuxStay operates in over 30 countries, with a portfolio that includes urban retreats, beachfront resorts, and countryside estates. Despite our growth, we remain committed to our founding principles of quality, authenticity, and attention to detail.
                 </p>
             </div>
-            
+
             <div class="mission-vision">
                 <div class="mission-card">
                     <h3 class="mission-title">Our Mission</h3>
                     <p>To provide exceptional hospitality experiences that create lasting memories for our guests, while maintaining the highest standards of service, comfort, and sustainability.</p>
                 </div>
-                
+
                 <div class="vision-card">
                     <h3 class="vision-title">Our Vision</h3>
                     <p>To be the most trusted and admired luxury hospitality brand in the world, recognized for our innovative approach to guest experiences and our commitment to excellence.</p>
@@ -963,11 +985,11 @@
                 <h2 class="section-title">Meet Our Leadership</h2>
                 <p class="section-subtitle">The passionate team behind LuxStay's success</p>
             </div>
-            
+
             <div class="team-grid">
                 <div class="team-member">
                     <div class="member-image">
-                        <img th:src="@{/../statics/assets/images/olexandr-ignatov-w72a24brINI-unsplash.jpg}" alt="Sarah Johnson">
+                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Sarah Johnson">
                     </div>
                     <div class="member-info">
                         <h4 class="member-name">Sarah Johnson</h4>
@@ -975,29 +997,29 @@
                         <p class="member-bio">With over 25 years in the hospitality industry, Sarah founded LuxStay with a vision to redefine luxury travel experiences.</p>
                         <div class="member-social">
                             <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                            <a th:href="@{#}"  class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="team-member">
                     <div class="member-image">
-                        <img th:src="@{/../statics/assets/images/jonas-allert-ZApUkahPK7c-unsplash.jpg}" alt="Michael Chen">
+                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Michael Chen">
                     </div>
                     <div class="member-info">
                         <h4 class="member-name">Michael Chen</h4>
                         <p class="member-position">Chief Operating Officer</p>
                         <p class="member-bio">Michael oversees global operations, ensuring seamless experiences across all LuxStay properties worldwide.</p>
                         <div class="member-social">
-                            <a th:href="@{#}"  class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                            <a th:href="@{#}"  class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="team-member">
                     <div class="member-image">
-                        <img th:src="@{/../statics/assets/images/rod-long-2P_ifaetDm0-unsplash.jpg}" alt="Elena Rodriguez">
+                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Elena Rodriguez">
                     </div>
                     <div class="member-info">
                         <h4 class="member-name">Elena Rodriguez</h4>
@@ -1009,10 +1031,10 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="team-member">
                     <div class="member-image">
-                        <img th:src="@{/../statics/assets/images/mr-junaid--3ohj90OT8o-unsplash.jpg}" alt="David Wilson">
+                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="David Wilson">
                     </div>
                     <div class="member-info">
                         <h4 class="member-name">David Wilson</h4>
@@ -1035,7 +1057,7 @@
                 <h2 class="section-title">Awards & Recognition</h2>
                 <p class="section-subtitle">Our commitment to excellence has been recognized globally</p>
             </div>
-            
+
             <div class="awards-grid">
                 <div class="award-item">
                     <div class="award-icon">
@@ -1044,7 +1066,7 @@
                     <h3 class="award-title">World's Best Hotel Brand</h3>
                     <p class="award-year">Travel + Leisure, 2024</p>
                 </div>
-                
+
                 <div class="award-item">
                     <div class="award-icon">
                         <i class="fas fa-star"></i>
@@ -1052,7 +1074,7 @@
                     <h3 class="award-title">5-Star Global Rating</h3>
                     <p class="award-year">Forbes Travel Guide, 2023</p>
                 </div>
-                
+
                 <div class="award-item">
                     <div class="award-icon">
                         <i class="fas fa-leaf"></i>
@@ -1060,7 +1082,7 @@
                     <h3 class="award-title">Sustainability Leader</h3>
                     <p class="award-year">Green Hotelier Awards, 2023</p>
                 </div>
-                
+
                 <div class="award-item">
                     <div class="award-icon">
                         <i class="fas fa-heart"></i>
@@ -1068,7 +1090,7 @@
                     <h3 class="award-title">Guest Experience Award</h3>
                     <p class="award-year">Condé Nast Traveler, 2022</p>
                 </div>
-                
+
                 <div class="award-item">
                     <div class="award-icon">
                         <i class="fas fa-globe"></i>
@@ -1076,7 +1098,7 @@
                     <h3 class="award-title">Global Expansion Award</h3>
                     <p class="award-year">International Hotel Awards, 2022</p>
                 </div>
-                
+
                 <div class="award-item">
                     <div class="award-icon">
                         <i class="fas fa-utensils"></i>
@@ -1095,37 +1117,36 @@
                 <h2 class="section-title">Our Partners</h2>
                 <p class="section-subtitle">Collaborating with the best in the industry</p>
             </div>
-            
+
             <div class="partners-grid">
                 <div class="partner-logo">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS">
                 </div>
-                
+
                 <div class="partner-logo">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original-wordmark.svg" alt="Google">
                 </div>
 
                 <div class="partner-logo">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoft/microsoft-original-wordmark.svg" alt="Microsoft">
-                </div>
-                
-                <div class="partner-logo">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/salesforce/salesforce-original.svg" alt="Salesforce">
                 </div>
-                
+
                 <div class="partner-logo">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle">
                 </div>
-                
+
                 <div class="partner-logo">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Apple">
                 </div>
             </div>
         </div>
     </section>
+</div>
 
+<!-- Contact Page Content -->
+<div id="contact-page" class="page-section">
     <!-- Contact Page Hero -->
-    <section class="page-hero" id="contact-hero" style="display: none;">
+    <section class="page-hero">
         <div class="container">
             <div class="hero-content">
                 <h1 class="hero-title">Contact Us</h1>
@@ -1135,18 +1156,18 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="contact-section" style="display: none;">
+    <section class="contact-section">
         <div class="container">
             <div class="contact-header">
                 <h2 class="section-title">Get In Touch</h2>
                 <p class="section-subtitle">Our team is ready to assist you with any inquiries</p>
             </div>
-            
+
             <div class="contact-container">
                 <div class="contact-info">
                     <div class="contact-card">
                         <h3 class="contact-title"><i class="fas fa-phone-alt"></i> Contact Information</h3>
-                        
+
                         <div class="contact-item">
                             <div class="contact-icon">
                                 <i class="fas fa-headset"></i>
@@ -1158,7 +1179,7 @@
                                 Saturday-Sunday: 9AM-8PM EST
                             </div>
                         </div>
-                        
+
                         <div class="contact-item">
                             <div class="contact-icon">
                                 <i class="fas fa-envelope"></i>
@@ -1170,7 +1191,7 @@
                                 <a href="mailto:groups@luxstay.com">groups@luxstay.com</a> (Group Travel)
                             </div>
                         </div>
-                        
+
                         <div class="contact-item">
                             <div class="contact-icon">
                                 <i class="fas fa-map-marker-alt"></i>
@@ -1182,43 +1203,43 @@
                                 United States
                             </div>
                         </div>
-                        
+
                         <div class="social-links">
-                            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                         </div>
                     </div>
-                    
+
                     <div class="contact-map">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215256703247!2d-73.98784492453802!3d40.75085697138862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1717461232841!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
-                
+
                 <div class="contact-form">
                     <div class="contact-card">
                         <h3 class="contact-title"><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
-                        
-                        <form id="contactForm">
+
+                        <form id="contactForm" th:action="@{/contact}" th:method="post">
                             <div class="form-group">
                                 <label for="contactName" class="form-label">Your Name</label>
-                                <input type="text" id="contactName" class="form-control" required>
+                                <input type="text" id="contactName" name="name" class="form-control" required>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="contactEmail" class="form-label">Email Address</label>
-                                <input type="email" id="contactEmail" class="form-control" required>
+                                <input type="email" id="contactEmail" name="email" class="form-control" required>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="contactPhone" class="form-label">Phone Number (Optional)</label>
-                                <input type="tel" id="contactPhone" class="form-control">
+                                <input type="tel" id="contactPhone" name="phone" class="form-control">
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="contactSubject" class="form-label">Subject</label>
-                                <select id="contactSubject" class="form-control" required>
+                                <select id="contactSubject" name="subject" class="form-control" required>
                                     <option value="">Select a subject</option>
                                     <option value="reservation">Reservation Inquiry</option>
                                     <option value="modification">Modify Existing Booking</option>
@@ -1227,12 +1248,12 @@
                                     <option value="other">Other</option>
                                 </select>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="contactMessage" class="form-label">Message</label>
-                                <textarea id="contactMessage" class="form-control" required></textarea>
+                                <textarea id="contactMessage" name="message" class="form-control" required></textarea>
                             </div>
-                            
+
                             <button type="submit" class="btn">Send Message</button>
                         </form>
                     </div>
@@ -1242,13 +1263,13 @@
     </section>
 
     <!-- FAQ Section -->
-    <section class="faq-section" style="display: none;">
+    <section class="faq-section">
         <div class="container">
             <div class="faq-header">
                 <h2 class="section-title">Frequently Asked Questions</h2>
                 <p class="section-subtitle">Find answers to common questions about LuxStay</p>
             </div>
-            
+
             <div class="faq-container">
                 <div class="faq-item">
                     <div class="faq-question">
@@ -1260,7 +1281,7 @@
                         <p>Please note that cancellation policies vary by property and rate plan. Your specific cancellation terms are provided at the time of booking and in your confirmation email.</p>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>What is LuxStay's price match guarantee?</span>
@@ -1271,7 +1292,7 @@
                         <p>To request a price match, please contact our customer service team with details of the lower rate you've found.</p>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>What amenities can I expect at LuxStay properties?</span>
@@ -1289,7 +1310,7 @@
                         <p>Many locations also feature spas, pools, and other unique amenities. Specific amenities for each property are listed on their individual pages.</p>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>How does the LuxStay loyalty program work?</span>
@@ -1306,7 +1327,7 @@
                         <p>Members also enjoy benefits like late check-out, welcome amenities, and priority service. Enrollment is free and can be done during booking or through our website.</p>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>What health and safety measures are in place?</span>
@@ -1324,7 +1345,7 @@
                         <p>Specific measures may vary by location based on local guidelines.</p>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Do you offer special rates for group travel?</span>
@@ -1345,179 +1366,174 @@
             </div>
         </div>
     </section>
+</div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">
-                        <img src="/api/placeholder/40/40" alt="LuxStay Logo">
-                        <div class="footer-logo-text">Lux<span>Stay</span></div>
-                    </div>
-                    <p class="footer-desc">
-                        LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
-                    </p>
-                    <div class="footer-social">
-                        <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
+                    <div class="footer-logo-text">Lux<span>Stay</span></div>
                 </div>
-                <div class="footer-links">
-                    <h3 class="footer-title">Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a th:href="@{/about.html}">About Us</a></li>
-                        <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
-                        <li><a th:href="@{/destination.html}">Destinations</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-links">
-                    <h3 class="footer-title">Support</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Cancellation Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-contact">
-                    <h3 class="footer-title">Contact Us</h3>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
-                        </div>
-                        <div class="contact-text">
-                            123 Luxury Avenue, New York, NY 10001, USA
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone-alt"></i>
-                        </div>
-                        <div class="contact-text">
-                            +1 (555) 123-4567
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="contact-text">
-                            info@luxstay.com
-                        </div>
-                    </div>
-                    <div class="footer-form">
-                        <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
-                        <button class="btn">Subscribe</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="container">
-                <p class="footer-bottom-text">
-                    &copy; 2025 LuxStay. All rights reserved.
+                <p class="footer-desc">
+                    LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
                 </p>
+                <div class="footer-social">
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/about.html}">About Us</a></li>
+                    <li><a th:href="@{/hotellistingpage.html}" >Hotels</a></li>
+                    <li><a th:href="@{/destination.html}" >Destinations</a></li>
+                    <li><a th:href="@{/contact}" onclick="showPage('contact')">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-title">Support</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/#}">Help Center</a></li>
+                    <li><a th:href="@{/#}">FAQs</a></li>
+                    <li><a th:href="@{/#}">Terms of Service</a></li>
+                    <li><a th:href="@{/#}">Privacy Policy</a></li>
+                    <li><a th:href="@{/#}">Cancellation Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3 class="footer-title">Contact Us</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        123 Luxury Avenue, New York, NY 10001, USA
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        +1 (555) 123-4567
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        info@luxstay.com
+                    </div>
+                </div>
+                <div class="footer-form">
+                    <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
+                    <button class="btn">Subscribe</button>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="footer-bottom-text">
+                &copy; 2025 LuxStay. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
 
-    <!-- JavaScript -->
-    <script>
-        // === Header Scroll Effect ===
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+<!-- JavaScript -->
+<script>
+    // === Header Scroll Effect ===
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // === Mobile Menu Toggle ===
+    const hamburger = document.querySelector('.hamburger');
+    const menu = document.querySelector('.menu');
+
+    hamburger.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        hamburger.innerHTML = menu.classList.contains('active')
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+    });
+
+    // === Page Navigation ===
+    function showPage(page) {
+        // Hide all page sections
+        const aboutPage = document.getElementById('about-page');
+        const contactPage = document.getElementById('contact-page');
+
+        aboutPage.classList.remove('active');
+        contactPage.classList.remove('active');
+
+        // Update menu active state
+        document.querySelectorAll('.menu li').forEach(li => {
+            li.classList.remove('active');
         });
 
-        // === Mobile Menu Toggle ===
-        const hamburger = document.querySelector('.hamburger');
-        const menu = document.querySelector('.menu');
-
-        hamburger.addEventListener('click', function() {
-            menu.classList.toggle('active');
-            hamburger.innerHTML = menu.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-
-        // === Page Navigation ===
-        function showPage(page) {
-            // Hide all page sections
-            document.getElementById('about-hero').style.display = 'none';
-            document.getElementById('contact-hero').style.display = 'none';
-            document.querySelector('.about-section').style.display = 'none';
-            document.querySelector('.team-section').style.display = 'none';
-            document.querySelector('.awards-section').style.display = 'none';
-            document.querySelector('.partners-section').style.display = 'none';
-            document.querySelector('.contact-section').style.display = 'none';
-            document.querySelector('.faq-section').style.display = 'none';
-            
-            // Show selected page
-            if (page === 'about') {
-                document.getElementById('about-hero').style.display = 'flex';
-                document.querySelector('.about-section').style.display = 'block';
-                document.querySelector('.team-section').style.display = 'block';
-                document.querySelector('.awards-section').style.display = 'block';
-                document.querySelector('.partners-section').style.display = 'block';
-                document.title = 'LuxStay - About Us';
-            } else if (page === 'contact') {
-                document.getElementById('contact-hero').style.display = 'flex';
-                document.querySelector('.contact-section').style.display = 'block';
-                document.querySelector('.faq-section').style.display = 'block';
-                document.title = 'LuxStay - Contact Us';
-            }
-            
-            // Update active menu item
-            document.querySelectorAll('.menu li a').forEach(link => {
-                link.parentNode.classList.remove('active');
-            });
-            event.target.parentNode.classList.add('active');
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
+        // Show selected page and update title
+        if (page === 'about') {
+            aboutPage.classList.add('active');
+            document.title = 'LuxStay - About Us';
+            document.querySelector('.menu li a[onclick*="about"]').parentNode.classList.add('active');
+        } else if (page === 'contact') {
+            contactPage.classList.add('active');
+            document.title = 'LuxStay - Contact Us';
+            document.querySelector('.menu li a[onclick*="contact"]').parentNode.classList.add('active');
         }
 
-        // Initialize to show about page
-        showPage('about');
+        // Scroll to top
+        window.scrollTo(0, 0);
 
-        // === FAQ Accordion ===
-        const faqItems = document.querySelectorAll('.faq-item');
-        
-        faqItems.forEach(item => {
-            const question = item.querySelector('.faq-question');
-            
-            question.addEventListener('click', function() {
-                // Close all other items
-                faqItems.forEach(otherItem => {
-                    if (otherItem !== item) {
-                        otherItem.classList.remove('active');
-                    }
-                });
-                
-                // Toggle current item
-                item.classList.toggle('active');
+        // Close mobile menu if open
+        menu.classList.remove('active');
+        hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+
+    // === FAQ Accordion ===
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+
+        question.addEventListener('click', function() {
+            // Close all other items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
             });
-        });
 
-        // === Contact Form Submission ===
-        const contactForm = document.getElementById('contactForm');
-        
+            // Toggle current item
+            item.classList.toggle('active');
+        });
+    });
+
+    // === Contact Form Submission ===
+    const contactForm = document.getElementById('contactForm');
+
+    if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             // Simple validation
             let isValid = true;
             const requiredFields = contactForm.querySelectorAll('[required]');
-            
+
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
                     field.style.borderColor = '#dc3545';
@@ -1526,7 +1542,7 @@
                     field.style.borderColor = '#ddd';
                 }
             });
-            
+
             if (isValid) {
                 alert('Thank you for your message! Our team will respond within 24 hours.');
                 contactForm.reset();
@@ -1534,24 +1550,31 @@
                 alert('Please fill in all required fields.');
             }
         });
+    }
 
-        // === Smooth Scrolling ===
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 100,
-                        behavior: 'smooth'
-                    });
-                }
-            });
+    // === Smooth Scrolling ===
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
         });
-    </script>
+    });
+
+    // Initialize page on load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show about page by default
+        showPage('about');
+    });
+</script>
 </body>
 </html>
