@@ -841,15 +841,15 @@
                     <div class="logo-text">Lux<span>Stay</span></div>
                 </div>
                 <ul class="menu">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Hotels</a></li>
-                    <li><a href="#">Destinations</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a th:href="@{/}">Home</a></li>
+                    <li><a th:href="@{/hotelListing}">Hotels</a></li>
+                    <li><a th:href="@{/hotelDetails}">Destinations</a></li>
+                    <li><a th:href="@{/about}">About Us</a></li>
+                    <li><a th:href="@{/about}">Contact</a></li>
                 </ul>
                 <div class="user-actions">
-                    <a href="#" class="btn btn-outline">Login</a>
-                    <a href="#" class="btn">Sign Up</a>
+                    <a th:href="@{/login}" class="btn btn-outline">Login</a>
+                    <a th:href="@{/login}" class="btn">Sign Up</a>
                 </div>
                 <button class="hamburger">
                     <i class="fas fa-bars"></i>
@@ -893,17 +893,17 @@
                         
                         <div class="divider">or sign in with email</div>
                         
-                        <form id="loginForm">
+                        <form id="loginForm" th:action="@{/login}" method="post">
                             <div class="form-group">
                                 <label for="login-email" class="form-label">Email Address</label>
-                                <input type="email" id="login-email" class="form-control" required>
+                                <input type="email" id="login-email" class="form-control" name="username" required>
                                 <div class="invalid-feedback">Please enter a valid email address</div>
                             </div>
                             
                             <div class="form-group">
                                 <label for="login-password" class="form-label">Password</label>
                                 <div class="input-group">
-                                    <input type="password" id="login-password" class="form-control" required>
+                                    <input type="password" id="login-password" class="form-control" name="password" required>
                                     <span class="password-toggle" id="login-toggle">
                                         <i class="far fa-eye"></i>
                                     </span>
@@ -949,38 +949,39 @@
                         
                         <div class="divider">or register with email</div>
                         
-                        <form id="registerForm">
+                        <form id="registerForm" th:action="@{/customer/add}" th:object="${loginForm}" method="post">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="first-name" class="form-label">First Name</label>
-                                    <input type="text" id="first-name" class="form-control" required>
+                                    <input type="text" id="first-name" class="form-control" required th:field="${loginForm.firstName}">
                                     <div class="invalid-feedback">Please enter your first name</div>
                                 </div>
                                 <div class="form-group">
                                     <label for="last-name" class="form-label">Last Name</label>
-                                    <input type="text" id="last-name" class="form-control" required>
+                                    <input type="text" id="last-name" class="form-control" required th:field="${loginForm.lastName}">
                                     <div class="invalid-feedback">Please enter your last name</div>
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <label for="register-email" class="form-label">Email Address</label>
-                                <input type="email" id="register-email" class="form-control" required>
+                                <input type="email" id="register-email" class="form-control" required th:field="${loginForm.email}">
                                 <div class="invalid-feedback">Please enter a valid email address</div>
                             </div>
                             
                             <div class="form-group">
                                 <label for="register-phone" class="form-label">Phone Number</label>
                                 <div class="phone-input">
-                                    <select id="country-code" class="country-select">
+                                    <select id="country-code" class="country-select" th:field="${loginForm.countryCode}">
                                         <option value="+1" selected>🇺🇸 +1</option>
                                         <option value="+44">🇬🇧 +44</option>
                                         <option value="+33">🇫🇷 +33</option>
                                         <option value="+49">🇩🇪 +49</option>
                                         <option value="+81">🇯🇵 +81</option>
+
                                         <!-- More country codes would be listed here -->
                                     </select>
-                                    <input type="tel" id="register-phone" class="form-control" required>
+                                    <input type="tel" id="register-phone" class="form-control" required th:field="${loginForm.phoneNumber}">
                                 </div>
                                 <div class="invalid-feedback">Please enter a valid phone number</div>
                             </div>
@@ -1002,7 +1003,7 @@
                             
                             <div class="form-group">
                                 <label for="confirm-password" class="form-label">Confirm Password</label>
-                                <input type="password" id="confirm-password" class="form-control" required>
+                                <input type="password" id="confirm-password" class="form-control" required th:field="${loginForm.password}">
                                 <div class="invalid-feedback">Passwords do not match</div>
                             </div>
                             
@@ -1266,16 +1267,8 @@
         // === Toggle Between Login/Register ===
         const loginLink = document.getElementById('login-link');
         const registerLink = document.getElementById('register-link');
-        
-        loginLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            authTabs[0].click();
-        });
-        
-        registerLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            authTabs[1].click();
-        });
+
+
 
         // === Password Toggle ===
         const loginToggle = document.getElementById('login-toggle');
@@ -1374,10 +1367,10 @@
         });
         
         // For demo purposes, show 2FA modal when login form is submitted
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        /*document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             openModal(twoFactorModal);
-        });
+        });*/
         
         modalCloseBtns.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -1411,8 +1404,6 @@
         
         // Register form validation
         document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
             let isValid = true;
             const firstName = document.getElementById('first-name');
             const lastName = document.getElementById('last-name');
@@ -1486,12 +1477,12 @@
             } else {
                 termsAgree.nextElementSibling.style.color = '';
             }
-            
+            console.log(isValid);
             if (isValid) {
-                alert('Account created successfully! Please check your email to verify your account.');
-                this.reset();
-                generateCaptcha();
-                authTabs[0].click(); // Switch to login tab
+                console.log("submitting form");
+                return true; // Let Thymeleaf handle submission
+            } else {
+                e.preventDefault(); // Only prevent if invalid
             }
         });
         
