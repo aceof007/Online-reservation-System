@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxStay - Reservation History</title>
+    <link rel="stylesheet" th:href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* === GENERAL STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #333;
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #d4af37;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #c49f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-outline:hover {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #d4af37;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* === HEADER STYLES === */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .logo-text span {
+            color: #d4af37;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        .menu li a {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .menu li a:hover {
+            color: #d4af37;
+        }
+
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #d4af37;
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .menu li a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* === PAGE HEADER === */
+        .page-header {
+            background-color: #f9f9f9;
+            padding: 120px 0 60px;
+            margin-bottom: 40px;
+        }
+
+        .page-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .breadcrumb {
+            display: flex;
+            list-style: none;
+            color: #666;
+        }
+
+        .breadcrumb li {
+            margin-right: 10px;
+        }
+
+        .breadcrumb li:after {
+            content: '/';
+            margin-left: 10px;
+        }
+
+        .breadcrumb li:last-child:after {
+            content: '';
+        }
+
+        .breadcrumb a:hover {
+            color: #d4af37;
+        }
+
+        /* === RESERVATION HISTORY === */
+        .reservation-history {
+            padding: 40px 0 80px;
+        }
+
+        .history-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 250px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        .reservation-list {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .reservation-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            background-color: #f5f5f5;
+            padding: 15px 20px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .reservation-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            align-items: center;
+        }
+
+        .reservation-item:last-child {
+            border-bottom: none;
+        }
+
+        .reservation-item:hover {
+            background-color: #fafafa;
+        }
+
+        .reservation-property {
+            display: flex;
+            align-items: center;
+        }
+
+        .property-img {
+            width: 80px;
+            height: 60px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .property-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-name {
+            font-weight: 600;
+        }
+
+        .property-location {
+            color: #666;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .reservation-date {
+            color: #333;
+        }
+
+        .reservation-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background-color: #e6f7ee;
+            color: #00a859;
+        }
+
+        .status-cancelled {
+            background-color: #fee;
+            color: #e74c3c;
+        }
+
+        .status-upcoming {
+            background-color: #e6f3ff;
+            color: #3498db;
+        }
+
+        .reservation-price {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .reservation-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-primary {
+            background-color: #d4af37;
+            color: white;
+            border: none;
+        }
+
+        .action-primary:hover {
+            background-color: #c49f2f;
+        }
+
+        .action-secondary {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: #666;
+        }
+
+        .action-secondary:hover {
+            border-color: #d4af37;
+            color: #d4af37;
+        }
+
+        /* === REVIEW MODAL === */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #d4af37;
+        }
+
+        .rating-input {
+            margin-bottom: 20px;
+        }
+
+        .rating-stars {
+            color: #ddd;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .rating-stars .active {
+            color: #ffc107;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            border-color: #d4af37;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        /* === TRIP INSIGHTS === */
+        .trip-insights {
+            background-color: #f9f9f9;
+            padding: 60px 0;
+            margin-top: 60px;
+        }
+
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .insight-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .insight-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #d4af37;
+            margin-bottom: 10px;
+        }
+
+        .insight-label {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .footer-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-logo-text span {
+            color: #d4af37;
+        }
+
+        .footer-desc {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #aaa;
+        }
+
+        .footer-social {
+            display: flex;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #d4af37;
+            transform: translateY(-3px);
+        }
+
+        .footer-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 40px;
+            background-color: #d4af37;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #d4af37;
+            padding-left: 5px;
+        }
+
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .contact-icon {
+            color: #d4af37;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .contact-text {
+            color: #aaa;
+        }
+
+        .footer-form {
+            position: relative;
+        }
+
+        .footer-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-input:focus {
+            outline: none;
+            background-color: #444;
+        }
+
+        .footer-bottom {
+            background-color: #1a1a1a;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-bottom-text {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* === MEDIA QUERIES === */
+        @media (max-width: 992px) {
+            .reservation-header, .reservation-item {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+            
+            .reservation-header div:nth-child(4),
+            .reservation-item div:nth-child(4) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 0;
+            }
+
+            .menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 40px;
+                transition: all 0.3s ease;
+            }
+
+            .menu.active {
+                left: 0;
+            }
+
+            .menu li {
+                margin: 0 0 20px 0;
+            }
+
+            .menu li a {
+                font-size: 18px;
+            }
+
+            .hamburger {
+                display: block;
+            }
+            
+            .reservation-header, .reservation-item {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .reservation-header div:nth-child(3),
+            .reservation-item div:nth-child(3) {
+                display: none;
+            }
+            
+            .history-controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .reservation-header, .reservation-item {
+                grid-template-columns: 1fr;
+            }
+            
+            .reservation-header div:not(:first-child),
+            .reservation-item div:not(:first-child) {
+                display: none;
+            }
+            
+            .reservation-property {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .property-img {
+                margin-bottom: 10px;
+            }
+            
+            .reservation-actions {
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
+                    <div class="logo-text">Lux<span>Stay</span></div>
+                </div>
+                <ul class="menu">
+                    <li><a th:href="@{/templates/customer_dashboard/homepage.html}">Home</a></li>
+                    <li><a th:href="@{/templates/customer_dashboard/hotellistingpage.html}">Hotels</a></li>
+                    <li><a th:href="@{/templates/customer_dashboard/destination.html}">Destinations</a></li>
+                    <li><a th:href="@{/templates/customer_dashboard/about.html}">About Us</a></li>
+                </ul>
+                <div class="user-actions">
+                    <a th:href="@{/templates/customer_dashboard/registrationpage.html}" class="btn btn-outline">Login</a>
+                    <a th:href="@{/templates/customer_dashboard/registrationpage.html}" class="btn">Sign Up</a>
+                </div>
+                <button class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="page-header-content">
+                <div>
+                    <h1 class="section-title">Reservation History</h1>
+                    <ul class="breadcrumb">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">My Account</a></li>
+                        <li>Reservation History</li>
+                    </ul>
+                </div>
+                <a href="#" class="btn">Book New Stay</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservation History -->
+    <section class="reservation-history">
+        <div class="container">
+            <div class="history-controls">
+                <div class="filter-group">
+                    <select class="filter-select">
+                        <option>Filter by Year</option>
+                        <option>2025</option>
+                        <option>2024</option>
+                        <option>2023</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Filter by Location</option>
+                        <option>Paris</option>
+                        <option>New York</option>
+                        <option>Tokyo</option>
+                        <option>London</option>
+                    </select>
+                    <select class="filter-select">
+                        <option>Filter by Status</option>
+                        <option>Completed</option>
+                        <option>Upcoming</option>
+                        <option>Cancelled</option>
+                    </select>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="search-input" placeholder="Search by confirmation or hotel...">
+                </div>
+            </div>
+
+            <div class="reservation-list">
+                <div class="reservation-header">
+                    <div>Property</div>
+                    <div>Dates</div>
+                    <div>Status</div>
+                    <div>Price</div>
+                    <div>Actions</div>
+                </div>
+                
+                <!-- Reservation Item 1 -->
+                <div class="reservation-item">
+                    <div class="reservation-property">
+                        <div class="property-img">
+                            <img src="/2.png" alt="Grand Plaza Hotel">
+                        </div>
+                        <div>
+                            <div class="property-name">Grand Plaza Hotel</div>
+                            <div class="property-location">Paris, France</div>
+                        </div>
+                    </div>
+                    <div class="reservation-date">
+                        <div>May 15 - 20, 2025</div>
+                        <div class="text-sm">Confirmation: LX12345678</div>
+                    </div>
+                    <div>
+                        <span class="reservation-status status-upcoming">Upcoming</span>
+                    </div>
+                    <div class="reservation-price">$1,245.00</div>
+                    <div class="reservation-actions">
+                        <button class="action-btn action-primary">Modify</button>
+                        <button class="action-btn action-secondary">Cancel</button>
+                    </div>
+                </div>
+                
+                <!-- Reservation Item 2 -->
+                <div class="reservation-item">
+                    <div class="reservation-property">
+                        <div class="property-img">
+                            <img src="/2.png" alt="Oceanview Resort">
+                        </div>
+                        <div>
+                            <div class="property-name">Oceanview Resort</div>
+                            <div class="property-location">Bali, Indonesia</div>
+                        </div>
+                    </div>
+                    <div class="reservation-date">
+                        <div>Mar 10 - 17, 2025</div>
+                        <div class="text-sm">Confirmation: LX87654321</div>
+                    </div>
+                    <div>
+                        <span class="reservation-status status-completed">Completed</span>
+                    </div>
+                    <div class="reservation-price">$1,890.00</div>
+                    <div class="reservation-actions">
+                        <button class="action-btn action-primary" onclick="openReviewModal()">Review</button>
+                        <button class="action-btn action-primary">Book Again</button>
+                    </div>
+                </div>
+                
+                <!-- Reservation Item 3 -->
+                <div class="reservation-item">
+                    <div class="reservation-property">
+                        <div class="property-img">
+                            <img src="/2.png" alt="Mountain Retreat">
+                        </div>
+                        <div>
+                            <div class="property-name">Mountain Retreat</div>
+                            <div class="property-location">Aspen, USA</div>
+                        </div>
+                    </div>
+                    <div class="reservation-date">
+                        <div>Jan 5 - 10, 2025</div>
+                        <div class="text-sm">Confirmation: LX13579246</div>
+                    </div>
+                    <div>
+                        <span class="reservation-status status-completed">Completed</span>
+                    </div>
+                    <div class="reservation-price">$2,150.00</div>
+                    <div class="reservation-actions">
+                        <button class="action-btn action-secondary">Edit Review</button>
+                        <button class="action-btn action-primary">Book Again</button>
+                    </div>
+                </div>
+                
+                <!-- Reservation Item 4 -->
+                <div class="reservation-item">
+                    <div class="reservation-property">
+                        <div class="property-img">
+                            <img src="/2.png" alt="Urban Loft">
+                        </div>
+                        <div>
+                            <div class="property-name">Urban Loft</div>
+                            <div class="property-location">New York, USA</div>
+                        </div>
+                    </div>
+                    <div class="reservation-date">
+                        <div>Dec 20 - 23, 2024</div>
+                        <div class="text-sm">Confirmation: LX24681357</div>
+                    </div>
+                    <div>
+                        <span class="reservation-status status-cancelled">Cancelled</span>
+                    </div>
+                    <div class="reservation-price">$975.00</div>
+                    <div class="reservation-actions">
+                        <button class="action-btn action-primary">Book Again</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trip Insights -->
+    <section class="trip-insights">
+        <div class="container">
+            <h2 class="section-title">Your Travel Insights</h2>
+            <p class="section-subtitle">Discover your travel patterns and preferences</p>
+            
+            <div class="insights-grid">
+                <div class="insight-card">
+                    <div class="insight-value">12</div>
+                    <div class="insight-label">Total Stays</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-value">42</div>
+                    <div class="insight-label">Nights Booked</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-value">8</div>
+                    <div class="insight-label">Cities Visited</div>
+                </div>
+                <div class="insight-card">
+                    <div class="insight-value">$9,850</div>
+                    <div class="insight-label">Total Spent</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Review Modal -->
+    <div class="modal-overlay" id="reviewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Write a Review</h3>
+                <button class="modal-close" onclick="closeReviewModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="rating-input">
+                    <div class="form-label">Your Rating</div>
+                    <div class="rating-stars">
+                        <i class="fas fa-star" data-rating="1"></i>
+                        <i class="fas fa-star" data-rating="2"></i>
+                        <i class="fas fa-star" data-rating="3"></i>
+                        <i class="fas fa-star" data-rating="4"></i>
+                        <i class="fas fa-star" data-rating="5"></i>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reviewTitle" class="form-label">Review Title</label>
+                    <input type="text" id="reviewTitle" class="form-input" placeholder="Summarize your experience">
+                </div>
+                <div class="form-group">
+                    <label for="reviewText" class="form-label">Your Review</label>
+                    <textarea id="reviewText" class="form-textarea" placeholder="Tell others about your experience..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-outline" onclick="closeReviewModal()">Cancel</button>
+                    <button class="btn">Submit Review</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <img src="/api/placeholder/40/40" alt="LuxStay Logo">
+                        <div class="footer-logo-text">Lux<span>Stay</span></div>
+                    </div>
+                    <p class="footer-desc">
+                        LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Hotels</a></li>
+                        <li><a href="#">Destinations</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3 class="footer-title">Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cancellation Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-contact">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            123 Luxury Avenue, New York, NY 10001, USA
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            +1 (555) 123-4567
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            info@luxstay.com
+                        </div>
+                    </div>
+                    <div class="footer-form">
+                        <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
+                        <button class="btn">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p class="footer-bottom-text">
+                    &copy; 2025 LuxStay. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // === Header Scroll Effect ===
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // === Mobile Menu Toggle ===
+        const hamburger = document.querySelector('.hamburger');
+        const menu = document.querySelector('.menu');
+
+        hamburger.addEventListener('click', function() {
+            menu.classList.toggle('active');
+            hamburger.innerHTML = menu.classList.contains('active') 
+                ? '<i class="fas fa-times"></i>' 
+                : '<i class="fas fa-bars"></i>';
+        });
+
+        // === Review Modal ===
+        function openReviewModal() {
+            document.getElementById('reviewModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Star Rating
+        const stars = document.querySelectorAll('.rating-stars i');
+        stars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = parseInt(this.getAttribute('data-rating'));
+                stars.forEach((s, index) => {
+                    if (index < rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('reviewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeReviewModal();
+            }
+        });
+
+        // === Filter Functionality ===
+        const filterSelects = document.querySelectorAll('.filter-select');
+        const searchInput = document.querySelector('.search-input');
+        const reservationItems = document.querySelectorAll('.reservation-item');
+
+        function filterReservations() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const yearFilter = filterSelects[0].value;
+            const locationFilter = filterSelects[1].value;
+            const statusFilter = filterSelects[2].value;
+
+            reservationItems.forEach(item => {
+                const propertyName = item.querySelector('.property-name').textContent.toLowerCase();
+                const propertyLocation = item.querySelector('.property-location').textContent.toLowerCase();
+                const confirmation = item.querySelector('.text-sm').textContent.toLowerCase();
+                const status = item.querySelector('.reservation-status').textContent;
+                const year = item.querySelector('.reservation-date div:first-child').textContent.includes('2025') ? '2025' : 
+                            item.querySelector('.reservation-date div:first-child').textContent.includes('2024') ? '2024' : '2023';
+
+                const matchesSearch = searchTerm === '' || 
+                                    propertyName.includes(searchTerm) || 
+                                    confirmation.includes(searchTerm);
+                
+                const matchesYear = yearFilter === 'Filter by Year' || year === yearFilter;
+                const matchesLocation = locationFilter === 'Filter by Location' || 
+                                      propertyLocation.includes(locationFilter.toLowerCase());
+                const matchesStatus = statusFilter === 'Filter by Status' || 
+                                    status.toLowerCase() === statusFilter.toLowerCase();
+
+                if (matchesSearch && matchesYear && matchesLocation && matchesStatus) {
+                    item.style.display = 'grid';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        filterSelects.forEach(select => {
+            select.addEventListener('change', filterReservations);
+        });
+
+        searchInput.addEventListener('input', filterReservations);
+
+        // === Sort Functionality ===
+        // This would be implemented based on column headers in a real application
+        // For this example, we'll just show the concept
+        const sortHeaders = document.querySelectorAll('.reservation-header div');
+        sortHeaders.forEach((header, index) => {
+            header.style.cursor = 'pointer';
+            header.addEventListener('click', function() {
+                alert(`Sorting by ${this.textContent} would be implemented here`);
+                // Actual sorting implementation would go here
+            });
+        });
+
+        // === Animation on Scroll ===
+        // Simple function to check if element is in viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.bottom >= 0
+            );
+        }
+
+        // Elements to animate
+        const animateItems = document.querySelectorAll('.reservation-item, .insight-card');
+        
+        // Add animation class when elements are in viewport
+        function animateOnScroll() {
+            animateItems.forEach(item => {
+                if (isInViewport(item) && !item.classList.contains('animated')) {
+                    item.classList.add('animated');
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    
+                    setTimeout(() => {
+                        item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            });
+        }
+
+        // Run on scroll and on load
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+    </script>
+</body>
+</html>

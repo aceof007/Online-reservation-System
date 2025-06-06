@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LuxStay - About Us & Contact</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
+    <style>
+        /* === GENERAL STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            color: #333;
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #d4af37;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #c49f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+        }
+
+        .btn-outline:hover {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #222;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 60px;
+            background-color: #d4af37;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        /* === HEADER STYLES === */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .logo-text span {
+            color: #d4af37;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .menu li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        .menu li a {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .menu li a:hover {
+            color: #d4af37;
+        }
+
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background-color: #d4af37;
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .menu li a:hover::after {
+            width: 100%;
+        }
+
+        .menu li.active a {
+            color: #d4af37;
+        }
+
+        .menu li.active a::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 24px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-actions a {
+            margin-left: 15px;
+        }
+
+        /* === HERO SECTION === */
+        .page-hero {
+            height: 400px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/statics/images/sasha-kaunas-Fk9d0cxYqC4-unsplash.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            color: white;
+            margin-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 24px;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease 0.2s;
+            animation-fill-mode: both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* === ABOUT PAGE STYLES === */
+        .about-section {
+            padding: 80px 0;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-header .section-title {
+            display: inline-block;
+        }
+
+        .about-header .section-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .mission-vision {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .mission-card, .vision-card {
+            flex: 1;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .mission-card {
+            border-top: 4px solid #d4af37;
+        }
+
+        .vision-card {
+            border-top: 4px solid #333;
+        }
+
+        .mission-title, .vision-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        /* Leadership Team */
+        .team-section {
+            padding: 60px 0;
+            background-color: #f9f9f9;
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.05);
+        }
+
+        .member-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .member-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #222;
+        }
+
+        .member-position {
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .member-bio {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .member-social {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-link {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        /* Awards & Recognition */
+        .awards-section {
+            padding: 60px 0;
+        }
+
+        .awards-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .award-item {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .award-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .award-icon {
+            font-size: 40px;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .award-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .award-year {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Partners Section */
+        .partners-section {
+            padding: 60px 0;
+            background-color: #f9f9f9;
+        }
+
+        .partners-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 30px;
+            align-items: center;
+        }
+
+        .partner-logo {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .partner-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .partner-logo:hover img {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        /* === CONTACT PAGE STYLES === */
+        .contact-section {
+            padding: 80px 0;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 40px;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-form {
+            flex: 1;
+        }
+
+        .contact-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .contact-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #222;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-title i {
+            margin-right: 10px;
+            color: #d4af37;
+        }
+
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .contact-icon {
+            color: #d4af37;
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .contact-text {
+            flex: 1;
+            color: #555;
+        }
+
+        .contact-text strong {
+            color: #222;
+        }
+
+        .contact-text a {
+            color: #d4af37;
+            text-decoration: underline;
+        }
+
+        .contact-map {
+            height: 300px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .social-links .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links .social-link:hover {
+            background-color: #d4af37;
+            transform: translateY(-3px);
+        }
+
+        /* Contact Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #d4af37;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 60px 0;
+            background-color: #f9f9f9;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            color: #d4af37;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Page visibility controls */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        /* === FOOTER === */
+        footer {
+            background-color: #222;
+            color: #fff;
+            padding-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .footer-logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .footer-logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .footer-logo-text span {
+            color: #d4af37;
+        }
+
+        .footer-desc {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #aaa;
+        }
+
+        .footer-social {
+            display: flex;
+        }
+
+        .footer-social .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #333;
+            color: #fff;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social .social-link:hover {
+            background-color: #d4af37;
+            transform: translateY(-3px);
+        }
+
+        .footer-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 40px;
+            background-color: #d4af37;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #d4af37;
+            padding-left: 5px;
+        }
+
+        .footer-contact .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .footer-contact .contact-icon {
+            color: #d4af37;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .footer-contact .contact-text {
+            color: #aaa;
+        }
+
+        .footer-form {
+            position: relative;
+        }
+
+        .footer-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .footer-input:focus {
+            outline: none;
+            background-color: #444;
+        }
+
+        .footer-bottom {
+            background-color: #1a1a1a;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-bottom-text {
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* === MEDIA QUERIES === */
+        @media (max-width: 992px) {
+            .mission-vision {
+                flex-direction: column;
+            }
+
+            .contact-container {
+                flex-direction: column;
+            }
+
+            .contact-info, .contact-form {
+                flex: none;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 0;
+            }
+
+            .menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: white;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 40px;
+                transition: all 0.3s ease;
+            }
+
+            .menu.active {
+                left: 0;
+            }
+
+            .menu li {
+                margin: 0 0 20px 0;
+            }
+
+            .menu li a {
+                font-size: 18px;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 20px;
+            }
+
+            .page-hero {
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<div th:replace="~{/fragments/nonsigninuserfragment :: header}"></div>
+
+<!-- About Page Content -->
+<div id="about-page" class="page-section active">
+
+    <!-- About Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Our Story</h1>
+                <p class="hero-subtitle">Discover the passion behind LuxStay and our commitment to exceptional hospitality</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-header">
+                <h2 class="section-title">About LuxStay</h2>
+                <p class="section-subtitle">Redefining luxury hospitality since 2010</p>
+            </div>
+
+            <div class="about-content">
+                <p class="about-text">
+                    Founded in 2010, LuxStay began with a simple vision: to create unforgettable travel experiences by combining luxurious accommodations with personalized service. What started as a single boutique hotel in Paris has grown into a global collection of exceptional properties, each offering a unique sense of place and unparalleled hospitality.
+                </p>
+
+                <p class="about-text">
+                    Today, LuxStay operates in over 30 countries, with a portfolio that includes urban retreats, beachfront resorts, and countryside estates. Despite our growth, we remain committed to our founding principles of quality, authenticity, and attention to detail.
+                </p>
+            </div>
+
+            <div class="mission-vision">
+                <div class="mission-card">
+                    <h3 class="mission-title">Our Mission</h3>
+                    <p>To provide exceptional hospitality experiences that create lasting memories for our guests, while maintaining the highest standards of service, comfort, and sustainability.</p>
+                </div>
+
+                <div class="vision-card">
+                    <h3 class="vision-title">Our Vision</h3>
+                    <p>To be the most trusted and admired luxury hospitality brand in the world, recognized for our innovative approach to guest experiences and our commitment to excellence.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leadership Team -->
+    <section class="team-section">
+        <div class="container">
+            <div class="team-header">
+                <h2 class="section-title">Meet Our Leadership</h2>
+                <p class="section-subtitle">The passionate team behind LuxStay's success</p>
+            </div>
+
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Sarah Johnson">
+                    </div>
+                    <div class="member-info">
+                        <h4 class="member-name">Sarah Johnson</h4>
+                        <p class="member-position">Founder & CEO</p>
+                        <p class="member-bio">With over 25 years in the hospitality industry, Sarah founded LuxStay with a vision to redefine luxury travel experiences.</p>
+                        <div class="member-social">
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Michael Chen">
+                    </div>
+                    <div class="member-info">
+                        <h4 class="member-name">Michael Chen</h4>
+                        <p class="member-position">Chief Operating Officer</p>
+                        <p class="member-bio">Michael oversees global operations, ensuring seamless experiences across all LuxStay properties worldwide.</p>
+                        <div class="member-social">
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Elena Rodriguez">
+                    </div>
+                    <div class="member-info">
+                        <h4 class="member-name">Elena Rodriguez</h4>
+                        <p class="member-position">Chief Marketing Officer</p>
+                        <p class="member-bio">Elena leads our global marketing efforts and brand strategy, sharing the LuxStay story with the world.</p>
+                        <div class="member-social">
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="David Wilson">
+                    </div>
+                    <div class="member-info">
+                        <h4 class="member-name">David Wilson</h4>
+                        <p class="member-position">VP of Hospitality</p>
+                        <p class="member-bio">David ensures that every LuxStay property meets our exacting standards for service and guest experience.</p>
+                        <div class="member-social">
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards & Recognition -->
+    <section class="awards-section">
+        <div class="container">
+            <div class="awards-header">
+                <h2 class="section-title">Awards & Recognition</h2>
+                <p class="section-subtitle">Our commitment to excellence has been recognized globally</p>
+            </div>
+
+            <div class="awards-grid">
+                <div class="award-item">
+                    <div class="award-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="award-title">World's Best Hotel Brand</h3>
+                    <p class="award-year">Travel + Leisure, 2024</p>
+                </div>
+
+                <div class="award-item">
+                    <div class="award-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="award-title">5-Star Global Rating</h3>
+                    <p class="award-year">Forbes Travel Guide, 2023</p>
+                </div>
+
+                <div class="award-item">
+                    <div class="award-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="award-title">Sustainability Leader</h3>
+                    <p class="award-year">Green Hotelier Awards, 2023</p>
+                </div>
+
+                <div class="award-item">
+                    <div class="award-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="award-title">Guest Experience Award</h3>
+                    <p class="award-year">Condé Nast Traveler, 2022</p>
+                </div>
+
+                <div class="award-item">
+                    <div class="award-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="award-title">Global Expansion Award</h3>
+                    <p class="award-year">International Hotel Awards, 2022</p>
+                </div>
+
+                <div class="award-item">
+                    <div class="award-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3 class="award-title">Culinary Excellence</h3>
+                    <p class="award-year">World Culinary Awards, 2021</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="partners-section">
+        <div class="container">
+            <div class="partners-header">
+                <h2 class="section-title">Our Partners</h2>
+                <p class="section-subtitle">Collaborating with the best in the industry</p>
+            </div>
+
+            <div class="partners-grid">
+                <div class="partner-logo">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS">
+                </div>
+
+                <div class="partner-logo">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original-wordmark.svg" alt="Google">
+                </div>
+
+                <div class="partner-logo">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/salesforce/salesforce-original.svg" alt="Salesforce">
+                </div>
+
+                <div class="partner-logo">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/oracle/oracle-original.svg" alt="Oracle">
+                </div>
+
+                <div class="partner-logo">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Apple">
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Contact Page Content -->
+<div id="contact-page" class="page-section">
+
+    <!-- Contact Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Contact Us</h1>
+                <p class="hero-subtitle">We're here to help with any questions or requests</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Our team is ready to assist you with any inquiries</p>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <h3 class="contact-title"><i class="fas fa-phone-alt"></i> Contact Information</h3>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="contact-text">
+                                <strong>Customer Service:</strong><br>
+                                <a href="tel:+18005551234">+1 (800) 555-1234</a><br>
+                                Monday-Friday: 8AM-10PM EST<br>
+                                Saturday-Sunday: 9AM-8PM EST
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <strong>Email:</strong><br>
+                                <a href="mailto:reservations@luxstay.com">reservations@luxstay.com</a> (Bookings)<br>
+                                <a href="mailto:support@luxstay.com">support@luxstay.com</a> (Customer Support)<br>
+                                <a href="mailto:groups@luxstay.com">groups@luxstay.com</a> (Group Travel)
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <strong>Corporate Headquarters:</strong><br>
+                                123 Luxury Avenue, Suite 500<br>
+                                New York, NY 10001<br>
+                                United States
+                            </div>
+                        </div>
+
+                        <div class="social-links">
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="contact-map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215256703247!2d-73.98784492453802!3d40.75085697138862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1717461232841!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <div class="contact-card">
+                        <h3 class="contact-title"><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
+
+                        <form id="contactForm" th:action="@{/contact}" th:method="post">
+                            <div class="form-group">
+                                <label for="contactName" class="form-label">Your Name</label>
+                                <input type="text" id="contactName" name="name" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactEmail" class="form-label">Email Address</label>
+                                <input type="email" id="contactEmail" name="email" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactPhone" class="form-label">Phone Number (Optional)</label>
+                                <input type="tel" id="contactPhone" name="phone" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactSubject" class="form-label">Subject</label>
+                                <select id="contactSubject" name="subject" class="form-control" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="reservation">Reservation Inquiry</option>
+                                    <option value="modification">Modify Existing Booking</option>
+                                    <option value="feedback">Feedback & Suggestions</option>
+                                    <option value="group">Group Travel</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactMessage" class="form-label">Message</label>
+                                <textarea id="contactMessage" name="message" class="form-control" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Find answers to common questions about LuxStay</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I modify or cancel my reservation?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can modify or cancel your reservation through our website or mobile app by accessing "My Bookings" in your account. Alternatively, you can contact our customer service team at +1 (800) 555-1234 or email support@luxstay.com for assistance.</p>
+                        <p>Please note that cancellation policies vary by property and rate plan. Your specific cancellation terms are provided at the time of booking and in your confirmation email.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is LuxStay's price match guarantee?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We're confident in offering the best rates for our properties. If you find a lower rate for the same room, dates, and terms on another website within 24 hours of booking with us, we'll match that rate and give you an additional 10% discount.</p>
+                        <p>To request a price match, please contact our customer service team with details of the lower rate you've found.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What amenities can I expect at LuxStay properties?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All LuxStay properties offer premium amenities including:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Luxury bedding and bath products</li>
+                            <li>High-speed Wi-Fi</li>
+                            <li>24/7 concierge service</li>
+                            <li>Fitness centers</li>
+                            <li>At least one dining option</li>
+                        </ul>
+                        <p>Many locations also feature spas, pools, and other unique amenities. Specific amenities for each property are listed on their individual pages.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How does the LuxStay loyalty program work?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our LuxStay Rewards program offers points for every dollar spent on eligible stays. These points can be redeemed for:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Free nights at any LuxStay property</li>
+                            <li>Room upgrades</li>
+                            <li>Dining and spa credits</li>
+                            <li>Exclusive member rates</li>
+                        </ul>
+                        <p>Members also enjoy benefits like late check-out, welcome amenities, and priority service. Enrollment is free and can be done during booking or through our website.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What health and safety measures are in place?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Guest safety is our top priority. All LuxStay properties adhere to our comprehensive LuxSafe program, which includes:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Enhanced cleaning protocols</li>
+                            <li>Contactless check-in/check-out options</li>
+                            <li>Hand sanitizer stations throughout properties</li>
+                            <li>Regular staff health screenings</li>
+                            <li>Hospital-grade air filtration systems</li>
+                        </ul>
+                        <p>Specific measures may vary by location based on local guidelines.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you offer special rates for group travel?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer special rates and amenities for groups of 10 rooms or more. Our Group Travel specialists can help with:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Customized room blocks</li>
+                            <li>Meeting and event space</li>
+                            <li>Catering arrangements</li>
+                            <li>Transportation coordination</li>
+                            <li>Special group activities</li>
+                        </ul>
+                        <p>Contact our Group Travel team at groups@luxstay.com or +1 (800) 555-5678 for personalized assistance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Footer -->
+<div th:replace="~{/fragments/nonsigninuserfragment :: footer}"></div>
+
+<!-- JavaScript -->
+<script>
+    // === Header Scroll Effect ===
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // === Mobile Menu Toggle ===
+    const hamburger = document.querySelector('.hamburger');
+    const menu = document.querySelector('.menu');
+
+    hamburger.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        hamburger.innerHTML = menu.classList.contains('active')
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+    });
+
+    // === Page Navigation ===
+    function showPage(page) {
+        // Hide all page sections
+        const aboutPage = document.getElementById('about-page');
+        const contactPage = document.getElementById('contact-page');
+
+        aboutPage.classList.remove('active');
+        contactPage.classList.remove('active');
+
+        // Update menu active state
+        document.querySelectorAll('.menu li').forEach(li => {
+            li.classList.remove('active');
+        });
+
+        // Show selected page and update title
+        if (page === 'about') {
+            aboutPage.classList.add('active');
+            document.title = 'LuxStay - About Us';
+            document.querySelector('.menu li a[onclick*="about"]').parentNode.classList.add('active');
+        } else if (page === 'contact') {
+            contactPage.classList.add('active');
+            document.title = 'LuxStay - Contact Us';
+            document.querySelector('.menu li a[onclick*="contact"]').parentNode.classList.add('active');
+        }
+
+        // Scroll to top
+        window.scrollTo(0, 0);
+
+        // Close mobile menu if open
+        menu.classList.remove('active');
+        hamburger.innerHTML = '<i class="fas fa-bars"></i>';
+    }
+
+    // === FAQ Accordion ===
+    const faqItems = document.querySelectorAll('.faq-item');
+
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+
+        question.addEventListener('click', function() {
+            // Close all other items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+
+            // Toggle current item
+            item.classList.toggle('active');
+        });
+    });
+
+    // === Contact Form Submission ===
+    const contactForm = document.getElementById('contactForm');
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Simple validation
+            let isValid = true;
+            const requiredFields = contactForm.querySelectorAll('[required]');
+
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#dc3545';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#ddd';
+                }
+            });
+
+            if (isValid) {
+                alert('Thank you for your message! Our team will respond within 24 hours.');
+                contactForm.reset();
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+    }
+
+    // === Smooth Scrolling ===
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Initialize page on load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show about page by default
+        showPage('about');
+    });
+</script>
+</body>
+</html>
