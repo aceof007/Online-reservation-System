@@ -1,6 +1,8 @@
 package com.ORS.Online_reservation_System.controllers;
 
+import com.ORS.Online_reservation_System.DTO.LoginDTO;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
@@ -8,7 +10,7 @@ public class MainController {
 
     // Public area mappings
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
         return "public/homepage";
     }
 
@@ -28,16 +30,16 @@ public class MainController {
     }
 
     @GetMapping("/hotellisting")
-    public String hotellisting() {
+    public String hotelListing() {
         return "public/hotellistingpage";
     }
 
 
     @GetMapping("/login")
-    public String login() {
-        return "public/login";
+    public String index(Model model) {
+        model.addAttribute("loginForm", new LoginDTO() );
+        return "/public/registrationpage";
     }
-
     @GetMapping("/register")
     public String register() {
         return "public/registrationpage";

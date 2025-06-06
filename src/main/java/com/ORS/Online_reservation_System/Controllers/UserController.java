@@ -1,4 +1,4 @@
-package com.ORS.Online_reservation_System.Controllers;
+package com.ORS.Online_reservation_System.controllers;
 
 import org.springframework.web.bind.annotation.*;
 
