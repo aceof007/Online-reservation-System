@@ -8,8 +8,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 // optional, assumes the table name is 'admin'
-public class Admin {
-
+@Entity
+public class Admin extends User {
     // Getters and Setters
 
 }
