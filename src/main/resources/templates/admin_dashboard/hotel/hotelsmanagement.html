@@ -2731,31 +2731,35 @@
 
     <div class="menu">
         <div class="menu-title">Main</div>
-        <a href="#" class="menu-item" data-section="dashboard">
+        <a th:href="@{/admin/Dashboard}" class="menu-item active" data-section="dashboard">
             <i class="fas fa-th-large"></i>
             <span class="menu-text">Dashboard</span>
         </a>
-        <a href="#" class="menu-item active" data-section="hotel-management">
+        <a th:href="@{/admin/HotelManagement}" class="menu-item" data-section="hotel-management">
             <i class="fas fa-building"></i>
             <span class="menu-text">Hotel Management</span>
         </a>
-        <a href="#" class="menu-item" data-section="user-management">
+        <a th:href="@{/admin/roomlManagement}" class="menu-item" data-section="room-management">
+            <i class="fas fa-bed"></i>
+            <span class="menu-text">Room Management</span>
+        </a>
+        <a th:href="@{/admin/UserManagement}" class="menu-item" data-section="user-management">
             <i class="fas fa-users"></i>
             <span class="menu-text">User Management</span>
         </a>
 
         <div class="menu-title">Reports</div>
-        <a href="#" class="menu-item" data-section="reservation-overview">
+        <a th:href="@{/admin/reservationOverview}" class="menu-item" data-section="reservation-overview">
             <i class="fas fa-chart-line"></i>
             <span class="menu-text">Reservation Overview</span>
         </a>
 
         <div class="menu-title">Settings</div>
-        <a href="#" class="menu-item">
+        <a th:href="@{/admin/system}" class="menu-item">
             <i class="fas fa-cog"></i>
             <span class="menu-text">Settings</span>
         </a>
-        <a href="#" class="menu-item">
+        <a th:href="@{/admin/system}" class="menu-item">
             <i class="fas fa-question-circle"></i>
             <span class="menu-text">Help & Support</span>
         </a>
@@ -4503,7 +4507,6 @@ Child policy: Children under 12 stay free with parents</textarea>
 
         menuItems.forEach(item => {
             item.addEventListener('click', function(e) {
-                e.preventDefault();
 
                 // Remove active class from all menu items
                 menuItems.forEach(i => i.classList.remove('active'));
