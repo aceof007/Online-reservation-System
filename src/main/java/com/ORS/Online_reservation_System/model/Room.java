@@ -28,13 +28,10 @@ public class Room {
     @Column(name = "room_id")
     private Long roomId;
 
-    @NotNull(message = "Hotel is required")
-    @Column(name = "hotel_id")
-    private Long hotelId;
-
     @NotNull(message = "Room type is required")
-    @Column(name = "room_type_id")
-    private Long roomTypeId;
+    @Column(name = "room_type")
+    @Enumerated(EnumType.STRING)
+    private RoomType roomType;
 
     @NotBlank(message = "Room number is required")
     @Size(max = 10, message = "Room number cannot exceed 10 characters")
@@ -70,18 +67,21 @@ public class Room {
 
     // Relationships
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hotel_id", insertable = false, updatable = false)
+    @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "room_type_id", insertable = false, updatable = false)
-    private RoomType roomType;
 
-    @OneToMany(mappedBy = "roomId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
+    @JoinTable(
+            name = "room_amenity",
+            joinColumns = @JoinColumn(name = "room_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+    )
     @Builder.Default
-    private List<RoomAmenity> roomAmenities = new ArrayList<>();
+    private List<Amenity> roomAmenities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "roomId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<RoomImage> roomImages = new ArrayList<>();
 }

@@ -1,7 +1,10 @@
 package com.ORS.Online_reservation_System.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -12,6 +15,9 @@ import java.util.Date;
         name = "user",
         discriminatorType = DiscriminatorType.STRING
 )
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,8 +28,8 @@ public class User {
     String phoneNumber;
     String firstName;
     String lastName;
-    Date registraionDate;
-    String Status;
+    Date registrationDate;
+    String status;
     String role;
 
 }

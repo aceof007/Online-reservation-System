@@ -39,11 +39,17 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     List<Hotel> findByCityIgnoreCaseAndStarRatingAndIsActiveTrue(String city, Integer starRating);
 
     // Custom query to find hotels with amenities
-    @Query("SELECT DISTINCT h FROM Hotel h JOIN h.hotelAmenities ha WHERE ha.amenity = :amenityName AND h.isActive = true")
+    @Query("SELECT DISTINCT h FROM Hotel h JOIN h.amenities a WHERE a.name = :amenityName AND h.isActive = true")
     List<Hotel> findHotelsWithAmenity(@Param("amenityName") String amenityName);
+
+
 
     // Find hotels within a geographic area (if coordinates are available)
     @Query("SELECT h FROM Hotel h WHERE h.latitude BETWEEN :minLat AND :maxLat AND h.longitude BETWEEN :minLng AND :maxLng AND h.isActive = true")
     List<Hotel> findHotelsInArea(@Param("minLat") Double minLat, @Param("maxLat") Double maxLat,
                                  @Param("minLng") Double minLng, @Param("maxLng") Double maxLng);
+
+    boolean existsById(Long id);
+
+
 }

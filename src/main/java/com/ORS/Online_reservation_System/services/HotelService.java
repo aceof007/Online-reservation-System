@@ -1,9 +1,10 @@
 // HotelService.java (Interface)
 package com.ORS.Online_reservation_System.services;
 
+import com.ORS.Online_reservation_System.model.Amenity;
 import com.ORS.Online_reservation_System.model.Hotel;
-import com.ORS.Online_reservation_System.model.HotelAmenity;
 import com.ORS.Online_reservation_System.model.HotelImage;
+import com.ORS.Online_reservation_System.model.RoomType;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +30,10 @@ public interface HotelService {
     List<Hotel> findHotelsWithAmenity(String amenityName);
 
     // Amenity operations
-    HotelAmenity addAmenityToHotel(Long hotelId, String amenityName);
+    void addAmenityToHotel(Long hotelId, String amenityName);
     void removeAmenityFromHotel(Long hotelId, String amenityName);
-    List<HotelAmenity> getHotelAmenities(Long hotelId);
-    List<String> getAllUniqueAmenities();
+    List<Amenity> getHotelAmenities(Long hotelId);
+    List<Amenity> getAllUniqueAmenities();
 
     // Image operations
     HotelImage addImageToHotel(Long hotelId, String imageUrl, String description, Boolean isPrimary);
@@ -44,4 +45,7 @@ public interface HotelService {
     // Validation
     boolean hotelExistsByName(String name);
     boolean isHotelActive(Long hotelId);
+
+    List<RoomType> getDistinctRoomTypesForHotel(Long hotelId);
+
 }

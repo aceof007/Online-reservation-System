@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.util.List;
+
 @Entity
 @Table(name = "amenity")
 @Data
@@ -37,4 +39,11 @@ public class Amenity {
     @Builder.Default
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
+
+    // Add this for bidirectional Many-to-Many
+    @ManyToMany(mappedBy = "amenities")
+    private List<Hotel> hotels;
+
+    @ManyToMany(mappedBy = "roomAmenities")
+    private List<Room> rooms;
 }

@@ -17,21 +17,25 @@ import java.util.Optional;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
-    private final RoomTypeRepository roomTypeRepository;
-    private final RoomAmenityRepository roomAmenityRepository;
     private final RoomImageRepository roomImageRepository;
     private final AmenityRepository amenityRepository;
+    private final HotelRepository hotelRepository;
 
     @Override
     public Room createRoom(Room room) {
-        // Validate hotel exists (you'll need to inject HotelRepository for this)
-        // Validate room type exists
-        if (!roomTypeRepository.existsById(room.getRoomTypeId())) {
-            throw new IllegalArgumentException("Room type not found");
+        // Validate hotel exists (assumes you have hotelRepository injected)
+        if (!hotelRepository.existsById(room.getHotel().getHotelId())) {
+            throw new IllegalArgumentException("Hotel not found");
+        }
+
+        // Validate roomType is non-null (enum, no DB check needed)
+        if (room.getRoomType() == null) {
+            throw new IllegalArgumentException("Room type is required");
         }
 
         // Check if room number already exists for this hotel
-        if (roomRepository.existsByHotelIdAndRoomNumber(room.getHotelId(), room.getRoomNumber())) {
+        if (roomRepository.existsByHotel_HotelIdAndRoomNumber(
+                room.getHotel().getHotelId(), room.getRoomNumber())) {
             throw new IllegalArgumentException("Room number already exists for this hotel");
         }
 
@@ -45,14 +49,15 @@ public class RoomServiceImpl implements RoomService {
 
         // Check room number uniqueness if changed
         if (!existingRoom.getRoomNumber().equals(room.getRoomNumber())) {
-            if (roomRepository.existsByHotelIdAndRoomNumber(room.getHotelId(), room.getRoomNumber())) {
+            if (roomRepository.existsByHotel_HotelIdAndRoomNumber(
+                    existingRoom.getHotel().getHotelId(), room.getRoomNumber())) {
                 throw new IllegalArgumentException("Room number already exists for this hotel");
             }
         }
 
         // Update fields
         existingRoom.setRoomNumber(room.getRoomNumber());
-        existingRoom.setRoomTypeId(room.getRoomTypeId());
+        existingRoom.setRoomType(room.getRoomType());
         existingRoom.setPricePerNight(room.getPricePerNight());
         existingRoom.setCapacity(room.getCapacity());
         existingRoom.setDescription(room.getDescription());
@@ -63,16 +68,16 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void deleteRoom(Long roomId) {
-        if (!roomRepository.existsById(roomId)) {
-            throw new IllegalArgumentException("Room not found");
-        }
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
 
-        // Delete related amenities and images
-        roomAmenityRepository.deleteByRoomId(roomId);
-        roomImageRepository.deleteByRoomId(roomId);
+        // Delete related images (assuming your repository method is correct)
+        roomImageRepository.deleteByRoom_RoomId(roomId);
 
-        roomRepository.deleteById(roomId);
+        // Delete room itself
+        roomRepository.delete(room);
     }
+
 
     @Override
     @Transactional(readOnly = true)
@@ -89,19 +94,19 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional(readOnly = true)
     public List<Room> getRoomsByHotel(Long hotelId) {
-        return roomRepository.findByHotelId(hotelId);
+        return roomRepository.findByHotel_HotelId(hotelId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Room> getAvailableRoomsByHotel(Long hotelId) {
-        return roomRepository.findByHotelIdAndIsAvailableTrue(hotelId);
+        return roomRepository.findByHotel_HotelIdAndIsAvailableTrue(hotelId);
     }
 
-    @Override
     @Transactional(readOnly = true)
-    public List<Room> getRoomsByType(Long roomTypeId) {
-        return roomRepository.findByRoomTypeId(roomTypeId);
+    @Override
+    public List<Room> getRoomsByType(RoomType roomType) {
+        return roomRepository.findByRoomType(roomType);
     }
 
     @Override
@@ -119,7 +124,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional(readOnly = true)
     public Optional<Room> getRoomByHotelAndRoomNumber(Long hotelId, String roomNumber) {
-        return roomRepository.findByHotelIdAndRoomNumber(hotelId, roomNumber);
+        return roomRepository.findByHotel_HotelIdAndRoomNumber(hotelId, roomNumber);
     }
 
     @Override
@@ -134,63 +139,67 @@ public class RoomServiceImpl implements RoomService {
     @Override
     @Transactional(readOnly = true)
     public Long getAvailableRoomCount(Long hotelId) {
-        return roomRepository.countByHotelIdAndIsAvailableTrue(hotelId);
+        return roomRepository.countByHotel_HotelIdAndIsAvailableTrue(hotelId);
     }
 
     @Override
     public void addAmenityToRoom(Long roomId, Long amenityId) {
-        // Validate room and amenity exist
-        if (!roomRepository.existsById(roomId)) {
-            throw new IllegalArgumentException("Room not found");
-        }
-        if (!amenityRepository.existsById(amenityId)) {
-            throw new IllegalArgumentException("Amenity not found");
-        }
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
 
-        // Check if already exists
-        if (roomAmenityRepository.existsByRoomIdAndAmenityId(roomId, amenityId)) {
+        Amenity amenity = amenityRepository.findById(amenityId)
+                .orElseThrow(() -> new IllegalArgumentException("Amenity not found"));
+
+        if (room.getRoomAmenities().contains(amenity)) {
             throw new IllegalArgumentException("Room already has this amenity");
         }
 
-        RoomAmenity roomAmenity = RoomAmenity.builder()
-                .roomId(roomId)
-                .amenityId(amenityId)
-                .build();
-
-        roomAmenityRepository.save(roomAmenity);
+        room.getRoomAmenities().add(amenity);
+        roomRepository.save(room);
     }
+
 
     @Override
     public void removeAmenityFromRoom(Long roomId, Long amenityId) {
-        roomAmenityRepository.deleteByRoomIdAndAmenityId(roomId, amenityId);
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+
+        Amenity amenity = amenityRepository.findById(amenityId)
+                .orElseThrow(() -> new IllegalArgumentException("Amenity not found"));
+
+        if (!room.getRoomAmenities().contains(amenity)) {
+            throw new IllegalArgumentException("Room does not have this amenity");
+        }
+
+        room.getRoomAmenities().remove(amenity);
+        roomRepository.save(room);
     }
+
 
     @Override
     @Transactional(readOnly = true)
     public List<Amenity> getRoomAmenities(Long roomId) {
-        return roomAmenityRepository.findByRoomId(roomId)
-                .stream()
-                .map(RoomAmenity::getAmenity)
-                .toList();
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+
+        return room.getRoomAmenities();
     }
+
 
     @Override
     public void addImageToRoom(Long roomId, String imageUrl, String altText, Boolean isPrimary) {
-        if (!roomRepository.existsById(roomId)) {
-            throw new IllegalArgumentException("Room not found");
-        }
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
 
-        // If setting as primary, unset other primary images
-        if (isPrimary) {
-            roomImageRepository.findByRoomIdAndIsPrimaryTrue(roomId)
-                    .ifPresent(primaryImage -> {
-                        primaryImage.setIsPrimary(false);
-                        roomImageRepository.save(primaryImage);
-                    });
-        }
+        // If setting as primary, unset any existing primary image
+        roomImageRepository.findByRoom_RoomIdAndIsPrimaryTrue(roomId)
+                .ifPresent(existingPrimary -> {
+                    existingPrimary.setIsPrimary(false);
+                    roomImageRepository.save(existingPrimary);
+                });
 
         RoomImage roomImage = RoomImage.builder()
-                .roomId(roomId)
+                .room(room)
                 .imageUrl(imageUrl)
                 .altText(altText)
                 .isPrimary(isPrimary)
@@ -198,6 +207,7 @@ public class RoomServiceImpl implements RoomService {
 
         roomImageRepository.save(roomImage);
     }
+
 
     @Override
     public void removeImageFromRoom(Long roomImageId) {
@@ -207,7 +217,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public void setPrimaryImage(Long roomId, Long roomImageId) {
         // Unset current primary
-        roomImageRepository.findByRoomIdAndIsPrimaryTrue(roomId)
+        roomImageRepository.findByRoom_RoomIdAndIsPrimaryTrue(roomId)
                 .ifPresent(primaryImage -> {
                     primaryImage.setIsPrimary(false);
                     roomImageRepository.save(primaryImage);
@@ -217,7 +227,7 @@ public class RoomServiceImpl implements RoomService {
         RoomImage newPrimary = roomImageRepository.findById(roomImageId)
                 .orElseThrow(() -> new IllegalArgumentException("Room image not found"));
 
-        if (!newPrimary.getRoomId().equals(roomId)) {
+        if (!newPrimary.getRoom().getRoomId().equals(roomId)) {
             throw new IllegalArgumentException("Image does not belong to this room");
         }
 
@@ -225,92 +235,4 @@ public class RoomServiceImpl implements RoomService {
         roomImageRepository.save(newPrimary);
     }
 
-    // Room Type methods
-    @Override
-    @Transactional(readOnly = true)
-    public List<RoomType> getAllRoomTypes() {
-        return roomTypeRepository.findByIsActiveTrueOrderByTypeName();
-    }
-
-    @Override
-    public RoomType createRoomType(RoomType roomType) {
-        if (roomTypeRepository.existsByTypeName(roomType.getTypeName())) {
-            throw new IllegalArgumentException("Room type name already exists");
-        }
-        return roomTypeRepository.save(roomType);
-    }
-
-    @Override
-    public RoomType updateRoomType(Long roomTypeId, RoomType roomType) {
-        RoomType existing = roomTypeRepository.findById(roomTypeId)
-                .orElseThrow(() -> new IllegalArgumentException("Room type not found"));
-
-        // Check name uniqueness if changed
-        if (!existing.getTypeName().equals(roomType.getTypeName())) {
-            if (roomTypeRepository.existsByTypeName(roomType.getTypeName())) {
-                throw new IllegalArgumentException("Room type name already exists");
-            }
-        }
-
-        existing.setTypeName(roomType.getTypeName());
-        existing.setDescription(roomType.getDescription());
-        existing.setIsActive(roomType.getIsActive());
-
-        return roomTypeRepository.save(existing);
-    }
-
-    @Override
-    public void deleteRoomType(Long roomTypeId) {
-        // Check if any rooms use this type
-        if (!roomRepository.findByRoomTypeId(roomTypeId).isEmpty()) {
-            throw new IllegalArgumentException("Cannot delete room type that is in use");
-        }
-
-        roomTypeRepository.deleteById(roomTypeId);
-    }
-
-    // Amenity methods
-    @Override
-    @Transactional(readOnly = true)
-    public List<Amenity> getAllAmenities() {
-        return amenityRepository.findByIsActiveTrueOrderByName();
-    }
-
-    @Override
-    public Amenity createAmenity(Amenity amenity) {
-        if (amenityRepository.existsByName(amenity.getName())) {
-            throw new IllegalArgumentException("Amenity name already exists");
-        }
-        return amenityRepository.save(amenity);
-    }
-
-    @Override
-    public Amenity updateAmenity(Long amenityId, Amenity amenity) {
-        Amenity existing = amenityRepository.findById(amenityId)
-                .orElseThrow(() -> new IllegalArgumentException("Amenity not found"));
-
-        // Check name uniqueness if changed
-        if (!existing.getName().equals(amenity.getName())) {
-            if (amenityRepository.existsByName(amenity.getName())) {
-                throw new IllegalArgumentException("Amenity name already exists");
-            }
-        }
-
-        existing.setName(amenity.getName());
-        existing.setDescription(amenity.getDescription());
-        existing.setIcon(amenity.getIcon());
-        existing.setIsActive(amenity.getIsActive());
-
-        return amenityRepository.save(existing);
-    }
-
-    @Override
-    public void deleteAmenity(Long amenityId) {
-        // Check if any rooms use this amenity
-        if (!roomAmenityRepository.findByAmenityId(amenityId).isEmpty()) {
-            throw new IllegalArgumentException("Cannot delete amenity that is in use");
-        }
-
-        amenityRepository.deleteById(amenityId);
-    }
 }

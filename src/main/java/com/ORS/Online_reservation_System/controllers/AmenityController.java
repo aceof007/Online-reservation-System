@@ -1,8 +1,7 @@
-// AmenityController.java
-package com.ORS.Online_reservation_System.controllers;
+package com.ORS.Online_reservation_System.Controllers;
 
 import com.ORS.Online_reservation_System.model.Amenity;
-import com.ORS.Online_reservation_System.services.RoomService;
+import com.ORS.Online_reservation_System.services.AmenityService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,18 +16,18 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class AmenityController {
 
-    private final RoomService roomService;
+    private final AmenityService amenityService;
 
     @GetMapping
     public ResponseEntity<List<Amenity>> getAllAmenities() {
-        List<Amenity> amenities = roomService.getAllAmenities();
+        List<Amenity> amenities = amenityService.getAllAmenities();
         return new ResponseEntity<>(amenities, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Amenity> createAmenity(@Valid @RequestBody Amenity amenity) {
         try {
-            Amenity createdAmenity = roomService.createAmenity(amenity);
+            Amenity createdAmenity = amenityService.createAmenity(amenity);
             return new ResponseEntity<>(createdAmenity, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -40,7 +39,7 @@ public class AmenityController {
             @PathVariable Long id,
             @Valid @RequestBody Amenity amenity) {
         try {
-            Amenity updatedAmenity = roomService.updateAmenity(id, amenity);
+            Amenity updatedAmenity = amenityService.updateAmenity(id, amenity);
             return new ResponseEntity<>(updatedAmenity, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -50,7 +49,7 @@ public class AmenityController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAmenity(@PathVariable Long id) {
         try {
-            roomService.deleteAmenity(id);
+            amenityService.deleteAmenity(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

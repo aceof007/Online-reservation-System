@@ -19,41 +19,4 @@ public class RoomTypeController {
 
     private final RoomService roomService;
 
-    @GetMapping
-    public ResponseEntity<List<RoomType>> getAllRoomTypes() {
-        List<RoomType> roomTypes = roomService.getAllRoomTypes();
-        return new ResponseEntity<>(roomTypes, HttpStatus.OK);
-    }
-
-    @PostMapping
-    public ResponseEntity<RoomType> createRoomType(@Valid @RequestBody RoomType roomType) {
-        try {
-            RoomType createdRoomType = roomService.createRoomType(roomType);
-            return new ResponseEntity<>(createdRoomType, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<RoomType> updateRoomType(
-            @PathVariable Long id,
-            @Valid @RequestBody RoomType roomType) {
-        try {
-            RoomType updatedRoomType = roomService.updateRoomType(id, roomType);
-            return new ResponseEntity<>(updatedRoomType, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRoomType(@PathVariable Long id) {
-        try {
-            roomService.deleteRoomType(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
 }

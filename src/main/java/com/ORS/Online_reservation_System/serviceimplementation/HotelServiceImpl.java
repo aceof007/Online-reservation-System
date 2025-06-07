@@ -1,12 +1,11 @@
 // HotelServiceImpl.java
 package com.ORS.Online_reservation_System.serviceimplementation;
 
-import com.ORS.Online_reservation_System.model.Hotel;
-import com.ORS.Online_reservation_System.model.HotelAmenity;
-import com.ORS.Online_reservation_System.model.HotelImage;
+import com.ORS.Online_reservation_System.model.*;
+import com.ORS.Online_reservation_System.repositories.AmenityRepository;
 import com.ORS.Online_reservation_System.repositories.HotelRepository;
-import com.ORS.Online_reservation_System.repositories.HotelAmenityRepository;
 import com.ORS.Online_reservation_System.repositories.HotelImageRepository;
+import com.ORS.Online_reservation_System.repositories.RoomRepository;
 import com.ORS.Online_reservation_System.services.HotelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,9 @@ import java.util.Optional;
 public class HotelServiceImpl implements HotelService {
 
     private final HotelRepository hotelRepository;
-    private final HotelAmenityRepository hotelAmenityRepository;
     private final HotelImageRepository hotelImageRepository;
+    private final AmenityRepository amenityRepository;
+    private final RoomRepository roomRepository;
 
     @Override
     public Hotel saveHotel(Hotel hotel) {
@@ -160,48 +160,52 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public HotelAmenity addAmenityToHotel(Long hotelId, String amenityName) {
+    public void addAmenityToHotel(Long hotelId, String amenityName) {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + hotelId));
 
-        // Check if amenity already exists for this hotel
-        if (hotelAmenityRepository.existsByHotel_HotelIdAndAmenityIgnoreCase(hotelId, amenityName)) {
+        Amenity amenity = amenityRepository.findByNameIgnoreCase(amenityName)
+                .orElseThrow(() -> new RuntimeException("Amenity not found: " + amenityName));
+
+        if (hotel.getAmenities().contains(amenity)) {
             throw new RuntimeException("Amenity already exists for this hotel");
         }
 
-        HotelAmenity hotelAmenity = HotelAmenity.builder()
-                .hotel(hotel)
-                .amenity(amenityName)
-                .build();
-
-        return hotelAmenityRepository.save(hotelAmenity);
+        hotel.getAmenities().add(amenity);
+        hotelRepository.save(hotel);
     }
+
 
     @Override
     public void removeAmenityFromHotel(Long hotelId, String amenityName) {
-        List<HotelAmenity> amenities = hotelAmenityRepository.findByHotel_HotelId(hotelId);
-        amenities.stream()
-                .filter(amenity -> amenity.getAmenity().equalsIgnoreCase(amenityName))
-                .findFirst()
-                .ifPresentOrElse(
-                        hotelAmenityRepository::delete,
-                        () -> {
-                            throw new RuntimeException("Amenity not found for this hotel");
-                        }
-                );
+        Hotel hotel = hotelRepository.findById(hotelId)
+                .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + hotelId));
+
+        Amenity amenity = amenityRepository.findByNameIgnoreCase(amenityName)
+                .orElseThrow(() -> new RuntimeException("Amenity not found: " + amenityName));
+
+        if (!hotel.getAmenities().remove(amenity)) {
+            throw new RuntimeException("Amenity not associated with this hotel");
+        }
+
+        hotelRepository.save(hotel);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Amenity> getHotelAmenities(Long hotelId) {
+        Hotel hotel = hotelRepository.findById(hotelId)
+                .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + hotelId));
+        return hotel.getAmenities();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<HotelAmenity> getHotelAmenities(Long hotelId) {
-        return hotelAmenityRepository.findByHotel_HotelId(hotelId);
+    public List<Amenity> getAllUniqueAmenities() {
+        return amenityRepository.findAll();
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<String> getAllUniqueAmenities() {
-        return hotelAmenityRepository.findAllUniqueAmenities();
-    }
 
     @Override
     public HotelImage addImageToHotel(Long hotelId, String imageUrl, String description, Boolean isPrimary) {
@@ -283,4 +287,17 @@ public class HotelServiceImpl implements HotelService {
                 .map(Hotel::getIsActive)
                 .orElse(false);
     }
+
+    @Override
+    public List<RoomType> getDistinctRoomTypesForHotel(Long hotelId) {
+        // Fetch all rooms for this hotel
+        List<Room> hotelRooms = roomRepository.findByHotel_HotelId(hotelId);
+
+        // Extract distinct RoomTypes
+        return hotelRooms.stream()
+                .map(Room::getRoomType)
+                .distinct()
+                .toList();
+    }
+
 }

@@ -11,33 +11,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class FrontEndController {
     @GetMapping("/")
     public String home(Model model) {
-        return "/customer_dashboard/homepage";
+        return "/customer/homepage";
     }
 
     @GetMapping("/login")
     public String index(Model model) {
         model.addAttribute("loginForm", new LoginDTO() );
-        return "/customer_dashboard/registrationpage";
+        return "/customer/registrationpage";
     }
 
     @GetMapping("/about")
     public String about(Model model) {
-        return "/customer_dashboard/about";
+        return "/customer/about";
     }
 
     @GetMapping("/hotelDetails")
     public String hotelDetails(Model model) {
-        return "/customer_dashboard/hoteldetailpage";
+        return "/customer/hoteldetailpage";
     }
 
     @GetMapping("/hotelListing")
     public String hotelListingPage(Model model) {
-        return "/customer_dashboard/hotellistingpage";
+        return "/customer/hotellistingpage";
     }
-
-    @GetMapping("/bookingFlow")
-    public String bookingFlow(Model model) {
-        return "/customer_dashboard/bookingflow";
-    }
-
 }

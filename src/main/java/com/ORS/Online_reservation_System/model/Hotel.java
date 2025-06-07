@@ -115,8 +115,13 @@ public class Hotel {
     private String managedBy;
 
     // Relationships
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<HotelAmenity> hotelAmenities;
+    @ManyToMany
+    @JoinTable(
+            name = "hotel_amenity",
+            joinColumns = @JoinColumn(name = "hotel_id"),
+            inverseJoinColumns = @JoinColumn(name = "amenity_id")
+    )
+    private List<Amenity> amenities;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<HotelImage> hotelImages;

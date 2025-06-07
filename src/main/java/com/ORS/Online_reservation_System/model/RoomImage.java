@@ -24,9 +24,6 @@ public class RoomImage {
     @Column(name = "room_image_id")
     private Long roomImageId;
 
-    @Column(name = "room_id", nullable = false)
-    private Long roomId;
-
     @NotBlank(message = "Image URL is required")
     @Size(max = 500, message = "Image URL cannot exceed 500 characters")
     @Column(name = "image_url", nullable = false, length = 500)
@@ -46,6 +43,7 @@ public class RoomImage {
 
     // Relationship
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "room_id", insertable = false, updatable = false)
+    @JoinColumn(name = "room_id", nullable = false)
     private Room room;
+
 }

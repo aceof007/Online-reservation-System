@@ -24,8 +24,6 @@ public class HotelImage {
     @Column(name = "hotel_image_id")
     private Long hotelImageId;
 
-    @Column(name = "hotel_id", nullable = false)
-    private Long hotelId;
 
     @NotBlank(message = "Image URL is required")
     @Size(max = 500, message = "Image URL cannot exceed 500 characters")

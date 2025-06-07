@@ -4,6 +4,7 @@ package com.ORS.Online_reservation_System.services;
 import com.ORS.Online_reservation_System.model.Room;
 import com.ORS.Online_reservation_System.model.RoomType;
 import com.ORS.Online_reservation_System.model.Amenity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +22,10 @@ public interface RoomService {
     // Room queries
     List<Room> getRoomsByHotel(Long hotelId);
     List<Room> getAvailableRoomsByHotel(Long hotelId);
-    List<Room> getRoomsByType(Long roomTypeId);
+
+    @Transactional(readOnly = true)
+    List<Room> getRoomsByType(RoomType roomType);
+
     List<Room> getRoomsByCapacity(Integer minCapacity);
     List<Room> getRoomsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice);
     Optional<Room> getRoomByHotelAndRoomNumber(Long hotelId, String roomNumber);
@@ -40,15 +44,5 @@ public interface RoomService {
     void removeImageFromRoom(Long roomImageId);
     void setPrimaryImage(Long roomId, Long roomImageId);
 
-    // Room types
-    List<RoomType> getAllRoomTypes();
-    RoomType createRoomType(RoomType roomType);
-    RoomType updateRoomType(Long roomTypeId, RoomType roomType);
-    void deleteRoomType(Long roomTypeId);
 
-    // Amenities
-    List<Amenity> getAllAmenities();
-    Amenity createAmenity(Amenity amenity);
-    Amenity updateAmenity(Long amenityId, Amenity amenity);
-    void deleteAmenity(Long amenityId);
 }
