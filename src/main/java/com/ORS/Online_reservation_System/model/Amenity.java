@@ -50,4 +50,9 @@ public class Amenity {
 
     @ManyToMany(mappedBy = "roomAmenities")
     private List<Room> rooms;
+
+    @ManyToMany(mappedBy = "additionalAmenities")
+    private List<Booking> bookings;
+
+
 }

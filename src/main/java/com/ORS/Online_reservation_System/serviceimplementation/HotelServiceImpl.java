@@ -7,6 +7,7 @@ import com.ORS.Online_reservation_System.repositories.HotelRepository;
 import com.ORS.Online_reservation_System.repositories.HotelImageRepository;
 import com.ORS.Online_reservation_System.repositories.RoomRepository;
 import com.ORS.Online_reservation_System.services.HotelService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,11 @@ public class HotelServiceImpl implements HotelService {
     private final HotelImageRepository hotelImageRepository;
     private final AmenityRepository amenityRepository;
     private final RoomRepository roomRepository;
+
+    public Hotel getHotelById(Long id) {
+        return hotelRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Hotel with ID " + id + " not found"));
+    }
 
     @Override
     public Hotel saveHotel(Hotel hotel) {
@@ -51,6 +57,10 @@ public class HotelServiceImpl implements HotelService {
     @Transactional(readOnly = true)
     public List<Hotel> findAllHotels() {
         return hotelRepository.findAll();
+    }
+
+    public List<AmenityCategory> amenityCategories(){
+        return List.of(AmenityCategory.values());
     }
 
     @Override

@@ -149,4 +149,12 @@ public class Room {
         }
     }
 
+    public double convertSquareMetersToSquareFeet(double squareMeters) {
+        double SQ_METERS_TO_SQ_FEET = 10.7639;
+        if (squareMeters < 0) {
+            throw new IllegalArgumentException("Area cannot be negative");
+        }
+        return squareMeters * SQ_METERS_TO_SQ_FEET;
+    }
+
 }

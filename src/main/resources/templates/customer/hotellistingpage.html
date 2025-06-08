@@ -1160,13 +1160,13 @@
                         <p class="hotel-description"><span th:text="${hotel.getDescription()}"></span></p>
                         <div class="hotel-footer">
                             <div class="hotel-actions">
-                                <a href="#" class="view-details">View Details</a>
-                                <a href="#" class="btn book-now">Book Now</a>
+                                <a th:href="@{/hotelDetails/{id}(id=${hotel.getHotelId()})}" class="view-details">View Details</a>
+                                <a th:href="@{/hotelDetails/{id}(id=${hotel.getHotelId()})}" class="btn book-now">Book Now</a>
                             </div>
                             <div class="hotel-price">
                                 <div class="price-old" th:text="'$'+${roomService.findCheapestRooms(hotel.getHotelId()).getPreviousPricePerNight()}"></div>
                                 <div class="price-current" th:text="'$'+${roomService.findCheapestRooms(hotel.getHotelId()).getPricePerNight()}"></div>
-                                <div class="price-note">per night, includes taxes</div>
+                                <div class="price-note">per night, excludes taxes</div>
                             </div>
                         </div>
                     </div>

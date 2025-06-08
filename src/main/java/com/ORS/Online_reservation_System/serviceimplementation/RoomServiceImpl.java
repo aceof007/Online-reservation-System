@@ -4,6 +4,8 @@ import com.ORS.Online_reservation_System.model.*;
 import com.ORS.Online_reservation_System.repositories.*;
 import com.ORS.Online_reservation_System.services.RoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDate;
+
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +26,7 @@ public class RoomServiceImpl implements RoomService {
     private final RoomImageRepository roomImageRepository;
     private final AmenityRepository amenityRepository;
     private final HotelRepository hotelRepository;
+    private final BookingRepository bookingRepository;
 
     //Fotsing implemented functions
     public Room findCheapestRooms(Long hotelId) {
@@ -44,6 +49,37 @@ public class RoomServiceImpl implements RoomService {
         System.out.println("Cheapest Room: " + cheapestRoom);
         return cheapestRoom;
     }
+
+    public String checkRoomAvailability(Long roomId, LocalDate checkIn, LocalDate checkOut) {
+        Room room = roomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Room not found with ID: " + roomId));
+
+        List<SpecificRoom> allSpecificRooms = room.getSpecific();
+
+        int availableCount = 0;
+
+        for (SpecificRoom specificRoom : allSpecificRooms) {
+            if (!Boolean.TRUE.equals(specificRoom.getIsAvailable())) {
+                continue; // Skip unavailable rooms
+            }
+
+            // Check if this specific room is booked during the date range
+            boolean isBooked = bookingRepository.existsBookingForSpecificRoomAndDates(
+                    specificRoom.getSpecificRoomId(), checkIn, checkOut
+            );
+
+            if (!isBooked) {
+                availableCount++;
+            }
+        }
+
+        return availableCount > 0
+                ? availableCount + " room(s) available for the selected dates."
+                : "No rooms available for the selected dates.";
+    }
+
+
+
 
 
 

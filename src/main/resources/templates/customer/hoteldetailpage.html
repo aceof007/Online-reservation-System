@@ -1071,6 +1071,16 @@
                 width: 100%;
             }
         }
+        .selected-room {
+            border: 2px solid #007bff;
+            background-color: #f0f8ff;
+            cursor: pointer;
+        }
+        .room-option {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
     </style>
 </head>
 <body>
@@ -1135,15 +1145,13 @@
         </div>
 
         <!-- Hotel Info Container -->
-        <div class="hotel-info-container">
+        <div class="hotel-info-container" >
             <!-- Main Content -->
             <main class="hotel-main-content">
                 <!-- Description Section -->
                 <section class="info-section">
-                    <h2 class="section-title">About Grand Hotel Paris</h2>
-                    <p>Located in the heart of Paris, just steps from the Opéra Garnier and the famous Rue de la Paix shopping district, Grand Hotel Paris is a legendary 5-star palace that has been welcoming guests since 1862. This architectural masterpiece combines Haussmannian elegance with contemporary luxury.</p>
-                    <p>Our hotel features 180 rooms and suites, each uniquely decorated with period furnishings and modern amenities. The property boasts three gourmet restaurants, including a Michelin-starred dining experience, an expansive spa with indoor pool, and exceptional personalized service that has made us a favorite among discerning travelers for generations.</p>
-                    <p>The hotel's historic facade and ornate interiors have been meticulously preserved, while discreetly incorporating all the modern comforts expected by today's luxury travelers. From the moment you step into our marble-floored lobby with its spectacular chandelier, you'll understand why Grand Hotel Paris remains one of the city's most iconic addresses.</p>
+                    <h2 class="section-title" th:text="${hotel.getName()}"></h2>
+                    <p th:text="${hotel.getDescription()}"></p>
                 </section>
 
                 <!-- Room Options -->
@@ -1151,12 +1159,12 @@
                     <h2 class="section-title">Room Options</h2>
                     
                     <!-- Deluxe Room -->
-                    <div class="room-option">
+                    <div class="room-option" th:each="room : ${hotel.getRooms()}" th:attr="data-room-id=${room.getRoomId()}">
                         <div class="room-header">
-                            <h3 class="room-title">Deluxe Room</h3>
+                            <h3 class="room-title" th:text="${room.getRoomName()}"></h3>
                             <div class="room-price">
-                                <div class="price-current">$399</div>
-                                <div class="price-note">per night, includes taxes</div>
+                                <div class="price-current" th:text="'$' + ${room.getPricePerNight()}"></div>
+                                <div class="price-note">per night, excludes taxes</div>
                             </div>
                         </div>
                         
@@ -1176,189 +1184,40 @@
                             <div class="room-detail-col">
                                 <div class="detail-item">
                                     <i class="fas fa-bed"></i>
-                                    <span>1 King Bed or 2 Twin Beds</span>
+                                    <span th:text="${room.getBedType()}"></span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-user-friends"></i>
-                                    <span>Sleeps 2 adults, 1 child</span>
+                                    <span th:text="'Sleeps'+${room.getMaxAdults()} + ' adults, ' +${room.getMaxChildren()} +' child'"></span>
                                 </div>
                                 <div class="detail-item">
                                     <i class="fas fa-ruler-combined"></i>
-                                    <span>35 m² (377 sq ft)</span>
-                                </div>
-                            </div>
-                            <div class="room-detail-col">
-                                <div class="detail-item">
-                                    <i class="fas fa-window-maximize"></i>
-                                    <span>City View</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-door-open"></i>
-                                    <span>Non-smoking</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-utensils"></i>
-                                    <span>Breakfast not included</span>
+                                    <span th:text="${room.getRoomSizeInSquareMeters()} + ' m²' +'(' +${room.convertSquareMetersToSquareFeet(room.getRoomSizeInSquareMeters())} + ' sq ft)'"></span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="room-amenities">
-                            <div class="amenity-badge">
-                                <i class="fas fa-wifi"></i> Free WiFi
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-tv"></i> Smart TV
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-coffee"></i> Coffee maker
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-wine-bottle"></i> Minibar
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-snowflake"></i> Air conditioning
+                        <div class="room-amenities" >
+                            <div class="amenity-badge" th:each="amenity: ${room.getRoomAmenities()}">
+                                <i class="fas " th:classappend="'fa-' + ${amenity.getIcon()}"></i><span th:text="${amenity.getName()}"></span>
                             </div>
                         </div>
                         
                         <div class="rate-options">
-                            <h4>Rate Options</h4>
+                            <h4>Rate Option</h4>
                             
                             <div class="rate-option selected">
                                 <div class="rate-header">
-                                    <div class="rate-title">Flexible Rate</div>
-                                    <div class="rate-price">$399</div>
+                                    <div class="rate-title" th:text="${room.getRateOptions().getFirst().getCancellationPolicy()}"></div>
+                                    <div class="rate-price" th:text="'$'+${room.getPricePerNight()}"></div>
                                 </div>
-                                <div class="rate-description">
-                                    Free cancellation until 2 days before check-in
-                                </div>
-                                <div class="rate-details">
-                                    Includes all taxes • No prepayment needed
-                                </div>
+                                <div class="rate-description" th:text="${room.getRateOptions().getFirst().getCancellationPolicy()}"></div>
+                                <div class="rate-details" th:text="${room.getRateOptions().getFirst().getNotes()}"></div>
                             </div>
-                            
-                            <div class="rate-option">
-                                <div class="rate-header">
-                                    <div class="rate-title">Non-Refundable Rate</div>
-                                    <div class="rate-price">$359</div>
-                                </div>
-                                <div class="rate-description">
-                                    No changes or refunds allowed
-                                </div>
-                                <div class="rate-details">
-                                    Includes all taxes • Pay now and save 10%
-                                </div>
-                            </div>
+
                         </div>
                         
-                        <button class="btn book-now-btn">Book Now</button>
-                    </div>
-                    
-                    <!-- Executive Suite -->
-                    <div class="room-option">
-                        <div class="room-header">
-                            <h3 class="room-title">Executive Suite</h3>
-                            <div class="room-price">
-                                <div class="price-current">$599</div>
-                                <div class="price-note">per night, includes taxes</div>
-                            </div>
-                        </div>
-                        
-                        <div class="room-gallery">
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Executive Suite">
-                            </div>
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Executive Suite Living Area">
-                            </div>
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Executive Suite Bathroom">
-                            </div>
-                        </div>
-                        
-                        <div class="room-details">
-                            <div class="room-detail-col">
-                                <div class="detail-item">
-                                    <i class="fas fa-bed"></i>
-                                    <span>1 King Bed</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-user-friends"></i>
-                                    <span>Sleeps 2 adults, 2 children</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-ruler-combined"></i>
-                                    <span>65 m² (700 sq ft)</span>
-                                </div>
-                            </div>
-                            <div class="room-detail-col">
-                                <div class="detail-item">
-                                    <i class="fas fa-window-maximize"></i>
-                                    <span>Opera View</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-door-open"></i>
-                                    <span>Non-smoking</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-utensils"></i>
-                                    <span>Breakfast included</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="room-amenities">
-                            <div class="amenity-badge">
-                                <i class="fas fa-wifi"></i> Free WiFi
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-tv"></i> Smart TV
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-coffee"></i> Nespresso machine
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-wine-bottle"></i> Premium minibar
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-snowflake"></i> Air conditioning
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-concierge-bell"></i> Butler service
-                            </div>
-                        </div>
-                        
-                        <div class="rate-options">
-                            <h4>Rate Options</h4>
-                            
-                            <div class="rate-option selected">
-                                <div class="rate-header">
-                                    <div class="rate-title">Flexible Rate</div>
-                                    <div class="rate-price">$599</div>
-                                </div>
-                                <div class="rate-description">
-                                    Free cancellation until 2 days before check-in
-                                </div>
-                                <div class="rate-details">
-                                    Includes all taxes • No prepayment needed
-                                </div>
-                            </div>
-                            
-                            <div class="rate-option">
-                                <div class="rate-header">
-                                    <div class="rate-title">Non-Refundable Rate</div>
-                                    <div class="rate-price">$539</div>
-                                </div>
-                                <div class="rate-description">
-                                    No changes or refunds allowed
-                                </div>
-                                <div class="rate-details">
-                                    Includes all taxes • Pay now and save 10%
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="btn book-now-btn">Book Now</button>
+                        <button class="btn book-now-btn" th:href="@{/bookingFlow}">Book Now</button>
                     </div>
                 </section>
 
@@ -1368,93 +1227,33 @@
                     <div class="amenities-grid">
                         <div class="amenity-category">
                             <h3>General</h3>
-                            <div class="amenity-item">
-                                <i class="fas fa-wifi"></i>
-                                <span>Free WiFi</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-parking"></i>
-                                <span>Valet parking</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-swimming-pool"></i>
-                                <span>Indoor pool</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-spa"></i>
-                                <span>Spa & wellness center</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-dumbbell"></i>
-                                <span>Fitness center</span>
+                            <div class="amenity-item" th:each="amenity : ${hotel.getAmenities()}" th:if="${amenity.getCategory()} == ${AmenityCategory.get(0)} ">
+                                <i class="fas " th:classappend="'fa-' + ${amenity.getIcon()}"></i>
+                                <span th:text="${amenity.getName()}" ></span>
                             </div>
                         </div>
-                        
+
                         <div class="amenity-category">
-                            <h3>In Your Room</h3>
-                            <div class="amenity-item">
-                                <i class="fas fa-snowflake"></i>
-                                <span>Air conditioning</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-tv"></i>
-                                <span>Smart TV</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-wine-bottle"></i>
-                                <span>Minibar</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-coffee"></i>
-                                <span>Coffee/tea maker</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-umbrella-beach"></i>
-                                <span>Bathrobes & slippers</span>
+                            <h3>In your Room</h3>
+                            <div class="amenity-item" th:each="amenity : ${hotel.getAmenities()}" th:if="${amenity.getCategory()} == ${AmenityCategory.get(1)} ">
+                                <i class="fas " th:classappend="'fa-' + ${amenity.getIcon()}"></i>
+                                <span th:text="${amenity.getName()}" ></span>
                             </div>
                         </div>
-                        
+
                         <div class="amenity-category">
                             <h3>Dining</h3>
-                            <div class="amenity-item">
-                                <i class="fas fa-utensils"></i>
-                                <span>3 restaurants</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-wine-glass-alt"></i>
-                                <span>Bar/Lounge</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-mug-hot"></i>
-                                <span>Room service (24-hour)</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-bread-slice"></i>
-                                <span>Breakfast available</span>
+                            <div class="amenity-item" th:each="amenity : ${hotel.getAmenities()}" th:if="${amenity.getCategory()} == ${AmenityCategory.get(2)} ">
+                                <i class="fas " th:classappend="'fa-' + ${amenity.getIcon()}"></i>
+                                <span th:text="${amenity.getName()}" ></span>
                             </div>
                         </div>
-                        
+
                         <div class="amenity-category">
                             <h3>Services</h3>
-                            <div class="amenity-item">
-                                <i class="fas fa-concierge-bell"></i>
-                                <span>24-hour front desk</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-bell"></i>
-                                <span>Concierge service</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-suitcase-rolling"></i>
-                                <span>Luggage storage</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-tshirt"></i>
-                                <span>Laundry service</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-business-time"></i>
-                                <span>Business center</span>
+                            <div class="amenity-item" th:each="amenity : ${hotel.getAmenities()}" th:if="${amenity.getCategory()} == ${AmenityCategory.get(3)} ">
+                                <i class="fas " th:classappend="'fa-' + ${amenity.getIcon()}"></i>
+                                <span th:text="${amenity.getName()}" ></span>
                             </div>
                         </div>
                     </div>
@@ -1464,29 +1263,9 @@
                 <section class="info-section">
                     <h2 class="section-title">Policies</h2>
                     <div class="policies-grid">
-                        <div class="policy-item">
-                            <h3>Check-in/Check-out</h3>
-                            <p>Check-in: 3:00 PM<br>Check-out: 12:00 PM<br>Early check-in and late check-out subject to availability</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Cancellation</h3>
-                            <p>Depends on rate selected. Flexible rates allow free cancellation until 2 days before arrival. Non-refundable rates cannot be changed or cancelled.</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Children & Extra Beds</h3>
-                            <p>Children under 12 stay free when using existing bedding. Rollaway/extra beds available for €50 per night. Maximum 1 extra bed per room.</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Pets</h3>
-                            <p>Pets allowed (dogs only, max 1 per room) for €50 per stay. Must notify hotel in advance. Pets not allowed in restaurant or pool areas.</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Payment</h3>
-                            <p>We accept all major credit cards. Cash payments accepted in EUR only. A valid credit card is required at check-in for incidentals.</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Accessibility</h3>
-                            <p>Accessible rooms available. Elevators serve all floors. Public areas wheelchair accessible. Please contact hotel for specific needs.</p>
+                        <div class="policy-item" th:each="policy : ${hotel.getPolicies()}">
+                            <h3 th:text="${policy.getName()}"></h3>
+                            <p th:text="${policy.getDescription()}"></p>
                         </div>
                     </div>
                 </section>
@@ -1509,48 +1288,17 @@
                                         <i class="fas fa-map-marker-alt"></i>
                                     </div>
                                     <div>
-                                        <p>12 Rue de la Paix, 75002 Paris, France</p>
+                                        <p th:text="${hotel.getAddress()}"></p>
                                     </div>
                                 </div>
-                                <div class="location-detail">
-                                    <div class="location-icon">
-                                        <i class="fas fa-subway"></i>
-                                    </div>
-                                    <div>
-                                        <p>Opéra Metro Station - 2 minute walk</p>
-                                    </div>
-                                </div>
-                                <div class="location-detail">
-                                    <div class="location-icon">
-                                        <i class="fas fa-plane"></i>
-                                    </div>
-                                    <div>
-                                        <p>Charles de Gaulle Airport - 45 minutes by car</p>
-                                    </div>
-                                </div>
+
                             </div>
                             
                             <div class="nearby-places">
                                 <h3>Nearby Attractions</h3>
-                                <div class="place-item">
-                                    <span class="place-name">Opéra Garnier</span>
-                                    <span class="place-distance">2 min walk</span>
-                                </div>
-                                <div class="place-item">
-                                    <span class="place-name">Place Vendôme</span>
-                                    <span class="place-distance">5 min walk</span>
-                                </div>
-                                <div class="place-item">
-                                    <span class="place-name">Louvre Museum</span>
-                                    <span class="place-distance">12 min walk</span>
-                                </div>
-                                <div class="place-item">
-                                    <span class="place-name">Tuileries Garden</span>
-                                    <span class="place-distance">15 min walk</span>
-                                </div>
-                                <div class="place-item">
-                                    <span class="place-name">Eiffel Tower</span>
-                                    <span class="place-distance">20 min by metro</span>
+                                <div class="place-item" th:each="att: ${hotel.getNearbyAttractions()}">
+                                    <span class="place-name" th:text="${att.getName()}"></span>
+                                    <span class="place-distance" th:text="${att.getDistanceInfo()}"></span>
                                 </div>
                             </div>
                         </div>
@@ -1697,53 +1445,13 @@
                 <section class="info-section">
                     <h2 class="section-title">Frequently Asked Questions</h2>
                     
-                    <div class="faq-item">
+                    <div class="faq-item" th:each="faq: ${hotel.getFaqs()}">
                         <div class="faq-question">
-                            <span>What time is check-in and check-out?</span>
+                            <span th:text="${faq.getQuestion()}"></span>
                             <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="faq-answer">
-                            <p>Check-in is at 3:00 PM and check-out is at 12:00 PM. Early check-in and late check-out may be available upon request, subject to availability and possibly an additional charge.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Is breakfast included in the room rate?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Breakfast is included in some room rates (like our Executive Suite) but not in others. You can see whether breakfast is included when selecting your room type. Breakfast can also be added to your reservation for an additional fee.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Does the hotel have parking?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Yes, we offer valet parking service for €50 per night. Due to our central Paris location, self-parking is not available. There is also a public parking garage nearby at Place Vendôme.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>How far is the hotel from the Eiffel Tower?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>The Eiffel Tower is approximately 3.5 km (2.2 miles) from our hotel. It's about a 20-minute drive or you can take Metro line 8 from Opéra to École Militaire, which takes about 25 minutes total.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Does the hotel offer airport transfers?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Yes, we can arrange private airport transfers in luxury vehicles. The cost is €120 from Charles de Gaulle Airport (CDG) and €90 from Orly Airport (ORY). Please contact our concierge at least 48 hours before your arrival to arrange this service.</p>
+                            <p th:text="${faq.getAnswer()}"></p>
                         </div>
                     </div>
                 </section>
@@ -1756,39 +1464,40 @@
                     <div class="price-summary">
                         <div class="price-row">
                             <span>Deluxe Room x 2 nights</span>
-                            <span>$798</span>
+                            <span id="roomPrice">$798</span>
                         </div>
                         <div class="price-row">
                             <span>Taxes & fees</span>
-                            <span>$72</span>
+                            <span id="taxes">$72</span>
                         </div>
                         <div class="price-total">
                             <span>Total</span>
-                            <span>$870</span>
+                            <span id="totalPrice">$870</span>
                         </div>
                     </div>
                     
                     <div class="check-availability">
                         <h3>Check Availability</h3>
-                        <div class="form-group">
-                            <label for="check-in">Check-in Date</label>
-                            <input type="date" id="check-in">
-                        </div>
-                        <div class="form-group">
-                            <label for="check-out">Check-out Date</label>
-                            <input type="date" id="check-out">
-                        </div>
-                        <div class="form-group">
-                            <label for="guests">Guests</label>
-                            <select id="guests">
-                                <option value="1">1 Adult</option>
-                                <option value="2" selected>2 Adults</option>
-                                <option value="3">2 Adults, 1 Child</option>
-                                <option value="4">2 Adults, 2 Children</option>
-                                <option value="5">3 Adults</option>
-                            </select>
-                        </div>
-                        <button class="btn check-btn">Check Availability</button>
+                        <form th:action="@{/room/availability/{id}(id=*{roomId})}" th:object="${availabilityRequest}" method="post">
+                            <div class="form-group">
+                                <label for="check-in">Check-in Date</label>
+                                <input type="date" id="check-in" th:field="*{checkInDate}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="check-out">Check-out Date</label>
+                                <input type="date" id="check-out" th:field="*{checkOutDate}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="adults">Adults</label>
+                                <input type="number" min="1" th:field="*{numberOfAdults}" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="children">Children</label>
+                                <input type="number" min="0" th:field="*{numberOfChildren}">
+                            </div>
+                            <input type="hidden" th:field="*{roomId}" id="selectedRoomId">
+                            <button class="btn check-btn" type="submit">Check Availability</button>
+                        </form>
                     </div>
                 </div>
             </aside>
@@ -1800,7 +1509,27 @@
 
     <!-- JavaScript -->
     <script>
-        // === Header Scroll Effect ===
+
+            document.addEventListener('DOMContentLoaded', () => {
+            const roomOptions = document.querySelectorAll('.room-option');
+            const selectedRoomInput = document.getElementById('selectedRoomId');
+
+            roomOptions.forEach(room => {
+            room.addEventListener('click', () => {
+            // Remove highlight from all
+            roomOptions.forEach(r => r.classList.remove('selected-room'));
+
+            // Highlight the selected room
+            room.classList.add('selected-room');
+
+            // Set hidden input to this room's ID
+            const roomId = room.getAttribute('data-room-id');
+            selectedRoomInput.value = roomId;
+        });
+        });
+        });
+
+// === Header Scroll Effect ===
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
@@ -1895,6 +1624,26 @@
                 alert(`Booking ${roomTitle} for ${roomPrice} per night`);
             });
         });
-    </script>
+
+                document.addEventListener("DOMContentLoaded", function () {
+                const checkBtn = document.querySelector(".check-btn");
+
+                checkBtn.addEventListener("click", function () {
+                const roomId = document.querySelector("#roomId").value;
+                const checkIn = document.querySelector("#check-in").value;
+                const checkOut = document.querySelector("#check-out").value;
+
+                fetch(`/check-availability?roomId=${roomId}&checkIn=${checkIn}&checkOut=${checkOut}`)
+                .then(response => response.json())
+                .then(data => {
+                const resultDiv = document.querySelector("#availability-result");
+                resultDiv.textContent = data.message;
+                resultDiv.style.color = data.message.includes("not available") ? "red" : "green";
+            })
+                .catch(error => console.error("Error:", error));
+            });
+            });
+
+</script>
 </body>
 </html>
