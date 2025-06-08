@@ -1,4 +1,6 @@
 package com.ORS.Online_reservation_System.config;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,23 +12,28 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Setter
+@Getter
 @Configuration
 public class SecurityConfig {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/about", "/css/**", "/js/**", "/register", "/customer/add").permitAll() // public
-                        .requestMatchers("/").authenticated()
+                        .requestMatchers("/", "/about", "/css/**", "/js/**", "/register", "/customer/add", "/hotelListing", "/hotelDetails").permitAll() // public
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/customer/**").hasRole("USER")
                         .anyRequest().authenticated() // all other endpoints require auth
                 )
                 .formLogin(login -> login
                         .loginPage("/login") // custom login page (optional)
-                        .defaultSuccessUrl("/")
+                        .successHandler(successHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout
