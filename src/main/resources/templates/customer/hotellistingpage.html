@@ -882,7 +882,28 @@
 </head>
 <body>
 <!-- Header -->
-    <div th:replace="~{/fragments/nonsigninuserfragment :: header}"></div>
+<header>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-text">Lux<span>Stay</span></div>
+            </div>
+            <ul class="menu">
+                <li><a th:href="@{/homepage.html}">Home</a></li>
+                <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
+                <li><a th:href="@{/about.html}">About Us</a></li>
+                <li><a th:href="@{/contact.html}">contact</a></li>
+            </ul>
+            <div class="user-actions">
+                <a th:href="@{/registrationpage.html}" class="btn btn-outline">Login</a>
+                <a th:href="@{/registrationpage.html}" class="btn">Sign Up</a>
+            </div>
+            <button class="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </div>
+</header>
 
     <!-- Listing Header -->
     <section class="listing-header">
@@ -1264,7 +1285,83 @@
     </section>
 
 <!-- Footer -->
-<div th:replace="~{/fragments/nonsigninuserfragment :: footer}"></div>
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <div class="footer-logo-text">Lux<span>Stay</span></div>
+                </div>
+                <p class="footer-desc">
+                    LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
+                </p>
+                <div class="footer-social">
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/about.html}">About Us</a></li>
+                    <li><a th:href="@{/hotellistingpage.html}" >Hotels</a></li>
+                    <li><a th:href="@{/destination.html}" >Destinations</a></li>
+                    <li><a th:href="@{/contact}" onclick="showPage('contact')">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-title">Support</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/#}">Help Center</a></li>
+                    <li><a th:href="@{/#}">FAQs</a></li>
+                    <li><a th:href="@{/#}">Terms of Service</a></li>
+                    <li><a th:href="@{/#}">Privacy Policy</a></li>
+                    <li><a th:href="@{/#}">Cancellation Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3 class="footer-title">Contact Us</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        123 Luxury Avenue, New York, NY 10001, USA
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        +1 (555) 123-4567
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        info@luxstay.com
+                    </div>
+                </div>
+                <div class="footer-form">
+                    <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
+                    <button class="btn">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="footer-bottom-text">
+                &copy; 2025 LuxStay. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
 
     <!-- JavaScript -->
     <script>
