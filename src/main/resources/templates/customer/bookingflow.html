@@ -1074,65 +1074,46 @@
     </div>
 </header>
 
-    <!-- Booking Flow -->
-    <section class="booking-flow">
-        <div class="container">
-            <div class="booking-header">
-                <h1 class="section-title">Complete Your Booking</h1>
-                <p class="section-subtitle">Just a few more steps to secure your perfect stay</p>
-                
-                <!-- Progress Indicator -->
-                <div class="progress-indicator">
-                    <div class="progress-bar" style="width: 25%;"></div>
-                    <div class="progress-step">
-                        <div class="step-number completed">1</div>
-                        <div class="step-label completed">Room Selection</div>
-                    </div>
-                    <div class="progress-step">
-                        <div class="step-number active">2</div>
-                        <div class="step-label active">Guest Details</div>
-                    </div>
-                    <div class="progress-step">
-                        <div class="step-number">3</div>
-                        <div class="step-label">Add-ons</div>
-                    </div>
-                    <div class="progress-step">
-                        <div class="step-number">4</div>
-                        <div class="step-label">Payment</div>
-                    </div>
-                </div>
-<!--                <div class="progress-indicator">-->
-<!--                    <div class="progress-bar" style="width: 25%;"></div>-->
-<!--                    <div class="progress-step">-->
-<!--                        <div class="step-number active">1</div>-->
-<!--                        <div class="step-label active">Room Selection</div>-->
-<!--                    </div>-->
-<!--                    <div class="progress-step">-->
-<!--                        <div class="step-number">2</div>-->
-<!--                        <div class="step-label">Guest Details</div>-->
-<!--                    </div>-->
-<!--                    <div class="progress-step">-->
-<!--                        <div class="step-number">3</div>-->
-<!--                        <div class="step-label">Payment</div>-->
-<!--                    </div>-->
-<!--                    <div class="progress-step">-->
-<!--                        <div class="step-number">4</div>-->
-<!--                        <div class="step-label">Confirmation</div>-->
-<!--                    </div>-->
-<!--                </div>-->
-            </div>
-            
-            <div class="booking-container">
-                <main class="booking-main">
 
-                    <!-- Room Selection Confirmation -->
-                    <div class="step-container" id="step1" style="display: block;">
+<!-- Booking Flow -->
+<section class="booking-flow">
+    <div class="container">
+        <div class="booking-header">
+            <h1 class="section-title">Complete Your Booking</h1>
+            <p class="section-subtitle">Just a few more steps to secure your perfect stay</p>
+
+            <!-- Improved Progress Indicator -->
+            <div class="progress-indicator">
+                <div class="progress-bar" style="width: 0%;"></div>
+                <div class="progress-step">
+                    <div class="step-number active">1</div>
+                    <div class="step-label active">Room Selection</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number upcoming">2</div>
+                    <div class="step-label upcoming">Guest Details</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number upcoming">3</div>
+                    <div class="step-label upcoming">Add-ons</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-number upcoming">4</div>
+                    <div class="step-label upcoming">Payment</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-container">
+            <main class="booking-main">
+                <!-- Step 1: Room Selection -->
+                <div class="step-container" id="step1" style="display: block;">
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-hotel"></i> Your Room Selection</h2>
-                        
+
                         <div class="room-summary">
                             <div class="room-image">
-                                <img src="/statics/images/orva-studio-yB6WFHbkX40-unsplash.jpg" alt="Deluxe Room">
+                                <img src="/2.png" alt="Deluxe Room">
                             </div>
                             <div class="room-details">
                                 <h3 class="room-name">Deluxe Ocean View Room</h3>
@@ -1155,9 +1136,9 @@
                                 <span class="change-link">Change dates or room</span>
                             </div>
                         </div>
-                        
+
                         <h3 class="card-title"><i class="fas fa-receipt"></i> Price Breakdown</h3>
-                        
+
                         <table class="price-breakdown">
                             <tr>
                                 <td>Deluxe Ocean View Room (5 nights)</td>
@@ -1177,13 +1158,13 @@
                             </tr>
                         </table>
                     </div>
-                    </div>
+                </div>
 
-                    <div class="step-container" id="step2" style="display: none;">
-                    <!-- Guest Details Form -->
+                <!-- Step 2: Guest Details -->
+                <div class="step-container" id="step2" style="display: none;">
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-user-circle"></i> Guest Information</h2>
-                        
+
                         <form id="guestForm">
                             <div class="form-row">
                                 <div class="form-group">
@@ -1197,24 +1178,24 @@
                                     <div class="invalid-feedback">Please enter your last name</div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="email" class="form-label">Email Address</label>
                                 <input type="email" id="email" class="form-control" required>
                                 <div class="invalid-feedback">Please enter a valid email address</div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="phone" class="form-label">Phone Number</label>
                                 <input type="tel" id="phone" class="form-control" required>
                                 <div class="invalid-feedback">Please enter your phone number</div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="specialRequests" class="form-label">Special Requests (Optional)</label>
                                 <textarea id="specialRequests" class="form-control" placeholder="Please let us know if you have any special requests or needs"></textarea>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="arrivalTime" class="form-label">Estimated Arrival Time</label>
                                 <select id="arrivalTime" class="form-control">
@@ -1227,14 +1208,14 @@
                             </div>
                         </form>
                     </div>
-                    </div>
+                </div>
 
-                    <div class="step-container" id="step3" style="display: none;">
-                    <!-- Add-ons Section -->
+                <!-- Step 3: Add-ons -->
+                <div class="step-container" id="step3" style="display: none;">
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-plus-circle"></i> Enhance Your Stay</h2>
                         <p class="section-subtitle">Add these optional extras to make your stay even more memorable</p>
-                        
+
                         <div class="addons-grid">
                             <div class="addon-card">
                                 <div class="addon-header">
@@ -1247,7 +1228,7 @@
                                     <input type="checkbox" class="addon-checkbox">
                                 </div>
                             </div>
-                            
+
                             <div class="addon-card">
                                 <div class="addon-header">
                                     <h3 class="addon-title">Breakfast Package</h3>
@@ -1259,7 +1240,7 @@
                                     <input type="checkbox" class="addon-checkbox" checked>
                                 </div>
                             </div>
-                            
+
                             <div class="addon-card">
                                 <div class="addon-header">
                                     <h3 class="addon-title">Late Check-out</h3>
@@ -1271,7 +1252,7 @@
                                     <input type="checkbox" class="addon-checkbox">
                                 </div>
                             </div>
-                            
+
                             <div class="addon-card">
                                 <div class="addon-header">
                                     <h3 class="addon-title">Spa Package</h3>
@@ -1283,7 +1264,7 @@
                                     <input type="checkbox" class="addon-checkbox">
                                 </div>
                             </div>
-                            
+
                             <div class="addon-card">
                                 <div class="addon-header">
                                     <h3 class="addon-title">Romantic Package</h3>
@@ -1295,7 +1276,7 @@
                                     <input type="checkbox" class="addon-checkbox">
                                 </div>
                             </div>
-                            
+
                             <div class="addon-card">
                                 <div class="addon-header">
                                     <h3 class="addon-title">City Tour</h3>
@@ -1309,13 +1290,13 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
 
-                    <div class="step-container" id="step4" style="display: none;">
-                    <!-- Payment Processing -->
+                <!-- Step 4: Payment -->
+                <div class="step-container" id="step4" style="display: none;">
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-credit-card"></i> Payment Method</h2>
-                        
+
                         <div class="payment-methods">
                             <div class="payment-method selected" data-method="credit">
                                 <div class="payment-icon">
@@ -1336,7 +1317,7 @@
                                 <div class="payment-name">Apple Pay</div>
                             </div>
                         </div>
-                        
+
                         <div class="card-form active" id="creditCardForm">
                             <div class="card-icons">
                                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg" class="card-icon active" alt="Visa">
@@ -1344,13 +1325,13 @@
                                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amex/amex-original.svg" class="card-icon" alt="American Express">
                                 <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/discover/discover-original.svg" class="card-icon" alt="Discover">
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="cardNumber" class="form-label">Card Number</label>
                                 <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" required>
                                 <div class="invalid-feedback">Please enter a valid card number</div>
                             </div>
-                            
+
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="cardName" class="form-label">Name on Card</label>
@@ -1368,20 +1349,20 @@
                                     <div class="invalid-feedback">Please enter a valid CVV</div>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group">
                                 <input type="checkbox" id="saveCard" class="form-checkbox">
                                 <label for="saveCard">Save this card for future bookings</label>
                             </div>
                         </div>
-                        
+
                         <div class="card-form" id="paypalForm">
                             <p>You'll be redirected to PayPal to complete your payment securely.</p>
                             <button type="button" class="btn" style="background-color: #003087; margin-top: 15px;">
                                 <i class="fab fa-paypal"></i> Continue with PayPal
                             </button>
                         </div>
-                        
+
                         <div class="card-form" id="applePayForm">
                             <p>Complete your payment with Apple Pay for a fast and secure checkout.</p>
                             <button type="button" class="btn" style="background-color: #000; margin-top: 15px;">
@@ -1389,26 +1370,25 @@
                             </button>
                         </div>
                     </div>
-                    </div>
 
                     <!-- Booking Policies -->
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-file-contract"></i> Booking Policies</h2>
-                        
+
                         <div class="policy-item">
                             <input type="checkbox" id="policyCancellation" class="policy-checkbox" required>
                             <label for="policyCancellation" class="policy-text">
                                 I agree to the <a href="#" class="policy-link">Cancellation Policy</a>: Free cancellation up to 72 hours before check-in. After that, 50% of the first night will be charged.
                             </label>
                         </div>
-                        
+
                         <div class="policy-item">
                             <input type="checkbox" id="policyTerms" class="policy-checkbox" required>
                             <label for="policyTerms" class="policy-text">
                                 I agree to the <a href="#" class="policy-link">Terms & Conditions</a> and <a href="#" class="policy-link">Privacy Policy</a> of LuxStay.
                             </label>
                         </div>
-                        
+
                         <div class="policy-item">
                             <input type="checkbox" id="policyMarketing" class="policy-checkbox">
                             <label for="policyMarketing" class="policy-text">
@@ -1416,226 +1396,224 @@
                             </label>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Navigation Buttons -->
-                    <div class="booking-navigation">
-                        <button class="btn btn-outline" id="prevBtn" style="display: none;">
-                            <i class="fas fa-arrow-left"></i> Back
-                        </button>
-                        <button class="btn" id="nextBtn">
-                            Continue <i class="fas fa-arrow-right"></i>
-                        </button>
-                        <button class="btn" id="submitBtn" style="display: none; background-color: #28a745;">
-                            Complete Booking <i class="fas fa-check"></i>
-                        </button>
+                <!-- Navigation Buttons -->
+                <div class="booking-navigation">
+                    <button class="btn btn-outline" id="prevBtn" style="display: none;">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <button class="btn" id="nextBtn">
+                        Continue <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button class="btn" id="submitBtn" style="display: none; background-color: #28a745;">
+                        Complete Booking <i class="fas fa-check"></i>
+                    </button>
+                </div>
+            </main>
+
+            <!-- Booking Summary Sidebar -->
+            <aside class="booking-sidebar">
+                <div class="summary-card">
+                    <h3 class="summary-title">Booking Summary</h3>
+
+                    <div class="summary-item">
+                        <span class="summary-label">Room</span>
+                        <span class="summary-value">Deluxe Ocean View</span>
+                    </div>
+
+                    <div class="summary-item">
+                        <span class="summary-label">Dates</span>
+                        <span class="summary-value">May 15 - 20, 2025 (5 nights)</span>
+                    </div>
+
+                    <div class="summary-item">
+                        <span class="summary-label">Guests</span>
+                        <span class="summary-value">2 Adults</span>
+                    </div>
+
+                    <div class="summary-item">
+                        <span class="summary-label">Room rate</span>
+                        <span class="summary-value">$1,250.00</span>
+                    </div>
+
+                    <div class="summary-item">
+                        <span class="summary-label">Taxes & fees</span>
+                        <span class="summary-value">$187.50</span>
+                    </div>
+
+                    <div class="summary-item">
+                        <span class="summary-label">Resort fee</span>
+                        <span class="summary-value">$75.00</span>
+                    </div>
+
+                    <div class="summary-item">
+                        <span class="summary-label">Breakfast package</span>
+                        <span class="summary-value">$100.00</span>
+                    </div>
+
+                    <div class="summary-item summary-total">
+                        <span class="summary-label">Total</span>
+                        <span class="summary-value">$1,612.50</span>
+                    </div>
+
+                    <p class="summary-note">
+                        Prices are in USD. Your card will be charged for the total amount shown above. You may cancel for free up to 72 hours before check-in.
+                    </p>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<!-- Confirmation Modal (Hidden by default) -->
+<div id="confirmationModal" style="display: none;">
+    <div class="booking-flow" style="padding-top: 120px;">
+        <div class="container">
+            <div class="confirmation-header">
+                <div class="confirmation-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h1 class="confirmation-title">Booking Confirmed!</h1>
+                <p class="confirmation-subtitle">Thank you for choosing LuxStay. Your reservation has been successfully processed.</p>
+                <div class="confirmation-number">
+                    Booking Reference: <strong>LXS-2025-0520-4892</strong>
+                </div>
+                <div class="confirmation-actions">
+                    <button class="btn btn-outline">
+                        <i class="fas fa-envelope"></i> Email Itinerary
+                    </button>
+                    <button class="btn">
+                        <i class="fas fa-calendar-plus"></i> Add to Calendar
+                    </button>
+                    <button class="btn" style="background-color: #4267B2;">
+                        <i class="fab fa-facebook-f"></i> Share
+                    </button>
+                </div>
+            </div>
+
+            <div class="booking-container">
+                <main class="booking-main">
+                    <div class="confirmation-card">
+                        <h2 class="card-title"><i class="fas fa-info-circle"></i> Booking Details</h2>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Booking Number</div>
+                            <div class="confirmation-value">LXS-2025-0520-4892</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Status</div>
+                            <div class="confirmation-value" style="color: #5cb85c;">Confirmed</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Hotel</div>
+                            <div class="confirmation-value">LuxStay Ocean Resort, Miami Beach</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Room Type</div>
+                            <div class="confirmation-value">Deluxe Ocean View Room</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Check-in Date</div>
+                            <div class="confirmation-value">Friday, May 15, 2025 (3:00 PM)</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Check-out Date</div>
+                            <div class="confirmation-value">Wednesday, May 20, 2025 (11:00 AM)</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Guests</div>
+                            <div class="confirmation-value">2 Adults</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Total Amount</div>
+                            <div class="confirmation-value" style="font-weight: 700;">$1,612.50 USD</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Payment Method</div>
+                            <div class="confirmation-value">VISA ending in 4242</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Special Requests</div>
+                            <div class="confirmation-value">Early check-in requested if available</div>
+                        </div>
+
+                        <div class="confirmation-row">
+                            <div class="confirmation-label">Cancellation Policy</div>
+                            <div class="confirmation-value">Free cancellation until May 12, 2025</div>
+                        </div>
+                    </div>
+
+                    <div class="confirmation-card">
+                        <h2 class="card-title"><i class="fas fa-map-marker-alt"></i> Hotel Location</h2>
+                        <div style="height: 300px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; margin-top: 20px;">
+                            [Map would be displayed here]
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <p><strong>Address:</strong> 123 Ocean Drive, Miami Beach, FL 33139, USA</p>
+                            <p><strong>Phone:</strong> +1 (305) 555-0123</p>
+                            <p><strong>Email:</strong> info@luxstayocean.com</p>
+                        </div>
+                    </div>
+
+                    <div class="recommendations">
+                        <h3 class="recommendations-title">You Might Also Like</h3>
+                        <div class="recommendations-grid">
+                            <div class="recommendation-card">
+                                <div class="recommendation-img">
+                                    <img src="/2.png" alt="Spa Package">
+                                </div>
+                                <div class="recommendation-content">
+                                    <h4 class="recommendation-title">Ultimate Spa Experience</h4>
+                                    <div class="recommendation-price">From $199</div>
+                                </div>
+                            </div>
+
+                            <div class="recommendation-card">
+                                <div class="recommendation-img">
+                                    <img src="/2.png" alt="Dining">
+                                </div>
+                                <div class="recommendation-content">
+                                    <h4 class="recommendation-title">Gourmet Dining Package</h4>
+                                    <div class="recommendation-price">From $150</div>
+                                </div>
+                            </div>
+
+                            <div class="recommendation-card">
+                                <div class="recommendation-img">
+                                    <img src="/2.png" alt="Car Rental">
+                                </div>
+                                <div class="recommendation-content">
+                                    <h4 class="recommendation-title">Luxury Car Rental</h4>
+                                    <div class="recommendation-price">From $89/day</div>
+                                </div>
+                            </div>
+
+                            <div class="recommendation-card">
+                                <div class="recommendation-img">
+                                    <img src="/2.png" alt="Excursion">
+                                </div>
+                                <div class="recommendation-content">
+                                    <h4 class="recommendation-title">Everglades Excursion</h4>
+                                    <div class="recommendation-price">From $75</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </main>
-                
-                <!-- Booking Summary Sidebar -->
-                <aside class="booking-sidebar">
-                    <div class="summary-card">
-                        <h3 class="summary-title">Booking Summary</h3>
-                        
-                        <div class="summary-item">
-                            <span class="summary-label">Room</span>
-                            <span class="summary-value">Deluxe Ocean View</span>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <span class="summary-label">Dates</span>
-                            <span class="summary-value">May 15 - 20, 2025 (5 nights)</span>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <span class="summary-label">Guests</span>
-                            <span class="summary-value">2 Adults</span>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <span class="summary-label">Room rate</span>
-                            <span class="summary-value">$1,250.00</span>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <span class="summary-label">Taxes & fees</span>
-                            <span class="summary-value">$187.50</span>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <span class="summary-label">Resort fee</span>
-                            <span class="summary-value">$75.00</span>
-                        </div>
-                        
-                        <div class="summary-item">
-                            <span class="summary-label">Breakfast package</span>
-                            <span class="summary-value">$100.00</span>
-                        </div>
-                        
-                        <div class="summary-item summary-total">
-                            <span class="summary-label">Total</span>
-                            <span class="summary-value">$1,612.50</span>
-                        </div>
-                        
-                        <p class="summary-note">
-                            Prices are in USD. Your card will be charged for the total amount shown above. You may cancel for free up to 72 hours before check-in.
-                        </p>
-                    </div>
-                </aside>
-            </div>
-        </div>
-    </section>
-
-<!--&lt;!&ndash; Footer &ndash;&gt;-->
-<!--<div th:replace="~{/fragments/nonsigninuserfragment :: footer}"></div>-->
-
-    <!-- Confirmation Modal (Hidden by default) -->
-    <div id="confirmationModal" style="display: none;">
-        <div class="booking-flow" style="padding-top: 120px;">
-            <div class="container">
-                <div class="confirmation-header">
-                    <div class="confirmation-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <h1 class="confirmation-title">Booking Confirmed!</h1>
-                    <p class="confirmation-subtitle">Thank you for choosing LuxStay. Your reservation has been successfully processed.</p>
-                    <div class="confirmation-number">
-                        Booking Reference: <strong>LXS-2025-0520-4892</strong>
-                    </div>
-                    <div class="confirmation-actions">
-                        <button class="btn btn-outline">
-                            <i class="fas fa-envelope"></i> Email Itinerary
-                        </button>
-                        <button class="btn">
-                            <i class="fas fa-calendar-plus"></i> Add to Calendar
-                        </button>
-                        <button class="btn" style="background-color: #4267B2;">
-                            <i class="fab fa-facebook-f"></i> Share
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="booking-container">
-                    <main class="booking-main">
-                        <div class="confirmation-card">
-                            <h2 class="card-title"><i class="fas fa-info-circle"></i> Booking Details</h2>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Booking Number</div>
-                                <div class="confirmation-value">LXS-2025-0520-4892</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Status</div>
-                                <div class="confirmation-value" style="color: #5cb85c;">Confirmed</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Hotel</div>
-                                <div class="confirmation-value">LuxStay Ocean Resort, Miami Beach</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Room Type</div>
-                                <div class="confirmation-value">Deluxe Ocean View Room</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Check-in Date</div>
-                                <div class="confirmation-value">Friday, May 15, 2025 (3:00 PM)</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Check-out Date</div>
-                                <div class="confirmation-value">Wednesday, May 20, 2025 (11:00 AM)</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Guests</div>
-                                <div class="confirmation-value">2 Adults</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Total Amount</div>
-                                <div class="confirmation-value" style="font-weight: 700;">$1,612.50 USD</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Payment Method</div>
-                                <div class="confirmation-value">VISA ending in 4242</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Special Requests</div>
-                                <div class="confirmation-value">Early check-in requested if available</div>
-                            </div>
-                            
-                            <div class="confirmation-row">
-                                <div class="confirmation-label">Cancellation Policy</div>
-                                <div class="confirmation-value">Free cancellation until May 12, 2025</div>
-                            </div>
-                        </div>
-                        
-                        <div class="confirmation-card">
-                            <h2 class="card-title"><i class="fas fa-map-marker-alt"></i> Hotel Location</h2>
-                            <div style="height: 300px; background-color: #f5f5f5; display: flex; align-items: center; justify-content: center; border-radius: 6px; margin-top: 20px;">
-                                [Map would be displayed here]
-                            </div>
-                            <div style="margin-top: 20px;">
-                                <p><strong>Address:</strong> 123 Ocean Drive, Miami Beach, FL 33139, USA</p>
-                                <p><strong>Phone:</strong> +1 (305) 555-0123</p>
-                                <p><strong>Email:</strong> info@luxstayocean.com</p>
-                            </div>
-                        </div>
-                        
-                        <div class="recommendations">
-                            <h3 class="recommendations-title">You Might Also Like</h3>
-                            <div class="recommendations-grid">
-                                <div class="recommendation-card">
-                                    <div class="recommendation-img">
-                                        <img src="/2.png" alt="Spa Package">
-                                    </div>
-                                    <div class="recommendation-content">
-                                        <h4 class="recommendation-title">Ultimate Spa Experience</h4>
-                                        <div class="recommendation-price">From $199</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="recommendation-card">
-                                    <div class="recommendation-img">
-                                        <img src="/2.png" alt="Dining">
-                                    </div>
-                                    <div class="recommendation-content">
-                                        <h4 class="recommendation-title">Gourmet Dining Package</h4>
-                                        <div class="recommendation-price">From $150</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="recommendation-card">
-                                    <div class="recommendation-img">
-                                        <img src="/2.png" alt="Car Rental">
-                                    </div>
-                                    <div class="recommendation-content">
-                                        <h4 class="recommendation-title">Luxury Car Rental</h4>
-                                        <div class="recommendation-price">From $89/day</div>
-                                    </div>
-                                </div>
-                                
-                                <div class="recommendation-card">
-                                    <div class="recommendation-img">
-                                        <img src="/2.png" alt="Excursion">
-                                    </div>
-                                    <div class="recommendation-content">
-                                        <h4 class="recommendation-title">Everglades Excursion</h4>
-                                        <div class="recommendation-price">From $75</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </main>
-                </div>
             </div>
         </div>
     </div>
+</div>
 
 <!-- Footer -->
 <footer>
@@ -1716,265 +1694,295 @@
     </div>
 </footer>
 
-    <!-- JavaScript -->
-    <script>
-
-        let currentStep = 1;
-        const totalSteps = 4;
-
-        function showStep(step) {
-            // Hide all steps
-            document.querySelectorAll('.step-container').forEach(container => {
-                container.style.display = 'none';
-            });
-
-            // Show current step
-            document.getElementById(`step${step}`).style.display = 'block';
-
-            // Update progress indicator
-            document.querySelector('.progress-bar').style.width = `${(step-1)/(totalSteps-1)*100}%`;
-
-            // Update step numbers
-            document.querySelectorAll('.progress-step').forEach((stepElement, index) => {
-                const number = stepElement.querySelector('.step-number');
-                const label = stepElement.querySelector('.step-label');
-
-                number.classList.remove('active', 'completed');
-                label.classList.remove('active', 'completed');
-
-                if (index < step - 1) {
-                    number.classList.add('completed');
-                    label.classList.add('completed');
-                } else if (index === step - 1) {
-                    number.classList.add('active');
-                    label.classList.add('active');
-                }
-            });
-
-            // Update navigation buttons
-            document.getElementById('prevBtn').style.display = step > 1 ? 'inline-block' : 'none';
-            document.getElementById('nextBtn').style.display = step < totalSteps ? 'inline-block' : 'none';
-            document.getElementById('submitBtn').style.display = step === totalSteps ? 'inline-block' : 'none';
+<!-- JavaScript -->
+<script>
+    // === Header Scroll Effect ===
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
         }
+    });
 
-        // Initialize
-        showStep(1);
+    // === Mobile Menu Toggle ===
+    const hamburger = document.querySelector('.hamburger');
+    const menu = document.querySelector('.menu');
 
-        // Navigation handlers
-        document.getElementById('nextBtn').addEventListener('click', function() {
-            if (validateStep(currentStep)) {
-                currentStep++;
-                showStep(currentStep);
-            }
+    hamburger.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        hamburger.innerHTML = menu.classList.contains('active')
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+    });
+
+    // === Payment Method Selection ===
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    const paymentForms = document.querySelectorAll('.card-form');
+
+    paymentMethods.forEach(method => {
+        method.addEventListener('click', function() {
+            // Remove selected class from all methods
+            paymentMethods.forEach(m => m.classList.remove('selected'));
+            // Add selected class to clicked method
+            this.classList.add('selected');
+
+            // Hide all forms
+            paymentForms.forEach(form => form.style.display = 'none');
+            // Show selected form
+            const methodType = this.getAttribute('data-method');
+            document.getElementById(`${methodType}Form`).style.display = 'block';
         });
+    });
 
-        document.getElementById('prevBtn').addEventListener('click', function() {
-            currentStep--;
-            showStep(currentStep);
-        });
+    // === Add-on Selection ===
+    const addonCards = document.querySelectorAll('.addon-card');
 
-        function validateStep(step) {
-            // Add validation logic for each step
-            return true;
-        }
+    addonCards.forEach(card => {
+        const checkbox = card.querySelector('.addon-checkbox');
 
-        // === Header Scroll Effect ===
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // === Mobile Menu Toggle ===
-        const hamburger = document.querySelector('.hamburger');
-        const menu = document.querySelector('.menu');
-
-        hamburger.addEventListener('click', function() {
-            menu.classList.toggle('active');
-            hamburger.innerHTML = menu.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
-
-        // === Payment Method Selection ===
-        const paymentMethods = document.querySelectorAll('.payment-method');
-        const paymentForms = document.querySelectorAll('.card-form');
-        
-        paymentMethods.forEach(method => {
-            method.addEventListener('click', function() {
-                // Remove selected class from all methods
-                paymentMethods.forEach(m => m.classList.remove('selected'));
-                // Add selected class to clicked method
-                this.classList.add('selected');
-                
-                // Hide all forms
-                paymentForms.forEach(form => form.style.display = 'none');
-                // Show selected form
-                const methodType = this.getAttribute('data-method');
-                document.getElementById(`${methodType}Form`).style.display = 'block';
-            });
-        });
-
-        // === Add-on Selection ===
-        const addonCards = document.querySelectorAll('.addon-card');
-        
-        addonCards.forEach(card => {
-            const checkbox = card.querySelector('.addon-checkbox');
-            
-            card.addEventListener('click', function(e) {
-                // Don't toggle if clicking directly on the checkbox
-                if (e.target !== checkbox) {
-                    checkbox.checked = !checkbox.checked;
-                    updateCardState();
-                }
-            });
-            
-            checkbox.addEventListener('click', function(e) {
-                e.stopPropagation(); // Prevent card click from triggering
+        card.addEventListener('click', function(e) {
+            // Don't toggle if clicking directly on the checkbox
+            if (e.target !== checkbox) {
+                checkbox.checked = !checkbox.checked;
                 updateCardState();
-            });
-            
-            function updateCardState() {
-                if (checkbox.checked) {
-                    card.classList.add('selected');
-                } else {
-                    card.classList.remove('selected');
-                }
             }
         });
 
-        // === Form Validation ===
-        const guestForm = document.getElementById('guestForm');
-        const continueBtn = document.getElementById('continueBtn');
-        
-        continueBtn.addEventListener('click', function() {
-            let isValid = true;
-            
-            // Validate required fields
-            const requiredFields = guestForm.querySelectorAll('[required]');
+        checkbox.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent card click from triggering
+            updateCardState();
+        });
+
+        function updateCardState() {
+            if (checkbox.checked) {
+                card.classList.add('selected');
+            } else {
+                card.classList.remove('selected');
+            }
+        }
+    });
+
+    // === Multi-Step Form Management ===
+    let currentStep = 1;
+    const totalSteps = 4;
+    const stepContainers = document.querySelectorAll('.step-container');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressSteps = document.querySelectorAll('.progress-step');
+
+    function showStep(step) {
+        // Hide all steps
+        stepContainers.forEach(container => {
+            container.style.display = 'none';
+        });
+
+        // Show current step
+        document.getElementById(`step${step}`).style.display = 'block';
+
+        // Update progress bar
+        const progressPercentage = ((step - 1) / (totalSteps - 1)) * 100;
+        document.querySelector('.progress-bar').style.width = `${progressPercentage}%`;
+
+        // Update step indicators
+        progressSteps.forEach((stepElement, index) => {
+            const number = stepElement.querySelector('.step-number');
+            const label = stepElement.querySelector('.step-label');
+
+            number.classList.remove('active', 'completed', 'upcoming');
+            label.classList.remove('active', 'completed', 'upcoming');
+
+            if (index < step - 1) {
+                // Completed steps
+                number.classList.add('completed');
+                label.classList.add('completed');
+            } else if (index === step - 1) {
+                // Current step
+                number.classList.add('active');
+                label.classList.add('active');
+            } else {
+                // Upcoming steps
+                number.classList.add('upcoming');
+                label.classList.add('upcoming');
+            }
+        });
+
+        // Update navigation buttons
+        prevBtn.style.display = step > 1 ? 'inline-block' : 'none';
+        nextBtn.style.display = step < totalSteps ? 'inline-block' : 'none';
+        submitBtn.style.display = step === totalSteps ? 'inline-block' : 'none';
+
+        // Scroll to top of step
+        window.scrollTo({ top: 150, behavior: 'smooth' });
+    }
+
+    // Initialize
+    showStep(1);
+
+    // Navigation handlers
+    nextBtn.addEventListener('click', function() {
+        if (validateStep(currentStep)) {
+            currentStep++;
+            showStep(currentStep);
+        }
+    });
+
+    prevBtn.addEventListener('click', function() {
+        currentStep--;
+        showStep(currentStep);
+    });
+
+    submitBtn.addEventListener('click', function() {
+        if (validateStep(currentStep)) {
+            // Show confirmation modal
+            document.getElementById('confirmationModal').style.display = 'block';
+            window.scrollTo(0, 0);
+
+            // Update all steps to completed in progress indicator
+            document.querySelectorAll('.progress-step').forEach(step => {
+                step.querySelector('.step-number').classList.add('completed');
+                step.querySelector('.step-label').classList.add('completed');
+            });
+        }
+    });
+
+    function validateStep(step) {
+        let isValid = true;
+
+        // Step-specific validation
+        if (step === 2) {
+            // Validate guest details form
+            const requiredFields = document.querySelectorAll('#guestForm [required]');
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
                     field.classList.add('is-invalid');
                     isValid = false;
+
+                    // Scroll to first error
+                    if (isValid) {
+                        field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        isValid = false; // Set to false after scrolling to first error
+                    }
                 } else {
                     field.classList.remove('is-invalid');
                 }
             });
-            
+
             // Validate email format
             const emailField = document.getElementById('email');
             if (emailField.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
                 emailField.classList.add('is-invalid');
                 emailField.nextElementSibling.textContent = 'Please enter a valid email address';
                 isValid = false;
+
+                if (isValid) {
+                    emailField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    isValid = false;
+                }
             }
-            
-            // Validate policy checkboxes
+        } else if (step === 4) {
+            // Validate payment and policies
             const policyCheckboxes = document.querySelectorAll('.policy-checkbox[required]');
             policyCheckboxes.forEach(checkbox => {
                 if (!checkbox.checked) {
                     checkbox.nextElementSibling.style.color = '#dc3545';
                     isValid = false;
+
+                    if (isValid) {
+                        checkbox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        isValid = false;
+                    }
                 } else {
                     checkbox.nextElementSibling.style.color = '';
                 }
             });
-            
-            if (isValid) {
-                // Show confirmation modal (in a real app, this would submit the form)
-                document.getElementById('confirmationModal').style.display = 'block';
-                window.scrollTo(0, 0);
-                
-                // Update progress indicator
-                document.querySelector('.progress-bar').style.width = '100%';
-                document.querySelectorAll('.progress-step').forEach(step => {
-                    step.querySelector('.step-number').classList.add('completed');
-                    step.querySelector('.step-label').classList.add('completed');
-                });
+
+            // Validate payment method
+            const selectedPayment = document.querySelector('.payment-method.selected');
+            if (!selectedPayment) {
+                isValid = false;
+                alert('Please select a payment method');
+            }
+        }
+
+        return isValid;
+    }
+
+    // === Card Type Detection ===
+    const cardNumber = document.getElementById('cardNumber');
+    const cardIcons = document.querySelectorAll('.card-icon');
+
+    cardNumber.addEventListener('input', function() {
+        const number = this.value.replace(/\s/g, '');
+        let cardType = '';
+
+        if (/^4/.test(number)) {
+            cardType = 'visa';
+        } else if (/^5[1-5]/.test(number)) {
+            cardType = 'mastercard';
+        } else if (/^3[47]/.test(number)) {
+            cardType = 'amex';
+        } else if (/^6(?:011|5)/.test(number)) {
+            cardType = 'discover';
+        }
+
+        // Update card icons
+        cardIcons.forEach(icon => {
+            if (icon.alt.toLowerCase() === cardType) {
+                icon.classList.add('active');
             } else {
-                // Scroll to first error
-                const firstError = document.querySelector('.is-invalid');
-                if (firstError) {
-                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
+                icon.classList.remove('active');
             }
         });
 
-        // === Card Type Detection ===
-        const cardNumber = document.getElementById('cardNumber');
-        const cardIcons = document.querySelectorAll('.card-icon');
-        
-        cardNumber.addEventListener('input', function() {
-            const number = this.value.replace(/\s/g, '');
-            let cardType = '';
-            
-            if (/^4/.test(number)) {
-                cardType = 'visa';
-            } else if (/^5[1-5]/.test(number)) {
-                cardType = 'mastercard';
-            } else if (/^3[47]/.test(number)) {
-                cardType = 'amex';
-            } else if (/^6(?:011|5)/.test(number)) {
-                cardType = 'discover';
-            }
-            
-            // Update card icons
-            cardIcons.forEach(icon => {
-                if (icon.alt.toLowerCase() === cardType) {
-                    icon.classList.add('active');
-                } else {
-                    icon.classList.remove('active');
-                }
-            });
-            
-            // Add spaces for better readability (e.g., 4242 4242 4242 4242)
-            if (number.length > 0 && number.length <= 16 && /^\d+$/.test(number)) {
-                this.value = number.match(/.{1,4}/g).join(' ');
-            }
-        });
+        // Add spaces for better readability (e.g., 4242 4242 4242 4242)
+        if (number.length > 0 && number.length <= 16 && /^\d+$/.test(number)) {
+            this.value = number.match(/.{1,4}/g).join(' ');
+        }
+    });
 
-        // === Expiry Date Formatting ===
-        const cardExpiry = document.getElementById('cardExpiry');
-        
-        cardExpiry.addEventListener('input', function() {
-            let value = this.value.replace(/\D/g, '');
-            
-            if (value.length > 2) {
-                this.value = `${value.substring(0, 2)}/${value.substring(2, 4)}`;
+    // === Expiry Date Formatting ===
+    const cardExpiry = document.getElementById('cardExpiry');
+
+    cardExpiry.addEventListener('input', function() {
+        let value = this.value.replace(/\D/g, '');
+
+        if (value.length > 2) {
+            this.value = `${value.substring(0, 2)}/${value.substring(2, 4)}`;
+        }
+    });
+
+    // === CVV Formatting ===
+    const cardCvv = document.getElementById('cardCvv');
+
+    cardCvv.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').substring(0, 4);
+    });
+
+    // === Real-time Validation ===
+    const formFields = document.querySelectorAll('.form-control');
+
+    formFields.forEach(field => {
+        field.addEventListener('input', function() {
+            if (this.value.trim()) {
+                this.classList.remove('is-invalid');
             }
         });
+    });
 
-        // === CVV Formatting ===
-        const cardCvv = document.getElementById('cardCvv');
-        
-        cardCvv.addEventListener('input', function() {
-            this.value = this.value.replace(/\D/g, '').substring(0, 4);
-        });
+    // === Policy Checkbox Validation ===
+    const policyCheckboxes = document.querySelectorAll('.policy-checkbox[required]');
 
-        // === Real-time Validation ===
-        const formFields = document.querySelectorAll('.form-control');
-        
-        formFields.forEach(field => {
-            field.addEventListener('input', function() {
-                if (this.value.trim()) {
-                    this.classList.remove('is-invalid');
-                }
-            });
+    policyCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                this.nextElementSibling.style.color = '';
+            }
         });
+    });
+</script>
 
-        // === Policy Checkbox Validation ===
-        const policyCheckboxes = document.querySelectorAll('.policy-checkbox[required]');
-        
-        policyCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', function() {
-                if (this.checked) {
-                    this.nextElementSibling.style.color = '';
-                }
-            });
-        });
-    </script>
 </body>
 </html>
