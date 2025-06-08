@@ -288,7 +288,7 @@ public class HotelServiceImpl implements HotelService {
                 .orElse(false);
     }
 
-    @Override
+    /*@Override
     public List<RoomType> getDistinctRoomTypesForHotel(Long hotelId) {
         // Fetch all rooms for this hotel
         List<Room> hotelRooms = roomRepository.findByHotel_HotelId(hotelId);
@@ -298,6 +298,6 @@ public class HotelServiceImpl implements HotelService {
                 .map(Room::getRoomType)
                 .distinct()
                 .toList();
-    }
+    }*/
 
 }

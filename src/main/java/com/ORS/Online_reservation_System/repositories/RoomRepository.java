@@ -16,24 +16,20 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room> findByHotel_HotelId(Long hotelId);
 
-    List<Room> findByHotel_HotelIdAndIsAvailableTrue(Long hotelId);
+    /*List<Room> findByHotel_HotelIdAndIsAvailableTrue(Long hotelId);
 
-    List<Room> findByRoomType(RoomType roomType);
-
-    Optional<Room> findByHotel_HotelIdAndRoomNumber(Long hotelId, String roomNumber);
-
-    List<Room> findByCapacityGreaterThanEqual(Integer capacity);
+    Optional<Room> findByHotel_HotelIdAndRoomNumber(Long hotelId, String roomNumber);*/
 
     List<Room> findByPricePerNightBetween(BigDecimal minPrice, BigDecimal maxPrice);
 
-    @Query("SELECT r FROM Room r WHERE r.hotel.hotelId = :hotelId AND r.capacity >= :capacity AND r.isAvailable = true")
-    List<Room> findAvailableRoomsByHotelAndCapacity(@Param("hotelId") Long hotelId, @Param("capacity") Integer capacity);
+    /*@Query("SELECT r FROM Room r WHERE r.hotel.hotelId = :hotelId AND r.totalQuantity >= :capacity AND r.isAvailable = true")
+    List<Room> findAvailableRoomsByHotelAndCapacity(@Param("hotelId") Long hotelId, @Param("capacity") Integer capacity);*/
 
     Long countByHotel_HotelId(Long hotelId);
 
     Long countByHotel_HotelIdAndIsAvailableTrue(Long hotelId);
 
-    boolean existsByHotel_HotelIdAndRoomNumber(Long hotelId, String roomNumber);
+    /*boolean existsByHotel_HotelIdAndRoomNumber(Long hotelId, String roomNumber);*/
 
     @Query("SELECT DISTINCT r FROM Room r LEFT JOIN FETCH r.roomAmenities WHERE r.hotel.hotelId = :hotelId")
     List<Room> findRoomsWithAmenitiesByHotel(@Param("hotelId") Long hotelId);

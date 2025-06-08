@@ -3,11 +3,18 @@ package com.ORS.Online_reservation_System.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "specific_room")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class SpecificRoom {
 
     @Id
@@ -27,5 +34,6 @@ public class SpecificRoom {
 
     @Column(name = "is_primary", nullable = false)
     private Boolean isAvailable = false;
+
 
 }

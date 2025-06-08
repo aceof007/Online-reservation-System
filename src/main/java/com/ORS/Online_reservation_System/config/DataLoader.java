@@ -2,9 +2,7 @@
 package com.ORS.Online_reservation_System.config;
 
 import com.ORS.Online_reservation_System.model.*;
-import com.ORS.Online_reservation_System.repositories.AmenityRepository;
-import com.ORS.Online_reservation_System.repositories.FAQRepository;
-import com.ORS.Online_reservation_System.repositories.HotelRepository;
+import com.ORS.Online_reservation_System.repositories.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,9 +19,13 @@ public class DataLoader {
     @Bean
     public CommandLineRunner loadAmenities(AmenityRepository amenityRepository,
                                            HotelRepository hotelRepository,
-                                           FAQRepository faqRepository) {
+                                           FAQRepository faqRepository,
+                                           NearByAttractionRepository nearByAttractionRepository,
+                                           PolicyRepository policyRepository,
+                                           RateOptionRepository rateOptionRepository,
+                                           RoomRepository roomRepository) {
         return args -> {
-            if (amenityRepository.count() == 0) {
+            if (rateOptionRepository.count() == 0) {
 
                 Amenity am1 = Amenity.builder()
                         .name("Free WiFi")
@@ -306,6 +308,12 @@ public class DataLoader {
                         .amenities(List.of(am1,am2,am3,am4,am5,am6,am7,am8,am9, am10,am11,am12,am13,am14,am15,am16,am17,am18))
                         .build();
 
+                hotelRepository.save(hotel1);
+                hotelRepository.save(hotel2);
+                hotelRepository.save(hotel3);
+                hotelRepository.save(hotel4);
+                hotelRepository.save(hotel5);
+
                 FAQ faq1 = FAQ.builder()
                         .question("What is the check-in time?")
                         .answer("Check-in time is from 3 PM onwards.")
@@ -336,7 +344,206 @@ public class DataLoader {
                         .hotel(hotel5)
                         .build();
 
-            }
+                FAQ faq6 = FAQ.builder()
+                        .question("Is parking available at the hotel?")
+                        .answer("Yes, we offer complimentary parking for all guests.")
+                        .hotel(hotel1)
+                        .build();
+
+                faqRepository.save(faq1);
+                faqRepository.save(faq2);
+                faqRepository.save(faq3);
+                faqRepository.save(faq4);
+                faqRepository.save(faq5);
+                faqRepository.save(faq6);
+
+                NearByAttraction attr1 = NearByAttraction.builder()
+                        .name("Central Park")
+                        .distanceInfo("5 min walk")
+                        .hotel(hotel1)  // assign the relevant hotel instance here
+                        .build();
+
+                NearByAttraction attr2 = NearByAttraction.builder()
+                        .name("City Museum")
+                        .distanceInfo("10 min drive")
+                        .hotel(hotel1)
+                        .build();
+
+                NearByAttraction attr3 = NearByAttraction.builder()
+                        .name("Historic Old Town")
+                        .distanceInfo("15 min by tram")
+                        .hotel(hotel2)
+                        .build();
+
+                NearByAttraction attr4 = NearByAttraction.builder()
+                        .name("Riverfront Promenade")
+                        .distanceInfo("3 min walk")
+                        .hotel(hotel3)
+                        .build();
+
+                NearByAttraction attr5 = NearByAttraction.builder()
+                        .name("Grand Shopping Mall")
+                        .distanceInfo("20 min by bus")
+                        .hotel(hotel4)
+                        .build();
+
+// Example save (assuming you have a nearbyAttractionRepository and a hotel reference)
+                nearByAttractionRepository.saveAll(List.of(attr1, attr2, attr3, attr4, attr5));
+                System.out.println("Nearby attractions loaded.");
+
+                Policy policy1 = Policy.builder()
+                        .name("Cancellation Policy")
+                        .description("Free cancellation up to 24 hours before check-in.")
+                        .hotel(hotel1)  // assign your Hotel entity here
+                        .build();
+
+                Policy policy2 = Policy.builder()
+                        .name("No Smoking")
+                        .description("Smoking is strictly prohibited inside the rooms and common areas.")
+                        .hotel(hotel1)
+                        .build();
+
+                Policy policy3 = Policy.builder()
+                        .name("Pet Policy")
+                        .description("Pets are allowed with an additional cleaning fee.")
+                        .hotel(hotel1)
+                        .build();
+
+                Policy policy4 = Policy.builder()
+                        .name("Check-in Policy")
+                        .description("Check-in is from 3 PM onwards. Valid ID required.")
+                        .hotel(hotel2)
+                        .build();
+
+                Policy policy5 = Policy.builder()
+                        .name("Noise Policy")
+                        .description("Please respect quiet hours from 10 PM to 7 AM.")
+                        .hotel(hotel3)
+                        .build();
+
+                    policyRepository.saveAll(List.of(policy1, policy2, policy3, policy4, policy5));
+                    System.out.println("Policies loaded.");
+
+                Room room1 = Room.builder()
+                        .roomName("Deluxe King")
+                        .pricePerNight(new BigDecimal("150.00"))
+                        .previousPricePerNight(new BigDecimal("180.00"))
+                        .totalQuantity(3)
+                        .occupiedQuantity(0)
+                        .bedType("King Bed")
+                        .maxAdults(2)
+                        .maxChildren(1)
+                        .prefix(1)
+                        .roomSizeInSquareMeters(30.0)
+                        .hotel(hotel1)
+                        .roomAmenities(List.of(am1,am5, am9, am11))
+                        .build();
+                room1.generateSpecificRooms();
+
+                Room room2 = Room.builder()
+                        .roomName("Executive Suite")
+                        .pricePerNight(new BigDecimal("250.00"))
+                        .previousPricePerNight(new BigDecimal("280.00"))
+                        .totalQuantity(2)
+                        .occupiedQuantity(0)
+                        .bedType("Queen Bed")
+                        .maxAdults(2)
+                        .maxChildren(2)
+                        .prefix(2)
+                        .roomSizeInSquareMeters(50.0)
+                        .hotel(hotel1)
+                        .roomAmenities(List.of(am1,am16, am7, am10))
+                        .build();
+                room2.generateSpecificRooms();
+
+                Room room3 = Room.builder()
+                        .roomName("Standard Twin")
+                        .pricePerNight(new BigDecimal("100.00"))
+                        .previousPricePerNight(new BigDecimal("120.00"))
+                        .totalQuantity(4)
+                        .occupiedQuantity(0)
+                        .bedType("Twin Beds")
+                        .maxAdults(2)
+                        .maxChildren(1)
+                        .prefix(3)
+                        .roomSizeInSquareMeters(25.0)
+                        .hotel(hotel2)
+                        .roomAmenities(List.of(am2,am6, am14, am10))
+                        .build();
+                room3.generateSpecificRooms();
+
+                roomRepository.saveAll(List.of(room1, room2, room3));
+
+            System.out.println("Rooms and SpecificRooms created for each hotel.");
+
+                RateOption rateOption1 = RateOption.builder()
+                        .name("Standard Rate")
+                        .refundable(true)
+                        .prepaymentRequired(false)
+                        .refundPercentageAfterDeadline(50)
+                        .allowLateCancellation(true)
+                        .cancellationDeadlineDays(2)
+                        .cancellationFeeAfterDeadline(new BigDecimal("50.00"))
+                        .cancellationPolicy("Free cancellation up to 2 days before check-in, then 50% fee applies.")
+                        .notes("Most flexible rate.")
+                        .room(room1)  // assign your Room entity here
+                        .build();
+
+                RateOption rateOption2 = RateOption.builder()
+                        .name("Non-refundable")
+                        .refundable(false)
+                        .prepaymentRequired(true)
+                        .refundPercentageAfterDeadline(0)
+                        .allowLateCancellation(false)
+                        .cancellationDeadlineDays(null)
+                        .cancellationFeeAfterDeadline(new BigDecimal("100.00"))
+                        .cancellationPolicy("No refunds after booking.")
+                        .notes("Best rate but no cancellation allowed.")
+                        .room(room2)
+                        .build();
+
+                RateOption rateOption3 = RateOption.builder()
+                        .name("Early Bird")
+                        .refundable(true)
+                        .prepaymentRequired(true)
+                        .refundPercentageAfterDeadline(25)
+                        .allowLateCancellation(true)
+                        .cancellationDeadlineDays(7)
+                        .cancellationFeeAfterDeadline(new BigDecimal("75.00"))
+                        .cancellationPolicy("Cancel at least 7 days before check-in for partial refund.")
+                        .notes("Discounted rate for early booking.")
+                        .room(room3)
+                        .build();
+
+                RateOption rateOption4 = RateOption.builder()
+                        .name("Flexible Rate")
+                        .refundable(true)
+                        .prepaymentRequired(false)
+                        .refundPercentageAfterDeadline(100)
+                        .allowLateCancellation(true)
+                        .cancellationDeadlineDays(1)
+                        .cancellationFeeAfterDeadline(new BigDecimal("0.00"))
+                        .cancellationPolicy("Cancel anytime before 1 day prior to check-in with full refund.")
+                        .notes("Maximum flexibility.")
+                        .room(room1)
+                        .build();
+
+                RateOption rateOption5 = RateOption.builder()
+                        .name("Weekend Special")
+                        .refundable(true)
+                        .prepaymentRequired(false)
+                        .refundPercentageAfterDeadline(50)
+                        .allowLateCancellation(true)
+                        .cancellationDeadlineDays(3)
+                        .cancellationFeeAfterDeadline(new BigDecimal("40.00"))
+                        .cancellationPolicy("50% refund if canceled 3 days before weekend stay.")
+                        .notes("Special pricing for weekend stays.")
+                        .room(room2)
+                        .build();
+
+                    rateOptionRepository.saveAll(List.of(rateOption1, rateOption2, rateOption3, rateOption4, rateOption5));
+                    System.out.println("Rate options loaded.");
+                }
         };
     }
 }

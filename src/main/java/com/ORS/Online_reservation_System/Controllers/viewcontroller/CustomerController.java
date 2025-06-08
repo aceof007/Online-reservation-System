@@ -1,4 +1,4 @@
-package com.ORS.Online_reservation_System.Controllers;
+package com.ORS.Online_reservation_System.Controllers.viewcontroller;
 
 import com.ORS.Online_reservation_System.DTO.LoginDTO;
 import com.ORS.Online_reservation_System.model.Customer;

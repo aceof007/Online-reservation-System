@@ -11,10 +11,12 @@ import java.util.Optional;
 
 public interface HotelService {
 
+    //implemented
+    List<Hotel> findAllHotels();
+
     // Basic CRUD operations
     Hotel saveHotel(Hotel hotel);
     Optional<Hotel> findHotelById(Long id);
-    List<Hotel> findAllHotels();
     List<Hotel> findAllActiveHotels();
     Hotel updateHotel(Long id, Hotel hotel);
     void deleteHotel(Long id);
@@ -46,6 +48,6 @@ public interface HotelService {
     boolean hotelExistsByName(String name);
     boolean isHotelActive(Long hotelId);
 
-    List<RoomType> getDistinctRoomTypesForHotel(Long hotelId);
+    /*List<RoomType> getDistinctRoomTypesForHotel(Long hotelId);*/
 
 }

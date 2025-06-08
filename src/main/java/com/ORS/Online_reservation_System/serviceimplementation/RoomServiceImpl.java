@@ -23,6 +23,9 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room createRoom(Room room) {
+        return roomRepository.save(room);
+    }
+    /*
         // Validate hotel exists (assumes you have hotelRepository injected)
         if (!hotelRepository.existsById(room.getHotel().getHotelId())) {
             throw new IllegalArgumentException("Hotel not found");
@@ -41,9 +44,12 @@ public class RoomServiceImpl implements RoomService {
 
         return roomRepository.save(room);
     }
-
+    */
     @Override
     public Room updateRoom(Long roomId, Room room) {
+        return roomRepository.save(room);
+    }
+    /*
         Room existingRoom = roomRepository.findById(roomId)
                 .orElseThrow(() -> new IllegalArgumentException("Room not found"));
 
@@ -64,7 +70,7 @@ public class RoomServiceImpl implements RoomService {
         existingRoom.setIsAvailable(room.getIsAvailable());
 
         return roomRepository.save(existingRoom);
-    }
+    }*/
 
     @Override
     public void deleteRoom(Long roomId) {
@@ -97,23 +103,22 @@ public class RoomServiceImpl implements RoomService {
         return roomRepository.findByHotel_HotelId(hotelId);
     }
 
-    @Override
+    /*@Override
     @Transactional(readOnly = true)
     public List<Room> getAvailableRoomsByHotel(Long hotelId) {
         return roomRepository.findByHotel_HotelIdAndIsAvailableTrue(hotelId);
-    }
+    }*/
 
-    @Transactional(readOnly = true)
-    @Override
+    /*@Transactional(readOnly = true)
     public List<Room> getRoomsByType(RoomType roomType) {
         return roomRepository.findByRoomType(roomType);
-    }
+    }*/
 
-    @Override
+    /*@Override
     @Transactional(readOnly = true)
     public List<Room> getRoomsByCapacity(Integer minCapacity) {
         return roomRepository.findByCapacityGreaterThanEqual(minCapacity);
-    }
+    }*/
 
     @Override
     @Transactional(readOnly = true)
@@ -121,11 +126,11 @@ public class RoomServiceImpl implements RoomService {
         return roomRepository.findByPricePerNightBetween(minPrice, maxPrice);
     }
 
-    @Override
+    /*@Override
     @Transactional(readOnly = true)
     public Optional<Room> getRoomByHotelAndRoomNumber(Long hotelId, String roomNumber) {
         return roomRepository.findByHotel_HotelIdAndRoomNumber(hotelId, roomNumber);
-    }
+    }*/
 
     @Override
     public void setRoomAvailability(Long roomId, Boolean isAvailable) {
@@ -136,7 +141,6 @@ public class RoomServiceImpl implements RoomService {
         roomRepository.save(room);
     }
 
-    @Override
     @Transactional(readOnly = true)
     public Long getAvailableRoomCount(Long hotelId) {
         return roomRepository.countByHotel_HotelIdAndIsAvailableTrue(hotelId);

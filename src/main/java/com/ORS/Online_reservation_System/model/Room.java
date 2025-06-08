@@ -49,13 +49,13 @@ public class Room {
     @Column(name = "previous_price_per_night", precision = 10, scale = 2)
     private BigDecimal previousPricePerNight;
 
-    @Min(value = 1, message = "Capacity must be at least 1")
-    @Max(value = 100, message = "Capacity cannot exceed 20")
+    @Min(value = 1, message = "totalQuantity must be at least 1")
+    @Max(value = 100, message = "totalQuantity cannot exceed 100")
     @Column(name = "total_Quantity")
     private Integer totalQuantity;
 
-    @Min(value = 1, message = "Capacity must be at least 1")
-    @Max(value = 100, message = "Capacity cannot exceed 20")
+    @Min(value = 0, message = "occupiedQuantity must be at least 1")
+    @Max(value = 100, message = "occupiedQuantity cannot exceed 100")
     @Column(name = "occupied_Quantity")
     private Integer occupiedQuantity;
 
@@ -122,4 +122,22 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<SpecificRoom> specific = new ArrayList<>();
+
+
+    public void generateSpecificRooms() {
+        this.specific.clear(); // Clear any existing specific rooms to avoid duplicates
+
+        for (int i = 1; i <= this.totalQuantity; i++) {
+            String roomNumber = prefix + String.format("%03d", i); // prefix + zero-padded number, e.g., "101", "102"
+
+            SpecificRoom specificRoom = SpecificRoom.builder()
+                    .room(this)
+                    .roomNumber(roomNumber)
+                    .isAvailable(true)
+                    .build();
+
+            this.specific.add(specificRoom);
+        }
+    }
+
 }

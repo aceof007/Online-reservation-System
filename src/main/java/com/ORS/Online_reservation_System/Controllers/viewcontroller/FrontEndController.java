@@ -1,6 +1,7 @@
-package com.ORS.Online_reservation_System.Controllers;
+package com.ORS.Online_reservation_System.Controllers.viewcontroller;
 
 import com.ORS.Online_reservation_System.DTO.LoginDTO;
+import com.ORS.Online_reservation_System.serviceimplementation.HotelServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("")
 public class FrontEndController {
+
+    private final HotelServiceImpl hotelService;
+
+    public FrontEndController(HotelServiceImpl hotelService) {
+        this.hotelService = hotelService;
+    }
+
     @GetMapping("/")
     public String home(Model model) {
         return "/customer/homepage";
@@ -32,6 +40,7 @@ public class FrontEndController {
 
     @GetMapping("/hotelListing")
     public String hotelListingPage(Model model) {
+        model.addAttribute("hotels", hotelService.findAllHotels());
         return "/customer/hotellistingpage";
     }
 }

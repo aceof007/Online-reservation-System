@@ -21,18 +21,15 @@ public interface RoomService {
 
     // Room queries
     List<Room> getRoomsByHotel(Long hotelId);
-    List<Room> getAvailableRoomsByHotel(Long hotelId);
+    /*List<Room> getAvailableRoomsByHotel(Long hotelId);*/
 
-    @Transactional(readOnly = true)
-    List<Room> getRoomsByType(RoomType roomType);
+    /*@Transactional(readOnly = true)
+    List<Room> getRoomsByType(RoomType roomType);*/
 
-    List<Room> getRoomsByCapacity(Integer minCapacity);
     List<Room> getRoomsByPriceRange(BigDecimal minPrice, BigDecimal maxPrice);
-    Optional<Room> getRoomByHotelAndRoomNumber(Long hotelId, String roomNumber);
 
     // Room availability
     void setRoomAvailability(Long roomId, Boolean isAvailable);
-    Long getAvailableRoomCount(Long hotelId);
 
     // Room amenities
     void addAmenityToRoom(Long roomId, Long amenityId);
