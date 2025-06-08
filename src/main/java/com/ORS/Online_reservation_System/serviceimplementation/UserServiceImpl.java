@@ -6,4 +6,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl {
 
+    private final UserRepository userRepository;
+
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
 }

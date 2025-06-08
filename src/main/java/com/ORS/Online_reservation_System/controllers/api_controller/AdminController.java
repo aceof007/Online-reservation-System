@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     @GetMapping("/Dashboard")
     public String adminDashboard(Model model) {
+        model.addAttribute("activePage", "dashboard");
         return "/admin_dashboard/hotel/dashboard";
     }
 
     @GetMapping("/HotelManagement")
     public String adminHotelManagement(Model model) {
+        model.addAttribute("activePage", "dashboard");
         return "/admin_dashboard/hotel/hotelsmanagement";
     }
 
@@ -26,7 +28,7 @@ public class AdminController {
 
     @GetMapping("/roomManagement")
     public String adminRoomManagement(Model model) {
-        return "/admin_dashboard/hotel/room_management";
+        return "/admin_dashboard/hotel/system";
     }
 
     @GetMapping("/system")

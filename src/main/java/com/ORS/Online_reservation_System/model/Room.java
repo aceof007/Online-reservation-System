@@ -16,7 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "room")
+@Table(
+        name = "room",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"hotel_id", "room_number"})
+        }
+)
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,15 +34,9 @@ public class Room {
     @Column(name = "room_id")
     private Long roomId;
 
-    @NotNull(message = "Room type is required")
+    @NotNull(message = "Room name is required")
     @Column(name = "room_type")
-    @Enumerated(EnumType.STRING)
-    private RoomType roomType;
-
-    @NotBlank(message = "Room number is required")
-    @Size(max = 10, message = "Room number cannot exceed 10 characters")
-    @Column(name = "room_number", nullable = false, length = 10)
-    private String roomNumber;
+    private String roomName;
 
     @NotNull(message = "Price per night is required")
     @DecimalMin(value = "0.01", message = "Price must be greater than 0")
@@ -44,14 +44,43 @@ public class Room {
     @Column(name = "price_per_night", precision = 10, scale = 2)
     private BigDecimal pricePerNight;
 
-    @Min(value = 1, message = "Capacity must be at least 1")
-    @Max(value = 20, message = "Capacity cannot exceed 20")
-    @Column(name = "capacity")
-    private Integer capacity;
+    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
+    @Digits(integer = 8, fraction = 2, message = "Invalid price format")
+    @Column(name = "previous_price_per_night", precision = 10, scale = 2)
+    private BigDecimal previousPricePerNight;
 
-    @Size(max = 1000, message = "Description cannot exceed 1000 characters")
-    @Column(name = "description", length = 1000)
-    private String description;
+    @Min(value = 1, message = "Capacity must be at least 1")
+    @Max(value = 100, message = "Capacity cannot exceed 20")
+    @Column(name = "total_Quantity")
+    private Integer totalQuantity;
+
+    @Min(value = 1, message = "Capacity must be at least 1")
+    @Max(value = 100, message = "Capacity cannot exceed 20")
+    @Column(name = "occupied_Quantity")
+    private Integer occupiedQuantity;
+
+    @Size(max = 100, message = "Bed type cannot exceed 100 characters")
+    @Column(name = "bed_type", length = 100)
+    private String bedType;
+
+    @Min(value = 1, message = "Minimum occupancy is 1")
+    @Max(value = 10, message = "Adults cannot exceed 10")
+    @Column(name = "max_adults")
+    private Integer maxAdults;
+
+    @NotNull
+    @Column(name = "prefix")
+    private Integer prefix;
+
+    @Min(value = 0, message = "Children cannot be negative")
+    @Max(value = 10, message = "Children cannot exceed 10")
+    @Column(name = "max_children")
+    private Integer maxChildren;
+
+    @DecimalMin(value = "1.0", message = "Room size must be at least 1")
+    @Column(name = "room_size_m2")
+    private Double roomSizeInSquareMeters;
+
 
     @Builder.Default
     @Column(name = "is_available", nullable = false)
@@ -64,6 +93,11 @@ public class Room {
     @UpdateTimestamp
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<RateOption> rateOptions = new ArrayList<>();
+
 
     // Relationships
     @ManyToOne(fetch = FetchType.LAZY)
@@ -84,4 +118,8 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<RoomImage> roomImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<SpecificRoom> specific = new ArrayList<>();
 }

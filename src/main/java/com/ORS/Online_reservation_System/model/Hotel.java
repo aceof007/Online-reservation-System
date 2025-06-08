@@ -17,6 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -66,6 +67,11 @@ public class Hotel {
     @Column(name = "email", length = 100)
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "property_type", nullable = false, length = 20)
+    private PropertyType propertyType;
+
+
     @Size(max = 200, message = "Website URL cannot exceed 200 characters")
     @Column(name = "website", length = 200)
     private String website;
@@ -113,6 +119,17 @@ public class Hotel {
     @Size(max = 8, message = "Managed by field cannot exceed 8 characters")
     @Column(name = "managed_by", length = 8)
     private String managedBy;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Policy> policies;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NearByAttraction> nearbyAttractions;
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<FAQ> faqs = new ArrayList<>();
+
 
     // Relationships
     @ManyToMany

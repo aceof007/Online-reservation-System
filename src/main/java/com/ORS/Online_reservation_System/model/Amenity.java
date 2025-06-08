@@ -40,6 +40,10 @@ public class Amenity {
     @Column(name = "is_active", nullable = false)
     private Boolean isActive = true;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category", nullable = false)
+    private AmenityCategory category;
+
     // Add this for bidirectional Many-to-Many
     @ManyToMany(mappedBy = "amenities")
     private List<Hotel> hotels;
