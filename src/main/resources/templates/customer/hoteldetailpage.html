@@ -1216,8 +1216,7 @@
                             </div>
 
                         </div>
-                        
-                        <button class="btn book-now-btn" th:href="@{/bookingFlow}">Book Now</button>
+                        <button class="btn book-now-btn" th:href="@{/bookingFlow/{roomid}(roomid=${room.getRoomId()})/{hotelid}(hotelid=${hotel.getHotelId()})/{nights}()}">Book Now</button>
                     </div>
                 </section>
 

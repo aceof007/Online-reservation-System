@@ -3,6 +3,8 @@ package com.ORS.Online_reservation_System.Controllers.viewcontroller;
 import com.ORS.Online_reservation_System.DTO.LoginDTO;
 import com.ORS.Online_reservation_System.model.Customer;
 import com.ORS.Online_reservation_System.serviceimplementation.CustomerServiceImpl;
+import com.ORS.Online_reservation_System.serviceimplementation.HotelServiceImpl;
+import com.ORS.Online_reservation_System.serviceimplementation.RoomServiceImpl;
 import com.ORS.Online_reservation_System.serviceimplementation.UserServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +19,14 @@ import java.util.Date;
 public class CustomerController {
     private final CustomerServiceImpl customerService;
     private final UserServiceImpl userService;
+    private final RoomServiceImpl roomService;
+    private final HotelServiceImpl hotelService;
 
-    public CustomerController(CustomerServiceImpl customerService, UserServiceImpl userService) {
+    public CustomerController(CustomerServiceImpl customerService, UserServiceImpl userService, RoomServiceImpl roomService, HotelServiceImpl hotelService) {
         this.customerService = customerService;
         this.userService = userService;
+        this.roomService = roomService;
+        this.hotelService = hotelService;
     }
 
     @PostMapping("/add")
@@ -53,8 +59,9 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/bookingFlow")
-    public String bookingFlow(Model model) {
+    @GetMapping("/bookingFlow/{roomid}/{hotelid}")
+    public String bookingFlow(Model model, @PathVariable(required = false) Long roomid, @PathVariable(required = false) Long hotelid) {
+        model.addAttribute("room", roomService.getRoomById(roomid));
         return "/customer/bookingflow";
     }
 
