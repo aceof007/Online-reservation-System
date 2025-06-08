@@ -837,7 +837,6 @@
     <div class="container">
         <nav class="navbar">
             <div class="logo">
-                <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
                 <div class="logo-text">Lux<span>Stay</span></div>
             </div>
             <ul class="menu">
@@ -864,7 +863,6 @@
                 <div class="auth-card">
                     <div class="auth-header">
                         <div class="auth-logo">
-                            <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
                             <div class="logo-text">Lux<span>Stay</span></div>
                         </div>
                         <h2 class="section-title">Welcome to LuxStay</h2>
@@ -878,20 +876,9 @@
                     
                     <!-- Login Form -->
                     <div class="auth-content active" id="login-content">
-                        <div class="social-login">
-                            <button class="btn-social btn-google">
-                                <i class="fab fa-google" style="margin-right: 10px;"></i> Continue with Google
-                            </button>
-                            <button class="btn-social btn-facebook">
-                                <i class="fab fa-facebook-f" style="margin-right: 10px;"></i> Continue with Facebook
-                            </button>
-                            <button class="btn-social btn-apple">
-                                <i class="fab fa-apple" style="margin-right: 10px;"></i> Continue with Apple
-                            </button>
-                        </div>
-                        
-                        <div class="divider">or sign in with email</div>
-                        
+
+                        <div class="divider">sign in with email</div>
+
                         <form id="loginForm" th:action="@{/login}" method="post">
                             <div class="form-group">
                                 <label for="login-email" class="form-label">Email Address</label>
@@ -934,19 +921,8 @@
                     
                     <!-- Registration Form -->
                     <div class="auth-content" id="register-content">
-                        <div class="social-login">
-                            <button class="btn-social btn-google">
-                                <i class="fab fa-google" style="margin-right: 10px;"></i> Continue with Google
-                            </button>
-                            <button class="btn-social btn-facebook">
-                                <i class="fab fa-facebook-f" style="margin-right: 10px;"></i> Continue with Facebook
-                            </button>
-                            <button class="btn-social btn-apple">
-                                <i class="fab fa-apple" style="margin-right: 10px;"></i> Continue with Apple
-                            </button>
-                        </div>
-                        
-                        <div class="divider">or register with email</div>
+
+                        <div class="divider">register with email</div>
                         
                         <form id="registerForm" th:action="@{/customer/add}" th:object="${loginForm}" method="post">
                             <div class="form-row">
@@ -977,7 +953,7 @@
                                 <div class="phone-input">
                                     <select id="country-code" class="country-select" th:field="${loginForm.countryCode}">
                                         <option value="+1" selected>🇺🇸 +1</option>
-                                        <option value="+44">🇬🇧 +44</option>
+                                        <option value="+44">🇬🇧 +237</option>
                                         <option value="+33">🇫🇷 +33</option>
                                         <option value="+49">🇩🇪 +49</option>
                                         <option value="+81">🇯🇵 +81</option>
@@ -1008,13 +984,7 @@
                                 <input type="password" id="confirm-password" class="form-control" required th:field="${loginForm.password}">
                                 <div class="invalid-feedback">Passwords do not match</div>
                             </div>
-                            
-                            <div class="captcha-container">
-                                <div class="captcha-image" id="captcha-text">A7B9K2</div>
-                                <i class="fas fa-sync-alt captcha-refresh" id="refresh-captcha"></i>
-                                <input type="text" id="captcha-input" class="form-control" placeholder="Enter CAPTCHA" style="flex: 1;" required>
-                            </div>
-                            
+
                             <div class="form-group">
                                 <div class="checkbox-group">
                                     <input type="checkbox" id="terms-agree" class="checkbox-input" required>
@@ -1146,7 +1116,6 @@
         <div class="footer-content">
             <div class="footer-about">
                 <div class="footer-logo">
-                    <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
                     <div class="footer-logo-text">Lux<span>Stay</span></div>
                 </div>
                 <p class="footer-desc">
