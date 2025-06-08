@@ -1086,34 +1086,54 @@
                 <div class="progress-indicator">
                     <div class="progress-bar" style="width: 25%;"></div>
                     <div class="progress-step">
-                        <div class="step-number active">1</div>
-                        <div class="step-label active">Room Selection</div>
+                        <div class="step-number completed">1</div>
+                        <div class="step-label completed">Room Selection</div>
                     </div>
                     <div class="progress-step">
-                        <div class="step-number">2</div>
-                        <div class="step-label">Guest Details</div>
+                        <div class="step-number active">2</div>
+                        <div class="step-label active">Guest Details</div>
                     </div>
                     <div class="progress-step">
                         <div class="step-number">3</div>
-                        <div class="step-label">Payment</div>
+                        <div class="step-label">Add-ons</div>
                     </div>
                     <div class="progress-step">
                         <div class="step-number">4</div>
-                        <div class="step-label">Confirmation</div>
+                        <div class="step-label">Payment</div>
                     </div>
                 </div>
+<!--                <div class="progress-indicator">-->
+<!--                    <div class="progress-bar" style="width: 25%;"></div>-->
+<!--                    <div class="progress-step">-->
+<!--                        <div class="step-number active">1</div>-->
+<!--                        <div class="step-label active">Room Selection</div>-->
+<!--                    </div>-->
+<!--                    <div class="progress-step">-->
+<!--                        <div class="step-number">2</div>-->
+<!--                        <div class="step-label">Guest Details</div>-->
+<!--                    </div>-->
+<!--                    <div class="progress-step">-->
+<!--                        <div class="step-number">3</div>-->
+<!--                        <div class="step-label">Payment</div>-->
+<!--                    </div>-->
+<!--                    <div class="progress-step">-->
+<!--                        <div class="step-number">4</div>-->
+<!--                        <div class="step-label">Confirmation</div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
             
             <div class="booking-container">
                 <main class="booking-main">
 
                     <!-- Room Selection Confirmation -->
+                    <div class="step-container" id="step1" style="display: block;">
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-hotel"></i> Your Room Selection</h2>
                         
                         <div class="room-summary">
                             <div class="room-image">
-                                <img src="/2.png" alt="Deluxe Room">
+                                <img src="/statics/images/orva-studio-yB6WFHbkX40-unsplash.jpg" alt="Deluxe Room">
                             </div>
                             <div class="room-details">
                                 <h3 class="room-name">Deluxe Ocean View Room</h3>
@@ -1158,7 +1178,9 @@
                             </tr>
                         </table>
                     </div>
-                    
+                    </div>
+
+                    <div class="step-container" id="step2" style="display: none;">
                     <!-- Guest Details Form -->
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-user-circle"></i> Guest Information</h2>
@@ -1206,7 +1228,9 @@
                             </div>
                         </form>
                     </div>
-                    
+                    </div>
+
+                    <div class="step-container" id="step3" style="display: none;">
                     <!-- Add-ons Section -->
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-plus-circle"></i> Enhance Your Stay</h2>
@@ -1286,7 +1310,9 @@
                             </div>
                         </div>
                     </div>
-                    
+                    </div>
+
+                    <div class="step-container" id="step4" style="display: none;">
                     <!-- Payment Processing -->
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-credit-card"></i> Payment Method</h2>
@@ -1364,7 +1390,8 @@
                             </button>
                         </div>
                     </div>
-                    
+                    </div>
+
                     <!-- Booking Policies -->
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-file-contract"></i> Booking Policies</h2>
@@ -1390,14 +1417,17 @@
                             </label>
                         </div>
                     </div>
-                    
+
                     <!-- Navigation Buttons -->
                     <div class="booking-navigation">
-                        <button class="btn btn-outline">
+                        <button class="btn btn-outline" id="prevBtn" style="display: none;">
                             <i class="fas fa-arrow-left"></i> Back
                         </button>
-                        <button class="btn" id="continueBtn">
-                            Continue to Payment <i class="fas fa-arrow-right"></i>
+                        <button class="btn" id="nextBtn">
+                            Continue <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="btn" id="submitBtn" style="display: none; background-color: #28a745;">
+                            Complete Booking <i class="fas fa-check"></i>
                         </button>
                     </div>
                 </main>
@@ -1690,6 +1720,66 @@
 
     <!-- JavaScript -->
     <script>
+
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        function showStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.step-container').forEach(container => {
+                container.style.display = 'none';
+            });
+
+            // Show current step
+            document.getElementById(`step${step}`).style.display = 'block';
+
+            // Update progress indicator
+            document.querySelector('.progress-bar').style.width = `${(step-1)/(totalSteps-1)*100}%`;
+
+            // Update step numbers
+            document.querySelectorAll('.progress-step').forEach((stepElement, index) => {
+                const number = stepElement.querySelector('.step-number');
+                const label = stepElement.querySelector('.step-label');
+
+                number.classList.remove('active', 'completed');
+                label.classList.remove('active', 'completed');
+
+                if (index < step - 1) {
+                    number.classList.add('completed');
+                    label.classList.add('completed');
+                } else if (index === step - 1) {
+                    number.classList.add('active');
+                    label.classList.add('active');
+                }
+            });
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').style.display = step > 1 ? 'inline-block' : 'none';
+            document.getElementById('nextBtn').style.display = step < totalSteps ? 'inline-block' : 'none';
+            document.getElementById('submitBtn').style.display = step === totalSteps ? 'inline-block' : 'none';
+        }
+
+        // Initialize
+        showStep(1);
+
+        // Navigation handlers
+        document.getElementById('nextBtn').addEventListener('click', function() {
+            if (validateStep(currentStep)) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        document.getElementById('prevBtn').addEventListener('click', function() {
+            currentStep--;
+            showStep(currentStep);
+        });
+
+        function validateStep(step) {
+            // Add validation logic for each step
+            return true;
+        }
+
         // === Header Scroll Effect ===
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
