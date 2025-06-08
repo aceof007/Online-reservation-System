@@ -1852,21 +1852,21 @@
 
   <div class="menu">
     <div class="menu-title">Main</div>
-    <a th:href="@{/dashboard.html}" class="menu-item active" data-section="dashboard">
+    <a th:href="@{/dashboard.html}" class="menu-item active">
       <i class="fas fa-th-large"></i>
       <span class="menu-text">Dashboard</span>
     </a>
-    <a th:href="@{/hotelsmanagement.html}" class="menu-item" data-section="hotel-management">
+    <a th:href="@{/hotelsmanagement.html}" class="menu-item">
       <i class="fas fa-building"></i>
       <span class="menu-text">Hotel Management</span>
     </a>
-    <a th:href="@{/user_management.html}" class="menu-item" data-section="user-management">
+    <a th:href="@{/user_management.html}" class="menu-item">
       <i class="fas fa-users"></i>
       <span class="menu-text">User Management</span>
     </a>
 
     <div class="menu-title">Reports</div>
-    <a th:href="@{/reservation_overview.html" class="menu-item" data-section="reservation-overview">
+    <a th:href="@{/reservation_overview.html}" class="menu-item">
       <i class="fas fa-chart-line"></i>
       <span class="menu-text">Reservation Overview</span>
     </a>
@@ -2498,32 +2498,32 @@
       mainContent.classList.toggle('expanded');
     });
 
-    // Menu Items Click Event
-    const menuItems = document.querySelectorAll('.menu-item');
-
-    menuItems.forEach(item => {
-      item.addEventListener('click', function(e) {
-
-        // Remove active class from all menu items
-        menuItems.forEach(i => i.classList.remove('active'));
-
-        // Add active class to clicked menu item
-        this.classList.add('active');
-
-        // Get the section to show
-        const sectionId = this.getAttribute('data-section');
-
-        // Hide all sections
-        document.querySelectorAll('[id$="-content"]').forEach(section => {
-          section.style.display = 'none';
-        });
-
-        // Show the selected section
-        if (sectionId) {
-          document.getElementById(`${sectionId}-content`).style.display = 'block';
-        }
-      });
-    });
+    // // Menu Items Click Event
+    // const menuItems = document.querySelectorAll('.menu-item');
+    //
+    // menuItems.forEach(item => {
+    //   item.addEventListener('click', function(e) {
+    //
+    //     // Remove active class from all menu items
+    //     menuItems.forEach(i => i.classList.remove('active'));
+    //
+    //     // Add active class to clicked menu item
+    //     this.classList.add('active');
+    //
+    //     // Get the section to show
+    //     const sectionId = this.getAttribute('data-section');
+    //
+    //     // Hide all sections
+    //     document.querySelectorAll('[id$="-content"]').forEach(section => {
+    //       section.style.display = 'none';
+    //     });
+    //
+    //     // Show the selected section
+    //     if (sectionId) {
+    //       document.getElementById(`${sectionId}-content`).style.display = 'block';
+    //     }
+    //   });
+    // });
 
     // Tab Buttons Click Event
     const tabButtons = document.querySelectorAll('.tab-btn');
