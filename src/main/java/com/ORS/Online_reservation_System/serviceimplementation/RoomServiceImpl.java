@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +22,30 @@ public class RoomServiceImpl implements RoomService {
     private final RoomImageRepository roomImageRepository;
     private final AmenityRepository amenityRepository;
     private final HotelRepository hotelRepository;
+
+    //Fotsing implemented functions
+    public Room findCheapestRooms(Long hotelId) {
+        List<Room> allRooms = roomRepository.findByHotel_HotelId(hotelId);
+
+        if (allRooms.isEmpty()) {
+            return null; // or throw exception if needed
+        }
+
+        Room cheapestRoom = allRooms.get(0); // Start with the first actual room
+        BigDecimal minPrice = cheapestRoom.getPricePerNight();
+
+        for (Room room : allRooms) {
+            if (room.getPricePerNight().compareTo(minPrice) < 0) {
+                minPrice = room.getPricePerNight();
+                cheapestRoom = room;
+            }
+        }
+
+        System.out.println("Cheapest Room: " + cheapestRoom);
+        return cheapestRoom;
+    }
+
+
 
     @Override
     public Room createRoom(Room room) {

@@ -474,6 +474,57 @@ public class DataLoader {
 
                 roomRepository.saveAll(List.of(room1, room2, room3));
 
+                // Repeat for hotel5
+                Room h5Room1 = Room.builder()
+                        .roomName("Superior King")
+                        .pricePerNight(new BigDecimal("170.00"))
+                        .previousPricePerNight(new BigDecimal("190.00"))
+                        .totalQuantity(3)
+                        .occupiedQuantity(0)
+                        .bedType("King Bed")
+                        .maxAdults(2)
+                        .maxChildren(2)
+                        .prefix(1)
+                        .roomSizeInSquareMeters(32.0)
+                        .hotel(hotel3)
+                        .roomAmenities(List.of(am2, am6, am12))
+                        .build();
+                h5Room1.generateSpecificRooms();
+
+                Room h5Room2 = Room.builder()
+                        .roomName("Penthouse Suite")
+                        .pricePerNight(new BigDecimal("300.00"))
+                        .previousPricePerNight(new BigDecimal("350.00"))
+                        .totalQuantity(1)
+                        .occupiedQuantity(0)
+                        .bedType("King Bed + Lounge")
+                        .maxAdults(4)
+                        .maxChildren(2)
+                        .prefix(2)
+                        .roomSizeInSquareMeters(60.0)
+                        .hotel(hotel4)
+                        .roomAmenities(List.of(am3, am7, am13, am14))
+                        .build();
+                h5Room2.generateSpecificRooms();
+
+                Room h5Room3 = Room.builder()
+                        .roomName("Economy Room")
+                        .pricePerNight(new BigDecimal("80.00"))
+                        .previousPricePerNight(new BigDecimal("100.00"))
+                        .totalQuantity(6)
+                        .occupiedQuantity(0)
+                        .bedType("Single Bed")
+                        .maxAdults(1)
+                        .maxChildren(1)
+                        .prefix(3)
+                        .roomSizeInSquareMeters(18.0)
+                        .hotel(hotel5)
+                        .roomAmenities(List.of(am1, am5))
+                        .build();
+                h5Room3.generateSpecificRooms();
+
+                roomRepository.saveAll(List.of(h5Room1, h5Room2, h5Room3));
+
             System.out.println("Rooms and SpecificRooms created for each hotel.");
 
                 RateOption rateOption1 = RateOption.builder()
@@ -544,6 +595,7 @@ public class DataLoader {
                     rateOptionRepository.saveAll(List.of(rateOption1, rateOption2, rateOption3, rateOption4, rateOption5));
                     System.out.println("Rate options loaded.");
                 }
+
         };
     }
 }

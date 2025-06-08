@@ -94,11 +94,6 @@ public class Room {
     @Column(name = "updated_date")
     private LocalDateTime updatedDate;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<RateOption> rateOptions = new ArrayList<>();
-
-
     // Relationships
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hotel_id", nullable = false)
@@ -119,9 +114,23 @@ public class Room {
     @Builder.Default
     private List<RoomImage> roomImages = new ArrayList<>();
 
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<RateOption> rateOptions = new ArrayList<>();
+
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<SpecificRoom> specific = new ArrayList<>();
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "id=" + roomId +
+                ", roomSize='" + getRoomSizeInSquareMeters() + '\'' +
+                ", pricePerNight=" + pricePerNight +
+                '}';
+    }
+
 
 
     public void generateSpecificRooms() {
