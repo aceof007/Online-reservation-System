@@ -1,6 +1,6 @@
 package com.ORS.Online_reservation_System.config;
 
-import com.ORS.Online_reservation_System.model.User;
+import com.ORS.Online_reservation_System.model.*;
 import com.ORS.Online_reservation_System.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
