@@ -909,10 +909,32 @@
 </head>
 <body>
 <!-- Header -->
-<div th:replace="~{/fragments/nonsigninuserfragment :: header}"></div>
+<header>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
+                <div class="logo-text">Lux<span>Stay</span></div>
+            </div>
+            <ul class="menu">
+                <li><a th:href="@{/homepage.html}">Home</a></li>
+                <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
+                <li><a th:href="@{/about.html}">About Us</a></li>
+                <li><a th:href="@{/contact.html}">contact</a></li>
+            </ul>
+            <div class="user-actions">
+                <a th:href="@{/registrationpage.html}" class="btn btn-outline">Login</a>
+                <a th:href="@{/registrationpage.html}" class="btn">Sign Up</a>
+            </div>
+            <button class="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </div>
+</header>
 
 <!-- About Page Content -->
-<div id="about-page" class="page-section active">
+<div class="page-section active">
 
     <!-- About Page Hero -->
     <section class="page-hero">
@@ -967,12 +989,12 @@
             <div class="team-grid">
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Sarah Johnson">
+                        <img src="/statics/images/akongagpt.png" alt="Sarah Johnson">
                     </div>
                     <div class="member-info">
-                        <h4 class="member-name">Sarah Johnson</h4>
-                        <p class="member-position">Founder & CEO</p>
-                        <p class="member-bio">With over 25 years in the hospitality industry, Sarah founded LuxStay with a vision to redefine luxury travel experiences.</p>
+                        <h4 class="member-name">Akonga Manuel</h4>
+                        <p class="member-position">Project Manager</p>
+                        <p class="member-bio">With over 25 years in the hospitality industry, Manuel with a vision to redefine luxury travel experiences.</p>
                         <div class="member-social">
                             <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                             <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
@@ -982,12 +1004,12 @@
 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Michael Chen">
+                        <img src="/statics/images/webergpt.png" alt="Michael Chen">
                     </div>
                     <div class="member-info">
-                        <h4 class="member-name">Michael Chen</h4>
-                        <p class="member-position">Chief Operating Officer</p>
-                        <p class="member-bio">Michael oversees global operations, ensuring seamless experiences across all LuxStay properties worldwide.</p>
+                        <h4 class="member-name">Fotsing Weber</h4>
+                        <p class="member-position">Backend Developer</p>
+                        <p class="member-bio">Fotsing ensures global operations of the backend,ensuring that every LuxStay platform meets our exacting standards for service and guest experience.</p>
                         <div class="member-social">
                             <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                             <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
@@ -997,12 +1019,12 @@
 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="Elena Rodriguez">
+                        <img src="/statics/images/mariegpt.png" alt="Elena Rodriguez">
                     </div>
                     <div class="member-info">
-                        <h4 class="member-name">Elena Rodriguez</h4>
-                        <p class="member-position">Chief Marketing Officer</p>
-                        <p class="member-bio">Elena leads our global marketing efforts and brand strategy, sharing the LuxStay story with the world.</p>
+                        <h4 class="member-name">Chengho Marie</h4>
+                        <p class="member-position">Frontend Developer</p>
+                        <p class="member-bio">Chengho ensuring seamless experiences across all LuxStay platform, sharing the LuxStay story with the world.</p>
                         <div class="member-social">
                             <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                             <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
@@ -1012,12 +1034,12 @@
 
                 <div class="team-member">
                     <div class="member-image">
-                        <img src="/statics/images/jorg-angeli-1tyuLfDOnG0-unsplash.jpg" alt="David Wilson">
+                        <img src="/statics/images/ingridgpt.png" alt="David Wilson">
                     </div>
                     <div class="member-info">
-                        <h4 class="member-name">David Wilson</h4>
-                        <p class="member-position">VP of Hospitality</p>
-                        <p class="member-bio">David ensures that every LuxStay property meets our exacting standards for service and guest experience.</p>
+                        <h4 class="member-name">Ingrid Patricia</h4>
+                        <p class="member-position">Backend Developer</p>
+                        <p class="member-bio">Ingrid ensures that every LuxStay platform meets our exacting standards for service and guest experience.</p>
                         <div class="member-social">
                             <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
                             <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
@@ -1121,234 +1143,85 @@
     </section>
 </div>
 
-<!-- Contact Page Content -->
-<div id="contact-page" class="page-section">
-
-    <!-- Contact Page Hero -->
-    <section class="page-hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">Contact Us</h1>
-                <p class="hero-subtitle">We're here to help with any questions or requests</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact-section">
-        <div class="container">
-            <div class="contact-header">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="section-subtitle">Our team is ready to assist you with any inquiries</p>
-            </div>
-
-            <div class="contact-container">
-                <div class="contact-info">
-                    <div class="contact-card">
-                        <h3 class="contact-title"><i class="fas fa-phone-alt"></i> Contact Information</h3>
-
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-headset"></i>
-                            </div>
-                            <div class="contact-text">
-                                <strong>Customer Service:</strong><br>
-                                <a href="tel:+18005551234">+1 (800) 555-1234</a><br>
-                                Monday-Friday: 8AM-10PM EST<br>
-                                Saturday-Sunday: 9AM-8PM EST
-                            </div>
-                        </div>
-
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
-                            <div class="contact-text">
-                                <strong>Email:</strong><br>
-                                <a href="mailto:reservations@luxstay.com">reservations@luxstay.com</a> (Bookings)<br>
-                                <a href="mailto:support@luxstay.com">support@luxstay.com</a> (Customer Support)<br>
-                                <a href="mailto:groups@luxstay.com">groups@luxstay.com</a> (Group Travel)
-                            </div>
-                        </div>
-
-                        <div class="contact-item">
-                            <div class="contact-icon">
-                                <i class="fas fa-map-marker-alt"></i>
-                            </div>
-                            <div class="contact-text">
-                                <strong>Corporate Headquarters:</strong><br>
-                                123 Luxury Avenue, Suite 500<br>
-                                New York, NY 10001<br>
-                                United States
-                            </div>
-                        </div>
-
-                        <div class="social-links">
-                            <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                            <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
-                            <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
-                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="contact-map">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215256703247!2d-73.98784492453802!3d40.75085697138862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1717461232841!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-
-                <div class="contact-form">
-                    <div class="contact-card">
-                        <h3 class="contact-title"><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
-
-                        <form id="contactForm" th:action="@{/contact}" th:method="post">
-                            <div class="form-group">
-                                <label for="contactName" class="form-label">Your Name</label>
-                                <input type="text" id="contactName" name="name" class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="contactEmail" class="form-label">Email Address</label>
-                                <input type="email" id="contactEmail" name="email" class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="contactPhone" class="form-label">Phone Number (Optional)</label>
-                                <input type="tel" id="contactPhone" name="phone" class="form-control">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="contactSubject" class="form-label">Subject</label>
-                                <select id="contactSubject" name="subject" class="form-control" required>
-                                    <option value="">Select a subject</option>
-                                    <option value="reservation">Reservation Inquiry</option>
-                                    <option value="modification">Modify Existing Booking</option>
-                                    <option value="feedback">Feedback & Suggestions</option>
-                                    <option value="group">Group Travel</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="contactMessage" class="form-label">Message</label>
-                                <textarea id="contactMessage" name="message" class="form-control" required></textarea>
-                            </div>
-
-                            <button type="submit" class="btn">Send Message</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="faq-section">
-        <div class="container">
-            <div class="faq-header">
-                <h2 class="section-title">Frequently Asked Questions</h2>
-                <p class="section-subtitle">Find answers to common questions about LuxStay</p>
-            </div>
-
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How do I modify or cancel my reservation?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>You can modify or cancel your reservation through our website or mobile app by accessing "My Bookings" in your account. Alternatively, you can contact our customer service team at +1 (800) 555-1234 or email support@luxstay.com for assistance.</p>
-                        <p>Please note that cancellation policies vary by property and rate plan. Your specific cancellation terms are provided at the time of booking and in your confirmation email.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What is LuxStay's price match guarantee?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>We're confident in offering the best rates for our properties. If you find a lower rate for the same room, dates, and terms on another website within 24 hours of booking with us, we'll match that rate and give you an additional 10% discount.</p>
-                        <p>To request a price match, please contact our customer service team with details of the lower rate you've found.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What amenities can I expect at LuxStay properties?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>All LuxStay properties offer premium amenities including:</p>
-                        <ul style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>Luxury bedding and bath products</li>
-                            <li>High-speed Wi-Fi</li>
-                            <li>24/7 concierge service</li>
-                            <li>Fitness centers</li>
-                            <li>At least one dining option</li>
-                        </ul>
-                        <p>Many locations also feature spas, pools, and other unique amenities. Specific amenities for each property are listed on their individual pages.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>How does the LuxStay loyalty program work?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Our LuxStay Rewards program offers points for every dollar spent on eligible stays. These points can be redeemed for:</p>
-                        <ul style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>Free nights at any LuxStay property</li>
-                            <li>Room upgrades</li>
-                            <li>Dining and spa credits</li>
-                            <li>Exclusive member rates</li>
-                        </ul>
-                        <p>Members also enjoy benefits like late check-out, welcome amenities, and priority service. Enrollment is free and can be done during booking or through our website.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>What health and safety measures are in place?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Guest safety is our top priority. All LuxStay properties adhere to our comprehensive LuxSafe program, which includes:</p>
-                        <ul style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>Enhanced cleaning protocols</li>
-                            <li>Contactless check-in/check-out options</li>
-                            <li>Hand sanitizer stations throughout properties</li>
-                            <li>Regular staff health screenings</li>
-                            <li>Hospital-grade air filtration systems</li>
-                        </ul>
-                        <p>Specific measures may vary by location based on local guidelines.</p>
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question">
-                        <span>Do you offer special rates for group travel?</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        <p>Yes, we offer special rates and amenities for groups of 10 rooms or more. Our Group Travel specialists can help with:</p>
-                        <ul style="margin-left: 20px; margin-bottom: 15px;">
-                            <li>Customized room blocks</li>
-                            <li>Meeting and event space</li>
-                            <li>Catering arrangements</li>
-                            <li>Transportation coordination</li>
-                            <li>Special group activities</li>
-                        </ul>
-                        <p>Contact our Group Travel team at groups@luxstay.com or +1 (800) 555-5678 for personalized assistance.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
-
 <!-- Footer -->
-<div th:replace="~{/fragments/nonsigninuserfragment :: footer}"></div>
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
+                    <div class="footer-logo-text">Lux<span>Stay</span></div>
+                </div>
+                <p class="footer-desc">
+                    LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
+                </p>
+                <div class="footer-social">
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/about.html}">About Us</a></li>
+                    <li><a th:href="@{/hotellistingpage.html}" >Hotels</a></li>
+                    <li><a th:href="@{/destination.html}" >Destinations</a></li>
+                    <li><a th:href="@{/contact}" onclick="showPage('contact')">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-title">Support</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/#}">Help Center</a></li>
+                    <li><a th:href="@{/#}">FAQs</a></li>
+                    <li><a th:href="@{/#}">Terms of Service</a></li>
+                    <li><a th:href="@{/#}">Privacy Policy</a></li>
+                    <li><a th:href="@{/#}">Cancellation Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3 class="footer-title">Contact Us</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        123 Luxury Avenue, New York, NY 10001, USA
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        +1 (555) 123-4567
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        info@luxstay.com
+                    </div>
+                </div>
+                <div class="footer-form">
+                    <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
+                    <button class="btn">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="footer-bottom-text">
+                &copy; 2025 LuxStay. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
 
 <!-- JavaScript -->
 <script>
@@ -1474,8 +1347,8 @@
 
     // Initialize page on load
     document.addEventListener('DOMContentLoaded', function() {
-        // Show about page by default
-        showPage('about');
+        // Show current page
+        document.querySelector('.page-section').classList.add('active');
     });
 </script>
 </body>
