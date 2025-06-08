@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LuxStay - Premium Hotel Experience</title>
-    <link rel="stylesheet" th:href="@{https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css}">
+    <title>LuxStay - Contact</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">-->
     <style>
         /* === GENERAL STYLES === */
         * {
@@ -477,6 +478,7 @@
             font-weight: 600;
             color: #333;
             transition: color 0.3s ease;
+            cursor: pointer;
         }
 
         .menu li a:hover {
@@ -498,6 +500,14 @@
             width: 100%;
         }
 
+        .menu li.active a {
+            color: #d4af37;
+        }
+
+        .menu li.active a::after {
+            width: 100%;
+        }
+
         .hamburger {
             display: none;
             cursor: pointer;
@@ -516,14 +526,14 @@
         }
 
         /* === HERO SECTION === */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/statics/images/roberto-nickson-MA82mPIZeGI-unsplash.jpg') no-repeat center center;
+        .page-hero {
+            height: 400px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/statics/images/sasha-kaunas-Fk9d0cxYqC4-unsplash.jpg') no-repeat center center;
             background-size: cover;
             display: flex;
             align-items: center;
             color: white;
-            position: relative;
+            margin-top: 80px;
         }
 
         .hero-content {
@@ -536,7 +546,6 @@
             font-size: 48px;
             font-weight: 700;
             margin-bottom: 20px;
-            margin-top: 100px;
             animation: fadeInUp 1s ease;
         }
 
@@ -558,37 +567,374 @@
             }
         }
 
-        /* === SEARCH WIDGET === */
-        .search-widget {
-            background-color: rgba(255, 255, 255, 0.95);
+        /* === ABOUT PAGE STYLES === */
+        .about-section {
+            padding: 80px 0;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-header .section-title {
+            display: inline-block;
+        }
+
+        .about-header .section-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .mission-vision {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .mission-card, .vision-card {
+            flex: 1;
+            background-color: #f9f9f9;
             border-radius: 8px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            margin-top: 30px;
-            animation: fadeInUp 1s ease 0.4s;
-            animation-fill-mode: both;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
-        .search-form {
+        .mission-card {
+            border-top: 4px solid #d4af37;
+        }
+
+        .vision-card {
+            border-top: 4px solid #333;
+        }
+
+        .mission-title, .vision-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #222;
+        }
+
+        /* Leadership Team */
+        .team-section {
+            padding: 60px 0;
+            background-color: #f9f9f9;
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
         }
 
-        .search-group {
-            position: relative;
+        .team-member {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
 
-        .search-group label {
-            display: block;
-            margin-bottom: 8px;
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .member-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.05);
+        }
+
+        .member-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .member-name {
+            font-size: 20px;
             font-weight: 600;
-            color: #333;
+            margin-bottom: 5px;
+            color: #222;
+        }
+
+        .member-position {
+            color: #d4af37;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .member-bio {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .member-social {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-link {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background-color: #d4af37;
+            color: white;
+        }
+
+        /* Awards & Recognition */
+        .awards-section {
+            padding: 60px 0;
+        }
+
+        .awards-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .awards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .award-item {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .award-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .award-icon {
+            font-size: 40px;
+            color: #d4af37;
+            margin-bottom: 20px;
+        }
+
+        .award-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #222;
+        }
+
+        .award-year {
+            color: #666;
             font-size: 14px;
         }
 
-        .search-group input,
-        .search-group select {
+        /* Partners Section */
+        .partners-section {
+            padding: 60px 0;
+            background-color: #f9f9f9;
+        }
+
+        .partners-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 30px;
+            align-items: center;
+        }
+
+        .partner-logo {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .partner-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .partner-logo:hover img {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+
+        /* === CONTACT PAGE STYLES === */
+        .contact-section {
+            padding: 80px 0;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 40px;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-form {
+            flex: 1;
+        }
+
+        .contact-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .contact-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #222;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-title i {
+            margin-right: 10px;
+            color: #d4af37;
+        }
+
+        .contact-item {
+            display: flex;
+            margin-bottom: 15px;
+        }
+
+        .contact-icon {
+            color: #d4af37;
+            margin-right: 15px;
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .contact-text {
+            flex: 1;
+            color: #555;
+        }
+
+        .contact-text strong {
+            color: #222;
+        }
+
+        .contact-text a {
+            color: #d4af37;
+            text-decoration: underline;
+        }
+
+        .contact-map {
+            height: 300px;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .social-links .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links .social-link:hover {
+            background-color: #d4af37;
+            transform: translateY(-3px);
+        }
+
+        /* Contact Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
@@ -597,323 +943,90 @@
             transition: all 0.3s ease;
         }
 
-        .search-group input:focus,
-        .search-group select:focus {
+        .form-control:focus {
             border-color: #d4af37;
             outline: none;
             box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
         }
 
-        .search-group i {
-            position: absolute;
-            right: 15px;
-            top: 40px;
-            color: #999;
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
         }
 
-        .search-btn {
-            grid-column: 1 / -1;
-            background-color: #d4af37;
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            padding: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: #bababa 0px 0px 12px;
-        }
-
-        .search-btn:hover {
-            background-color: #c49f2f;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        /* === VALUE PROPOSITION === */
-        .value-props {
-            padding: 80px 0;
+        /* FAQ Section */
+        .faq-section {
+            padding: 60px 0;
             background-color: #f9f9f9;
         }
 
-        .value-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-
-        .value-item {
-            text-align: center;
-            padding: 30px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .value-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .value-icon {
-            font-size: 36px;
-            color: #d4af37;
-            margin-bottom: 20px;
-        }
-
-        .value-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .value-desc {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        /* === FEATURED DESTINATIONS === */
-        .featured {
-            padding: 80px 0;
-        }
-
-        .featured-header {
+        .faq-header {
             text-align: center;
             margin-bottom: 50px;
         }
 
-        .featured-header .section-title {
-            display: inline-block;
-        }
-
-        .featured-header .section-title::after {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .featured-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .destination-card {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .destination-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .destination-img {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .destination-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .destination-card:hover .destination-img img {
-            transform: scale(1.1);
-        }
-
-        .destination-content {
-            padding: 20px;
-        }
-
-        .destination-title {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .destination-desc {
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .destination-price {
-            color: #d4af37;
-            font-weight: 700;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-
-        .destination-rating {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .rating-stars {
-            color: #ffc107;
-            margin-right: 10px;
-        }
-
-        .rating-count {
-            color: #666;
-            font-size: 14px;
-        }
-
-        /* === TESTIMONIALS === */
-        .testimonials {
-            padding: 80px 0;
-            background-color: #f9f9f9;
-        }
-
-        .testimonials-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .testimonials-header .section-title {
-            display: inline-block;
-        }
-
-        .testimonials-header .section-title::after {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .testimonials-slider {
+        .faq-container {
             max-width: 800px;
             margin: 0 auto;
-            position: relative;
-            overflow: hidden;
         }
 
-        .testimonials-track {
-            display: flex;
-            transition: transform 0.5s ease;
-        }
-
-        .testimonial-item {
-            min-width: 100%;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .testimonial-content {
+        .faq-item {
             background-color: white;
             border-radius: 8px;
-            padding: 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            position: relative;
-        }
-
-        .testimonial-content::before {
-            content: '"';
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 60px;
-            color: #f0f0f0;
-            font-family: Georgia, serif;
-            z-index: 1;
-        }
-
-        .testimonial-text {
-            position: relative;
-            z-index: 2;
-            margin-bottom: 20px;
-            font-style: italic;
-            line-height: 1.6;
-        }
-
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-        }
-
-        .author-img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
             overflow: hidden;
-            margin-right: 15px;
         }
 
-        .author-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .author-info h4 {
+        .faq-question {
+            padding: 20px;
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .author-info p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .testimonial-rating {
-            color: #ffc107;
-            margin-top: 10px;
-        }
-
-        .slider-nav {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
-
-        .slider-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: #ddd;
-            margin: 0 5px;
+            color: #222;
             cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             transition: all 0.3s ease;
         }
 
-        .slider-dot.active {
-            background-color: #d4af37;
-            transform: scale(1.2);
+        .faq-question:hover {
+            color: #d4af37;
         }
 
-        /* === CTA SECTION === */
-        .cta {
-            padding: 80px 0;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/statics/images/christian-lambert-diYY2TMBY5g-unsplash.jpg') no-repeat center center;
-            background-size: cover;
-            color: white;
-            text-align: center;
+        .faq-question i {
+            transition: transform 0.3s ease;
         }
 
-        .cta .section-title {
-            color: white;
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
         }
 
-        .cta .section-title::after {
-            left: 50%;
-            transform: translateX(-50%);
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
         }
 
-        .cta-content {
-            max-width: 600px;
-            margin: 0 auto;
+        .faq-item.active .faq-answer {
+            padding: 0 20px 20px;
+            max-height: 500px;
         }
 
-        .cta-text {
-            margin-bottom: 30px;
-            font-size: 18px;
+        .faq-answer p {
+            color: #555;
             line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Page visibility controls */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
         }
 
         /* === FOOTER === */
@@ -961,7 +1074,7 @@
             display: flex;
         }
 
-        .social-link {
+        .footer-social .social-link {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -974,7 +1087,7 @@
             transition: all 0.3s ease;
         }
 
-        .social-link:hover {
+        .footer-social .social-link:hover {
             background-color: #d4af37;
             transform: translateY(-3px);
         }
@@ -1016,18 +1129,18 @@
             padding-left: 5px;
         }
 
-        .contact-item {
+        .footer-contact .contact-item {
             display: flex;
             margin-bottom: 15px;
         }
 
-        .contact-icon {
+        .footer-contact .contact-icon {
             color: #d4af37;
             margin-right: 10px;
             font-size: 16px;
         }
 
-        .contact-text {
+        .footer-contact .contact-text {
             color: #aaa;
         }
 
@@ -1063,12 +1176,17 @@
 
         /* === MEDIA QUERIES === */
         @media (max-width: 992px) {
-            .hero-title {
-                font-size: 36px;
+            .mission-vision {
+                flex-direction: column;
             }
 
-            .hero-subtitle {
-                font-size: 20px;
+            .contact-container {
+                flex-direction: column;
+            }
+
+            .contact-info, .contact-form {
+                flex: none;
+                width: 100%;
             }
         }
 
@@ -1107,16 +1225,16 @@
                 display: block;
             }
 
-            .search-form {
-                grid-template-columns: 1fr;
-            }
-
             .hero-title {
-                font-size: 30px;
+                font-size: 36px;
             }
 
             .hero-subtitle {
-                font-size: 18px;
+                font-size: 20px;
+            }
+
+            .page-hero {
+                height: 300px;
             }
         }
     </style>
@@ -1130,10 +1248,10 @@
                 <div class="logo-text">Lux<span>Stay</span></div>
             </div>
             <ul class="nav-links">
-                <li style="--i:1"><a href="homepage.html" class="active">Home</a></li>
+                <li style="--i:1"><a href="homepage.html">Home</a></li>
                 <li style="--i:2"><a href="hotellistingpage.html">Hotels</a></li>
                 <li style="--i:3"><a href="about.html">About Us</a></li>
-                <li style="--i:4"><a href="contact.html">Contact</a></li>
+                <li style="--i:4"><a href="contact.html" class="active">Contact</a></li>
             </ul>
 
             <div class="user-menu">
@@ -1164,283 +1282,231 @@
     </div>
 </header>
 
-<!-- Hero Section -->
-<section class="hero">
-    <div class="container">
-        <div class="hero-content">
-            <h1 class="hero-title">Experience Luxury Like Never Before</h1>
-            <p class="hero-subtitle">Discover the perfect stay for your dream vacation</p>
+<!-- Contact Page Content -->
+<div class="page-section active">
 
-            <!-- Search Widget -->
-            <div class="search-widget">
-                <form class="search-form">
-                    <div class="search-group">
-                        <label for="location">Location</label>
-                        <input type="text" id="location" placeholder="Where are you going?">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div class="search-group">
-                        <label for="check-in">Check-in Date</label>
-                        <input type="date" id="check-in">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="search-group">
-                        <label for="check-out">Check-out Date</label>
-                        <input type="date" id="check-out">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="search-group">
-                        <label for="guests">Guests & Rooms</label>
-                        <select id="guests">
-                            <option value="1">1 Adult, 0 Children, 1 Room</option>
-                            <option value="2">2 Adults, 0 Children, 1 Room</option>
-                            <option value="3">2 Adults, 1 Child, 1 Room</option>
-                            <option value="4">2 Adults, 2 Children, 1 Room</option>
-                            <option value="5">3 Adults, 0 Children, 2 Rooms</option>
-                        </select>
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <button type="submit" class="search-btn">
-                        <i class="fas fa-search"></i> Search
-                    </button>
-                </form>
+    <!-- Contact Page Hero -->
+    <section class="page-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Contact Us</h1>
+                <p class="hero-subtitle">We're here to help with any questions or requests</p>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Value Propositions -->
-<section class="value-props">
-    <div class="container">
-        <div class="value-grid">
-            <div class="value-item">
-                <div class="value-icon">
-                    <i class="fas fa-medal"></i>
-                </div>
-                <h3 class="value-title">Best Price Guarantee</h3>
-                <p class="value-desc">Find a lower price? We'll refund the difference plus give you an additional 10% off.</p>
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-header">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">Our team is ready to assist you with any inquiries</p>
             </div>
-            <div class="value-item">
-                <div class="value-icon">
-                    <i class="fas fa-calendar-check"></i>
-                </div>
-                <h3 class="value-title">Free Cancellation</h3>
-                <p class="value-desc">Plans change? No problem. Cancel for free up to 24 hours before check-in on most rooms.</p>
-            </div>
-            <div class="value-item">
-                <div class="value-icon">
-                    <i class="fas fa-gift"></i>
-                </div>
-                <h3 class="value-title">Loyalty Rewards</h3>
-                <p class="value-desc">Earn points with every stay and redeem for free nights, upgrades, and exclusive perks.</p>
-            </div>
-            <div class="value-item">
-                <div class="value-icon">
-                    <i class="fas fa-headset"></i>
-                </div>
-                <h3 class="value-title">24/7 Support</h3>
-                <p class="value-desc">Our dedicated team is available around the clock to assist with any questions or concerns.</p>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Featured Destinations -->
-<section class="featured">
-    <div class="container">
-        <div class="featured-header">
-            <h2 class="section-title">Featured Destinations</h2>
-            <p class="section-subtitle">Explore our handpicked selection of extraordinary destinations</p>
-        </div>
-        <div class="featured-grid">
-            <div class="destination-card">
-                <div class="destination-img">
-                    <img src="/statics/images/restaurant-interior.jpg" alt="Paris">
-                </div>
-                <div class="destination-content">
-                    <h3 class="destination-title">Paris, France</h3>
-                    <p class="destination-desc">Experience the magic of the City of Light with stunning architecture and world-class cuisine.</p>
-                    <div class="destination-rating">
-                        <div class="rating-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <span class="rating-count">4.5 (320 reviews)</span>
-                    </div>
-                    <div class="destination-price">From $199/night</div>
-                    <a href="#" class="btn">Explore Hotels</a>
-                </div>
-            </div>
-            <div class="destination-card">
-                <div class="destination-img">
-                    <img src="/statics/images/restaurant-interior.jpg"  alt="Santorini">
-                </div>
-                <div class="destination-content">
-                    <h3 class="destination-title">Santorini, Greece</h3>
-                    <p class="destination-desc">Relax in paradise with breathtaking views of the Aegean Sea from whitewashed villas.</p>
-                    <div class="destination-rating">
-                        <div class="rating-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <span class="rating-count">4.9 (456 reviews)</span>
-                    </div>
-                    <div class="destination-price">From $249/night</div>
-                    <a href="#" class="btn">Explore Hotels</a>
-                </div>
-            </div>
-            <div class="destination-card">
-                <div class="destination-img">
-                    <img src="/statics/images/restaurant-interior.jpg"  alt="Bali">
-                </div>
-                <div class="destination-content">
-                    <h3 class="destination-title">Bali, Indonesia</h3>
-                    <p class="destination-desc">Discover tranquility in exotic settings with lush landscapes and vibrant culture.</p>
-                    <div class="destination-rating">
-                        <div class="rating-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                        <span class="rating-count">4.0 (289 reviews)</span>
-                    </div>
-                    <div class="destination-price">From $129/night</div>
-                    <a href="#" class="btn">Explore Hotels</a>
-                </div>
-            </div>
-            <div class="destination-card">
-                <div class="destination-img">
-                    <img src="/statics/images/restaurant-interior.jpg"  alt="Dubai">
-                </div>
-                <div class="destination-content">
-                    <h3 class="destination-title">Dubai, UAE</h3>
-                    <p class="destination-desc">Experience luxury at its finest in the city of superlatives with unforgettable experiences.</p>
-                    <div class="destination-rating">
-                        <div class="rating-stars">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                        </div>
-                        <span class="rating-count">4.7 (512 reviews)</span>
-                    </div>
-                    <div class="destination-price">From $299/night</div>
-                    <a href="#" class="btn">Explore Hotels</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <h3 class="contact-title"><i class="fas fa-phone-alt"></i> Contact Information</h3>
 
-<!-- Testimonials -->
-<section class="testimonials">
-    <div class="container">
-        <div class="testimonials-header">
-            <h2 class="section-title">Guest Testimonials</h2>
-            <p class="section-subtitle">Hear what our satisfied guests have to say about their experiences</p>
-        </div>
-        <div class="testimonials-slider">
-            <div class="testimonials-track">
-                <div class="testimonial-item">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">
-                            "LuxStay exceeded all our expectations. The room was immaculate, the service impeccable, and the location perfect for exploring the city. Will definitely be returning for our next anniversary!"
-                        </p>
-                        <div class="testimonial-author">
-                            <div class="author-img">
-                                <img src="/2.png" alt="Sarah Johnson">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-headset"></i>
                             </div>
-                            <div class="author-info">
-                                <h4>Sarah Johnson</h4>
-                                <p>New York, USA</p>
-                                <div class="testimonial-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
+                            <div class="contact-text">
+                                <strong>Customer Service:</strong><br>
+                                <a href="tel:+18005551234">+1 (800) 555-1234</a><br>
+                                Monday-Friday: 8AM-10PM EST<br>
+                                Saturday-Sunday: 9AM-8PM EST
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">
-                            "As a frequent business traveler, I've stayed in many hotels, but LuxStay really stands out. The rooms are spacious, the staff is attentive, and the loyalty program offers great perks!"
-                        </p>
-                        <div class="testimonial-author">
-                            <div class="author-img">
-                                <img src="/2.png" alt="James Wilson">
-                            </div>
-                            <div class="author-info">
-                                <h4>James Wilson</h4>
-                                <p>London, UK</p>
-                                <div class="testimonial-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">
-                            "Our family vacation was perfect thanks to LuxStay. The kids loved the pool, we loved the spa, and the concierge helped us plan amazing activities every day. Can't wait to come back next summer!"
-                        </p>
-                        <div class="testimonial-author">
-                            <div class="author-img">
-                                <img src="/2.png" alt="Maria Rodriguez">
-                            </div>
-                            <div class="author-info">
-                                <h4>Maria Rodriguez</h4>
-                                <p>Barcelona, Spain</p>
-                                <div class="testimonial-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slider-nav">
-                <div class="slider-dot active" data-index="0"></div>
-                <div class="slider-dot" data-index="1"></div>
-                <div class="slider-dot" data-index="2"></div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- CTA Section -->
-<section class="cta">
-    <div class="container">
-        <div class="cta-content">
-            <h2 class="section-title">Join Our Loyalty Program</h2>
-            <p class="cta-text">
-                Sign up today and start earning points with every stay. Enjoy exclusive benefits, free upgrades, and special member-only offers.
-            </p>
-            <a href="#" class="btn">Become a Member</a>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <strong>Email:</strong><br>
+                                <a href="mailto:reservations@luxstay.com">reservations@luxstay.com</a> (Bookings)<br>
+                                <a href="mailto:support@luxstay.com">support@luxstay.com</a> (Customer Support)<br>
+                                <a href="mailto:groups@luxstay.com">groups@luxstay.com</a> (Group Travel)
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <strong>Corporate Headquarters:</strong><br>
+                                123 Luxury Avenue, Suite 500<br>
+                                New York, NY 10001<br>
+                                United States
+                            </div>
+                        </div>
+
+                        <div class="social-links">
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                            <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="contact-map">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215256703247!2d-73.98784492453802!3d40.75085697138862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1717461232841!5m2!1sen!2sus" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <div class="contact-card">
+                        <h3 class="contact-title"><i class="fas fa-paper-plane"></i> Send Us a Message</h3>
+
+                        <form id="contactForm" th:action="@{/contact}" th:method="post">
+                            <div class="form-group">
+                                <label for="contactName" class="form-label">Your Name</label>
+                                <input type="text" id="contactName" name="name" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactEmail" class="form-label">Email Address</label>
+                                <input type="email" id="contactEmail" name="email" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactPhone" class="form-label">Phone Number (Optional)</label>
+                                <input type="tel" id="contactPhone" name="phone" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactSubject" class="form-label">Subject</label>
+                                <select id="contactSubject" name="subject" class="form-control" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="reservation">Reservation Inquiry</option>
+                                    <option value="modification">Modify Existing Booking</option>
+                                    <option value="feedback">Feedback & Suggestions</option>
+                                    <option value="group">Group Travel</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactMessage" class="form-label">Message</label>
+                                <textarea id="contactMessage" name="message" class="form-control" required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <div class="faq-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-subtitle">Find answers to common questions about LuxStay</p>
+            </div>
+
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How do I modify or cancel my reservation?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can modify or cancel your reservation through our website or mobile app by accessing "My Bookings" in your account. Alternatively, you can contact our customer service team at +1 (800) 555-1234 or email support@luxstay.com for assistance.</p>
+                        <p>Please note that cancellation policies vary by property and rate plan. Your specific cancellation terms are provided at the time of booking and in your confirmation email.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What is LuxStay's price match guarantee?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We're confident in offering the best rates for our properties. If you find a lower rate for the same room, dates, and terms on another website within 24 hours of booking with us, we'll match that rate and give you an additional 10% discount.</p>
+                        <p>To request a price match, please contact our customer service team with details of the lower rate you've found.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What amenities can I expect at LuxStay properties?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>All LuxStay properties offer premium amenities including:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Luxury bedding and bath products</li>
+                            <li>High-speed Wi-Fi</li>
+                            <li>24/7 concierge service</li>
+                            <li>Fitness centers</li>
+                            <li>At least one dining option</li>
+                        </ul>
+                        <p>Many locations also feature spas, pools, and other unique amenities. Specific amenities for each property are listed on their individual pages.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How does the LuxStay loyalty program work?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our LuxStay Rewards program offers points for every dollar spent on eligible stays. These points can be redeemed for:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Free nights at any LuxStay property</li>
+                            <li>Room upgrades</li>
+                            <li>Dining and spa credits</li>
+                            <li>Exclusive member rates</li>
+                        </ul>
+                        <p>Members also enjoy benefits like late check-out, welcome amenities, and priority service. Enrollment is free and can be done during booking or through our website.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What health and safety measures are in place?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Guest safety is our top priority. All LuxStay properties adhere to our comprehensive LuxSafe program, which includes:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Enhanced cleaning protocols</li>
+                            <li>Contactless check-in/check-out options</li>
+                            <li>Hand sanitizer stations throughout properties</li>
+                            <li>Regular staff health screenings</li>
+                            <li>Hospital-grade air filtration systems</li>
+                        </ul>
+                        <p>Specific measures may vary by location based on local guidelines.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Do you offer special rates for group travel?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer special rates and amenities for groups of 10 rooms or more. Our Group Travel specialists can help with:</p>
+                        <ul style="margin-left: 20px; margin-bottom: 15px;">
+                            <li>Customized room blocks</li>
+                            <li>Meeting and event space</li>
+                            <li>Catering arrangements</li>
+                            <li>Transportation coordination</li>
+                            <li>Special group activities</li>
+                        </ul>
+                        <p>Contact our Group Travel team at groups@luxstay.com or +1 (800) 555-5678 for personalized assistance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 
 <!-- Footer -->
 <footer>
@@ -1611,138 +1677,110 @@
             : '<i class="fas fa-bars"></i>';
     });
 
-    // === Testimonial Slider ===
-    const track = document.querySelector('.testimonials-track');
-    const slides = document.querySelectorAll('.testimonial-item');
-    const dots = document.querySelectorAll('.slider-dot');
-    let currentIndex = 0;
+    // === Page Navigation ===
+    function showPage(page) {
+        // Hide all page sections
+        const aboutPage = document.getElementById('about-page');
+        const contactPage = document.getElementById('contact-page');
 
-    // Set slide width on resize
-    function setSlideWidth() {
-        const slideWidth = document.querySelector('.testimonial-item').offsetWidth;
-        slides.forEach(slide => {
-            slide.style.minWidth = `${slideWidth}px`;
+        aboutPage.classList.remove('active');
+        contactPage.classList.remove('active');
+
+        // Update menu active state
+        document.querySelectorAll('.menu li').forEach(li => {
+            li.classList.remove('active');
         });
+
+        // Show selected page and update title
+        if (page === 'about') {
+            aboutPage.classList.add('active');
+            document.title = 'LuxStay - About Us';
+            document.querySelector('.menu li a[onclick*="about"]').parentNode.classList.add('active');
+        } else if (page === 'contact') {
+            contactPage.classList.add('active');
+            document.title = 'LuxStay - Contact Us';
+            document.querySelector('.menu li a[onclick*="contact"]').parentNode.classList.add('active');
+        }
+
+        // Scroll to top
+        window.scrollTo(0, 0);
+
+        // Close mobile menu if open
+        menu.classList.remove('active');
+        hamburger.innerHTML = '<i class="fas fa-bars"></i>';
     }
 
-    // Initialize slider
-    setSlideWidth();
-    window.addEventListener('resize', setSlideWidth);
+    // === FAQ Accordion ===
+    const faqItems = document.querySelectorAll('.faq-item');
 
-    // Handle dot click
-    dots.forEach(dot => {
-        dot.addEventListener('click', function() {
-            const index = parseInt(this.getAttribute('data-index'));
-            goToSlide(index);
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+
+        question.addEventListener('click', function() {
+            // Close all other items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+
+            // Toggle current item
+            item.classList.toggle('active');
         });
     });
 
-    // Go to specific slide
-    function goToSlide(index) {
-        const slideWidth = document.querySelector('.testimonial-item').offsetWidth;
-        track.style.transform = `translateX(-${index * slideWidth}px)`;
+    // === Contact Form Submission ===
+    const contactForm = document.getElementById('contactForm');
 
-        // Update active dot
-        dots.forEach(dot => dot.classList.remove('active'));
-        dots[index].classList.add('active');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        currentIndex = index;
-    }
+            // Simple validation
+            let isValid = true;
+            const requiredFields = contactForm.querySelectorAll('[required]');
 
-    // Auto slide every 5 seconds
-    setInterval(function() {
-        currentIndex = (currentIndex + 1) % slides.length;
-        goToSlide(currentIndex);
-    }, 5000);
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#dc3545';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#ddd';
+                }
+            });
 
-    // === Date Picker Defaults ===
-    // Set min dates to today
-    const today = new Date().toISOString().split('T')[0];
-    const checkInInput = document.getElementById('check-in');
-    const checkOutInput = document.getElementById('check-out');
-
-    checkInInput.setAttribute('min', today);
-    checkOutInput.setAttribute('min', today);
-
-    // Set default values (today and tomorrow)
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowStr = tomorrow.toISOString().split('T')[0];
-
-    checkInInput.value = today;
-    checkOutInput.value = tomorrowStr;
-
-    // Update min checkout date when checkin changes
-    checkInInput.addEventListener('change', function() {
-        const selectedDate = new Date(this.value);
-        selectedDate.setDate(selectedDate.getDate() + 1);
-        const nextDay = selectedDate.toISOString().split('T')[0];
-
-        checkOutInput.setAttribute('min', nextDay);
-
-        // If current checkout is before new checkin + 1, update it
-        if (checkOutInput.value < nextDay) {
-            checkOutInput.value = nextDay;
-        }
-    });
-
-    // === Search Form Validation ===
-    const searchForm = document.querySelector('.search-form');
-
-    searchForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const location = document.getElementById('location').value;
-        const checkIn = document.getElementById('check-in').value;
-        const checkOut = document.getElementById('check-out').value;
-
-        if (!location) {
-            alert('Please enter a destination');
-            return;
-        }
-
-        if (!checkIn || !checkOut) {
-            alert('Please select check-in and check-out dates');
-            return;
-        }
-
-        // Normally would submit the form or redirect here
-        alert(`Searching for hotels in ${location} from ${checkIn} to ${checkOut}`);
-    });
-
-    // === Animation on Scroll ===
-    // Simple function to check if element is in viewport
-    function isInViewport(element) {
-        const rect = element.getBoundingClientRect();
-        return (
-            rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.bottom >= 0
-        );
-    }
-
-    // Elements to animate
-    const animateItems = document.querySelectorAll('.value-item, .destination-card');
-
-    // Add animation class when elements are in viewport
-    function animateOnScroll() {
-        animateItems.forEach(item => {
-            if (isInViewport(item) && !item.classList.contains('animated')) {
-                item.classList.add('animated');
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-
-                setTimeout(() => {
-                    item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                    item.style.opacity = '1';
-                    item.style.transform = 'translateY(0)';
-                }, 100);
+            if (isValid) {
+                alert('Thank you for your message! Our team will respond within 24 hours.');
+                contactForm.reset();
+            } else {
+                alert('Please fill in all required fields.');
             }
         });
     }
 
-    // Run on scroll and on load
-    window.addEventListener('scroll', animateOnScroll);
-    window.addEventListener('load', animateOnScroll);
+    // === Smooth Scrolling ===
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 100,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Initialize page on load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Show current page
+        document.querySelector('.page-section').classList.add('active');
+    });
 </script>
 </body>
 </html>

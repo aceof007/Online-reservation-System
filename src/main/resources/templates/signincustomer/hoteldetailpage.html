@@ -177,6 +177,338 @@
             margin-left: 15px;
         }
 
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .logo:hover {
+            transform: translateX(5px);
+        }
+
+        .logo img {
+            height: 38px;
+            margin-right: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-text span {
+            color: #d4af37;
+            position: relative;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-text:hover span {
+            transform: translateY(-2px);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            margin: 0 20px;
+        }
+
+        .nav-links li {
+            position: relative;
+            margin: 0 5px;
+        }
+
+        .nav-links li a {
+            font-size: 15px;
+            font-weight: 500;
+            color: #444;
+            padding: 10px 15px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #d4af37;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transform: translateX(-50%);
+            opacity: 0;
+        }
+
+        .nav-links li a:hover {
+            color: #d4af37;
+        }
+
+        .nav-links li a:hover::after,
+        .nav-links li a.active::after {
+            width: 30px;
+            opacity: 1;
+        }
+
+        .nav-links li a.active {
+            color: #d4af37;
+            font-weight: 600;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .user-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-image {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid #d4af37;
+            border-radius: 50%;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover .profile-image::before {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+
+        .user-profile:hover .profile-image img {
+            transform: scale(1.08);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background-color: #d4af37;
+            border-radius: 50%;
+            width: 8px;
+            height: 8px;
+            transform: scale(0);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7);
+            }
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 5px rgba(212, 175, 55, 0);
+            }
+            100% {
+                transform: scale(0.8);
+            }
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            z-index: 1001;
+            overflow: hidden;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .user-profile:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu ul {
+            list-style: none;
+        }
+
+        .dropdown-menu li {
+            transform: translateY(15px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            transition-delay: calc(0.05s * var(--i));
+        }
+
+        .user-profile:hover .dropdown-menu li {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .dropdown-menu li a {
+            padding: 12px 20px;
+            display: block;
+            color: #555;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dropdown-menu li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 3px;
+            height: 100%;
+            background-color: #d4af37;
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+            z-index: -1;
+        }
+
+        .dropdown-menu li a:hover {
+            color: #d4af37;
+            padding-left: 24px;
+        }
+
+        .dropdown-menu li a:hover::before {
+            transform: scaleY(1);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background-color: rgba(212, 175, 55, 0.1);
+            margin: 8px 0;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            color: #d4af37;
+            transform: rotate(90deg);
+        }
+
+        /* === MEDIA QUERIES === */
+        @media (max-width: 992px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 76px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                flex-direction: column;
+                display: none;
+                padding: 20px 0;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                animation: slideIn 0.3s forwards;
+            }
+
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .nav-links li {
+                width: 100%;
+                margin: 0;
+                opacity: 0;
+                transform: translateX(-20px);
+                animation: fadeIn 0.5s forwards;
+                animation-delay: calc(0.1s * var(--i));
+            }
+
+            @keyframes fadeIn {
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .nav-links li a {
+                padding: 15px 30px;
+                display: block;
+            }
+
+            .nav-links li a::after {
+                left: 30px;
+                bottom: 12px;
+                transform: none;
+            }
+
+            .nav-links li a:hover::after,
+            .nav-links li a.active::after {
+                width: 20px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+                margin-right: 15px;
+            }
+        }
+
         /* === HOTEL DETAIL STYLES === */
         .hotel-header {
             padding: 140px 0 40px;
@@ -997,20 +1329,20 @@
             .hotel-info-container {
                 flex-direction: column;
             }
-            
+
             .booking-sidebar {
                 order: -1;
                 margin-bottom: 40px;
             }
-            
+
             .main-gallery {
                 height: 400px;
             }
-            
+
             .location-container {
                 flex-direction: column;
             }
-            
+
             .location-map {
                 height: 300px;
             }
@@ -1050,23 +1382,23 @@
             .hamburger {
                 display: block;
             }
-            
+
             .main-gallery {
                 grid-template-columns: 1fr 1fr;
                 grid-template-rows: 1fr 1fr 1fr;
                 height: 600px;
             }
-            
+
             .main-image {
                 grid-column: span 2;
                 grid-row: span 1;
             }
-            
+
             .review-summary {
                 flex-direction: column;
                 text-align: center;
             }
-            
+
             .rating-categories {
                 width: 100%;
             }
@@ -1074,926 +1406,1008 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav class="navbar">
-                <div class="logo">
-                    <img th:src="@{/api/placeholder/40/40}" alt="LuxStay Logo">
-                    <div class="logo-text">Lux<span>Stay</span></div>
-                </div>
-                <ul class="menu">
-                    <li><a th:href="@{/homepage.html}">Home</a></li>
-                    <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
-                    <li><a th:href="@{/about.html}">About Us</a></li>
-                </ul>
-                <div class="user-actions">
-                    <a th:href="@{/templates/customer_dashboard/registrationpage.html}" class="btn btn-outline">Login</a>
-                    <a th:href="@{/templates/customer_dashboard/registrationpage.html}" class="btn">Sign Up</a>
-                </div>
-                <button class="hamburger">
+<!-- Header -->
+<header>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-text">Lux<span>Stay</span></div>
+            </div>
+            <ul class="nav-links">
+                <li style="--i:1"><a href="homepage.html">Home</a></li>
+                <li style="--i:2"><a href="hotellistingpage.html" class="active">Hotels</a></li>
+                <li style="--i:3"><a href="about.html">About Us</a></li>
+                <li style="--i:4"><a href="contact.html">Contact</a></li>
+            </ul>
+
+            <div class="user-menu">
+                <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
                 </button>
-            </nav>
-        </div>
-    </header>
 
-    <!-- Hotel Header -->
-    <section class="hotel-header">
-        <div class="container">
-            <div class="hotel-title-container">
-                <h1 class="hotel-title">Grand Hotel Paris</h1>
-                <div class="hotel-rating">
-                    <span class="rating-value">9.2</span>
-                    <span class="rating-count">(1,245 reviews)</span>
-                </div>
-            </div>
-            <div class="hotel-location">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>12 Rue de la Paix, 75002 Paris, France</span>
-            </div>
-            <div class="hotel-features">
-                <div class="feature-badge">
-                    <i class="fas fa-wifi"></i> Free WiFi
-                </div>
-                <div class="feature-badge">
-                    <i class="fas fa-swimming-pool"></i> Swimming Pool
-                </div>
-                <div class="feature-badge">
-                    <i class="fas fa-spa"></i> Spa
-                </div>
-                <div class="feature-badge">
-                    <i class="fas fa-utensils"></i> 3 Restaurants
-                </div>
-                <div class="feature-badge">
-                    <i class="fas fa-concierge-bell"></i> 24/7 Concierge
-                </div>
-            </div>
-        </div>
-    </section>
+                <div class="user-profile">
+                    <div class="profile-image">
+                        <img src="/api/placeholder/100/100" alt="User Profile">
+                        <div class="notification-dot"></div>
+                    </div>
 
-    <!-- Image Gallery -->
+                    <div class="dropdown-menu">
+                        <ul>
+                            <li style="--i:1"><a href="profilmanagement.html">My Profile</a></li>
+                            <li style="--i:2"><a href="currentreservation.html">Current Reservation</a></li>
+                            <li style="--i:3"><a href="reservationhistory.html">Booking History</a></li>
+                            <li style="--i:4"><a href="reviewmanagement.html">My Reviews</a></li>
+                            <li style="--i:5"><a href="modifyreservation.html">Modify Reservation</a></li>
+                            <div class="dropdown-divider"></div>
+                            <li style="--i:6"><a href="logout.html">Log Out</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<!-- Hotel Header -->
+<section class="hotel-header">
     <div class="container">
-        <div class="gallery-container">
-            <div class="main-gallery">
-                <div class="main-image">
-                    <img src="/2.png" alt="Grand Hotel Paris Lobby">
-                    <a href="#" class="view-all-btn">View All Photos (48)</a>
-                </div>
-                <div class="secondary-image">
-                    <img src="/2.png" alt="Grand Hotel Paris Room">
-                </div>
-                <div class="secondary-image">
-                    <img src="/2.png" alt="Grand Hotel Paris Pool">
-                </div>
-                <div class="secondary-image">
-                    <img src="/2.png" alt="Grand Hotel Paris Restaurant">
-                </div>
-                <div class="secondary-image">
-                    <img src="/2.png" alt="Grand Hotel Paris Spa">
-                </div>
+        <div class="hotel-title-container">
+            <h1 class="hotel-title">Grand Hotel Paris</h1>
+            <div class="hotel-rating">
+                <span class="rating-value">9.2</span>
+                <span class="rating-count">(1,245 reviews)</span>
             </div>
         </div>
+        <div class="hotel-location">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>12 Rue de la Paix, 75002 Paris, France</span>
+        </div>
+        <div class="hotel-features">
+            <div class="feature-badge">
+                <i class="fas fa-wifi"></i> Free WiFi
+            </div>
+            <div class="feature-badge">
+                <i class="fas fa-swimming-pool"></i> Swimming Pool
+            </div>
+            <div class="feature-badge">
+                <i class="fas fa-spa"></i> Spa
+            </div>
+            <div class="feature-badge">
+                <i class="fas fa-utensils"></i> 3 Restaurants
+            </div>
+            <div class="feature-badge">
+                <i class="fas fa-concierge-bell"></i> 24/7 Concierge
+            </div>
+        </div>
+    </div>
+</section>
 
-        <!-- Hotel Info Container -->
-        <div class="hotel-info-container">
-            <!-- Main Content -->
-            <main class="hotel-main-content">
-                <!-- Description Section -->
-                <section class="info-section">
-                    <h2 class="section-title">About Grand Hotel Paris</h2>
-                    <p>Located in the heart of Paris, just steps from the Opéra Garnier and the famous Rue de la Paix shopping district, Grand Hotel Paris is a legendary 5-star palace that has been welcoming guests since 1862. This architectural masterpiece combines Haussmannian elegance with contemporary luxury.</p>
-                    <p>Our hotel features 180 rooms and suites, each uniquely decorated with period furnishings and modern amenities. The property boasts three gourmet restaurants, including a Michelin-starred dining experience, an expansive spa with indoor pool, and exceptional personalized service that has made us a favorite among discerning travelers for generations.</p>
-                    <p>The hotel's historic facade and ornate interiors have been meticulously preserved, while discreetly incorporating all the modern comforts expected by today's luxury travelers. From the moment you step into our marble-floored lobby with its spectacular chandelier, you'll understand why Grand Hotel Paris remains one of the city's most iconic addresses.</p>
-                </section>
-
-                <!-- Room Options -->
-                <section class="info-section">
-                    <h2 class="section-title">Room Options</h2>
-                    
-                    <!-- Deluxe Room -->
-                    <div class="room-option">
-                        <div class="room-header">
-                            <h3 class="room-title">Deluxe Room</h3>
-                            <div class="room-price">
-                                <div class="price-current">$399</div>
-                                <div class="price-note">per night, includes taxes</div>
-                            </div>
-                        </div>
-                        
-                        <div class="room-gallery">
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Deluxe Room">
-                            </div>
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Deluxe Room Bathroom">
-                            </div>
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Deluxe Room View">
-                            </div>
-                        </div>
-                        
-                        <div class="room-details">
-                            <div class="room-detail-col">
-                                <div class="detail-item">
-                                    <i class="fas fa-bed"></i>
-                                    <span>1 King Bed or 2 Twin Beds</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-user-friends"></i>
-                                    <span>Sleeps 2 adults, 1 child</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-ruler-combined"></i>
-                                    <span>35 m² (377 sq ft)</span>
-                                </div>
-                            </div>
-                            <div class="room-detail-col">
-                                <div class="detail-item">
-                                    <i class="fas fa-window-maximize"></i>
-                                    <span>City View</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-door-open"></i>
-                                    <span>Non-smoking</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-utensils"></i>
-                                    <span>Breakfast not included</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="room-amenities">
-                            <div class="amenity-badge">
-                                <i class="fas fa-wifi"></i> Free WiFi
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-tv"></i> Smart TV
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-coffee"></i> Coffee maker
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-wine-bottle"></i> Minibar
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-snowflake"></i> Air conditioning
-                            </div>
-                        </div>
-                        
-                        <div class="rate-options">
-                            <h4>Rate Options</h4>
-                            
-                            <div class="rate-option selected">
-                                <div class="rate-header">
-                                    <div class="rate-title">Flexible Rate</div>
-                                    <div class="rate-price">$399</div>
-                                </div>
-                                <div class="rate-description">
-                                    Free cancellation until 2 days before check-in
-                                </div>
-                                <div class="rate-details">
-                                    Includes all taxes • No prepayment needed
-                                </div>
-                            </div>
-                            
-                            <div class="rate-option">
-                                <div class="rate-header">
-                                    <div class="rate-title">Non-Refundable Rate</div>
-                                    <div class="rate-price">$359</div>
-                                </div>
-                                <div class="rate-description">
-                                    No changes or refunds allowed
-                                </div>
-                                <div class="rate-details">
-                                    Includes all taxes • Pay now and save 10%
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="btn book-now-btn">Book Now</button>
-                    </div>
-                    
-                    <!-- Executive Suite -->
-                    <div class="room-option">
-                        <div class="room-header">
-                            <h3 class="room-title">Executive Suite</h3>
-                            <div class="room-price">
-                                <div class="price-current">$599</div>
-                                <div class="price-note">per night, includes taxes</div>
-                            </div>
-                        </div>
-                        
-                        <div class="room-gallery">
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Executive Suite">
-                            </div>
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Executive Suite Living Area">
-                            </div>
-                            <div class="room-thumbnail">
-                                <img src="/2.png" alt="Executive Suite Bathroom">
-                            </div>
-                        </div>
-                        
-                        <div class="room-details">
-                            <div class="room-detail-col">
-                                <div class="detail-item">
-                                    <i class="fas fa-bed"></i>
-                                    <span>1 King Bed</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-user-friends"></i>
-                                    <span>Sleeps 2 adults, 2 children</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-ruler-combined"></i>
-                                    <span>65 m² (700 sq ft)</span>
-                                </div>
-                            </div>
-                            <div class="room-detail-col">
-                                <div class="detail-item">
-                                    <i class="fas fa-window-maximize"></i>
-                                    <span>Opera View</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-door-open"></i>
-                                    <span>Non-smoking</span>
-                                </div>
-                                <div class="detail-item">
-                                    <i class="fas fa-utensils"></i>
-                                    <span>Breakfast included</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="room-amenities">
-                            <div class="amenity-badge">
-                                <i class="fas fa-wifi"></i> Free WiFi
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-tv"></i> Smart TV
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-coffee"></i> Nespresso machine
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-wine-bottle"></i> Premium minibar
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-snowflake"></i> Air conditioning
-                            </div>
-                            <div class="amenity-badge">
-                                <i class="fas fa-concierge-bell"></i> Butler service
-                            </div>
-                        </div>
-                        
-                        <div class="rate-options">
-                            <h4>Rate Options</h4>
-                            
-                            <div class="rate-option selected">
-                                <div class="rate-header">
-                                    <div class="rate-title">Flexible Rate</div>
-                                    <div class="rate-price">$599</div>
-                                </div>
-                                <div class="rate-description">
-                                    Free cancellation until 2 days before check-in
-                                </div>
-                                <div class="rate-details">
-                                    Includes all taxes • No prepayment needed
-                                </div>
-                            </div>
-                            
-                            <div class="rate-option">
-                                <div class="rate-header">
-                                    <div class="rate-title">Non-Refundable Rate</div>
-                                    <div class="rate-price">$539</div>
-                                </div>
-                                <div class="rate-description">
-                                    No changes or refunds allowed
-                                </div>
-                                <div class="rate-details">
-                                    Includes all taxes • Pay now and save 10%
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <button class="btn book-now-btn">Book Now</button>
-                    </div>
-                </section>
-
-                <!-- Amenities Section -->
-                <section class="info-section">
-                    <h2 class="section-title">Amenities</h2>
-                    <div class="amenities-grid">
-                        <div class="amenity-category">
-                            <h3>General</h3>
-                            <div class="amenity-item">
-                                <i class="fas fa-wifi"></i>
-                                <span>Free WiFi</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-parking"></i>
-                                <span>Valet parking</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-swimming-pool"></i>
-                                <span>Indoor pool</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-spa"></i>
-                                <span>Spa & wellness center</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-dumbbell"></i>
-                                <span>Fitness center</span>
-                            </div>
-                        </div>
-                        
-                        <div class="amenity-category">
-                            <h3>In Your Room</h3>
-                            <div class="amenity-item">
-                                <i class="fas fa-snowflake"></i>
-                                <span>Air conditioning</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-tv"></i>
-                                <span>Smart TV</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-wine-bottle"></i>
-                                <span>Minibar</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-coffee"></i>
-                                <span>Coffee/tea maker</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-umbrella-beach"></i>
-                                <span>Bathrobes & slippers</span>
-                            </div>
-                        </div>
-                        
-                        <div class="amenity-category">
-                            <h3>Dining</h3>
-                            <div class="amenity-item">
-                                <i class="fas fa-utensils"></i>
-                                <span>3 restaurants</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-wine-glass-alt"></i>
-                                <span>Bar/Lounge</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-mug-hot"></i>
-                                <span>Room service (24-hour)</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-bread-slice"></i>
-                                <span>Breakfast available</span>
-                            </div>
-                        </div>
-                        
-                        <div class="amenity-category">
-                            <h3>Services</h3>
-                            <div class="amenity-item">
-                                <i class="fas fa-concierge-bell"></i>
-                                <span>24-hour front desk</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-bell"></i>
-                                <span>Concierge service</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-suitcase-rolling"></i>
-                                <span>Luggage storage</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-tshirt"></i>
-                                <span>Laundry service</span>
-                            </div>
-                            <div class="amenity-item">
-                                <i class="fas fa-business-time"></i>
-                                <span>Business center</span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Policies Section -->
-                <section class="info-section">
-                    <h2 class="section-title">Policies</h2>
-                    <div class="policies-grid">
-                        <div class="policy-item">
-                            <h3>Check-in/Check-out</h3>
-                            <p>Check-in: 3:00 PM<br>Check-out: 12:00 PM<br>Early check-in and late check-out subject to availability</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Cancellation</h3>
-                            <p>Depends on rate selected. Flexible rates allow free cancellation until 2 days before arrival. Non-refundable rates cannot be changed or cancelled.</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Children & Extra Beds</h3>
-                            <p>Children under 12 stay free when using existing bedding. Rollaway/extra beds available for €50 per night. Maximum 1 extra bed per room.</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Pets</h3>
-                            <p>Pets allowed (dogs only, max 1 per room) for €50 per stay. Must notify hotel in advance. Pets not allowed in restaurant or pool areas.</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Payment</h3>
-                            <p>We accept all major credit cards. Cash payments accepted in EUR only. A valid credit card is required at check-in for incidentals.</p>
-                        </div>
-                        <div class="policy-item">
-                            <h3>Accessibility</h3>
-                            <p>Accessible rooms available. Elevators serve all floors. Public areas wheelchair accessible. Please contact hotel for specific needs.</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Location Section -->
-                <section class="info-section">
-                    <h2 class="section-title">Location</h2>
-                    <div class="location-container">
-                        <div class="location-map">
-                            <!-- Map would be embedded here -->
-                            <div style="width:100%;height:100%;background-color:#eee;display:flex;align-items:center;justify-content:center;">
-                                <i class="fas fa-map-marked-alt" style="font-size:48px;color:#666;"></i>
-                            </div>
-                        </div>
-                        <div class="location-info">
-                            <h3>In the Heart of Paris</h3>
-                            <div class="location-details">
-                                <div class="location-detail">
-                                    <div class="location-icon">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                    </div>
-                                    <div>
-                                        <p>12 Rue de la Paix, 75002 Paris, France</p>
-                                    </div>
-                                </div>
-                                <div class="location-detail">
-                                    <div class="location-icon">
-                                        <i class="fas fa-subway"></i>
-                                    </div>
-                                    <div>
-                                        <p>Opéra Metro Station - 2 minute walk</p>
-                                    </div>
-                                </div>
-                                <div class="location-detail">
-                                    <div class="location-icon">
-                                        <i class="fas fa-plane"></i>
-                                    </div>
-                                    <div>
-                                        <p>Charles de Gaulle Airport - 45 minutes by car</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="nearby-places">
-                                <h3>Nearby Attractions</h3>
-                                <div class="place-item">
-                                    <span class="place-name">Opéra Garnier</span>
-                                    <span class="place-distance">2 min walk</span>
-                                </div>
-                                <div class="place-item">
-                                    <span class="place-name">Place Vendôme</span>
-                                    <span class="place-distance">5 min walk</span>
-                                </div>
-                                <div class="place-item">
-                                    <span class="place-name">Louvre Museum</span>
-                                    <span class="place-distance">12 min walk</span>
-                                </div>
-                                <div class="place-item">
-                                    <span class="place-name">Tuileries Garden</span>
-                                    <span class="place-distance">15 min walk</span>
-                                </div>
-                                <div class="place-item">
-                                    <span class="place-name">Eiffel Tower</span>
-                                    <span class="place-distance">20 min by metro</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Reviews Section -->
-                <section class="info-section">
-                    <h2 class="section-title">Guest Reviews</h2>
-                    
-                    <div class="review-summary">
-                        <div class="overall-rating">
-                            <div class="rating-stars">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <div class="rating-score">9.2</div>
-                            <div class="rating-count">1,245 reviews</div>
-                        </div>
-                        
-                        <div class="rating-categories">
-                            <div class="rating-category">
-                                <div class="category-name">Cleanliness</div>
-                                <div class="category-rating">
-                                    <span>9.4</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 94%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rating-category">
-                                <div class="category-name">Comfort</div>
-                                <div class="category-rating">
-                                    <span>9.3</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 93%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rating-category">
-                                <div class="category-name">Location</div>
-                                <div class="category-rating">
-                                    <span>9.7</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 97%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rating-category">
-                                <div class="category-name">Facilities</div>
-                                <div class="category-rating">
-                                    <span>9.1</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 91%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rating-category">
-                                <div class="category-name">Staff</div>
-                                <div class="category-rating">
-                                    <span>9.5</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 95%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="rating-category">
-                                <div class="category-name">Value</div>
-                                <div class="category-rating">
-                                    <span>8.9</span>
-                                    <div class="rating-bar">
-                                        <div class="rating-fill" style="width: 89%;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="review-list">
-                        <div class="review-item">
-                            <div class="review-header">
-                                <div class="reviewer">
-                                    <div class="reviewer-avatar">
-                                        <img src="/2.png" alt="Sarah Johnson">
-                                    </div>
-                                    <div class="reviewer-info">
-                                        <h4>Sarah Johnson</h4>
-                                        <p>New York, USA</p>
-                                    </div>
-                                </div>
-                                <div class="review-stats">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Absolutely stunning hotel with impeccable service. The location couldn't be better - right in the heart of Paris. Our room was spacious and beautifully appointed with a comfortable bed and luxurious bathroom. The concierge was extremely helpful with restaurant reservations and tour recommendations.</p>
-                            </div>
-                            <div class="review-date">
-                                Verified stay • April 2025
-                            </div>
-                            <div class="management-response">
-                                <div class="response-header">Management Response</div>
-                                <p>Dear Sarah, thank you for your wonderful review! We're delighted you enjoyed your stay with us and that our team could make your Parisian experience memorable. We hope to welcome you back soon!</p>
-                            </div>
-                        </div>
-                        
-                        <div class="review-item">
-                            <div class="review-header">
-                                <div class="reviewer">
-                                    <div class="reviewer-avatar">
-                                        <img src="/2.png" alt="Michael Chen">
-                                    </div>
-                                    <div class="reviewer-info">
-                                        <h4>Michael Chen</h4>
-                                        <p>Toronto, Canada</p>
-                                    </div>
-                                </div>
-                                <div class="review-stats">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                            </div>
-                            <div class="review-content">
-                                <p>Beautiful historic property with modern amenities. The spa was exceptional and the indoor pool was a nice retreat after a day of sightseeing. Only minor complaint was that breakfast service was a bit slow when the hotel was busy.</p>
-                            </div>
-                            <div class="review-date">
-                                Verified stay • March 2025
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- FAQ Section -->
-                <section class="info-section">
-                    <h2 class="section-title">Frequently Asked Questions</h2>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>What time is check-in and check-out?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Check-in is at 3:00 PM and check-out is at 12:00 PM. Early check-in and late check-out may be available upon request, subject to availability and possibly an additional charge.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Is breakfast included in the room rate?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Breakfast is included in some room rates (like our Executive Suite) but not in others. You can see whether breakfast is included when selecting your room type. Breakfast can also be added to your reservation for an additional fee.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Does the hotel have parking?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Yes, we offer valet parking service for €50 per night. Due to our central Paris location, self-parking is not available. There is also a public parking garage nearby at Place Vendôme.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>How far is the hotel from the Eiffel Tower?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>The Eiffel Tower is approximately 3.5 km (2.2 miles) from our hotel. It's about a 20-minute drive or you can take Metro line 8 from Opéra to École Militaire, which takes about 25 minutes total.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>Does the hotel offer airport transfers?</span>
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                        <div class="faq-answer">
-                            <p>Yes, we can arrange private airport transfers in luxury vehicles. The cost is €120 from Charles de Gaulle Airport (CDG) and €90 from Orly Airport (ORY). Please contact our concierge at least 48 hours before your arrival to arrange this service.</p>
-                        </div>
-                    </div>
-                </section>
-            </main>
-
-            <!-- Booking Sidebar -->
-            <aside class="booking-sidebar">
-                <div class="booking-card">
-                    <h3>Your Stay</h3>
-                    <div class="price-summary">
-                        <div class="price-row">
-                            <span>Deluxe Room x 2 nights</span>
-                            <span>$798</span>
-                        </div>
-                        <div class="price-row">
-                            <span>Taxes & fees</span>
-                            <span>$72</span>
-                        </div>
-                        <div class="price-total">
-                            <span>Total</span>
-                            <span>$870</span>
-                        </div>
-                    </div>
-                    
-                    <div class="check-availability">
-                        <h3>Check Availability</h3>
-                        <div class="form-group">
-                            <label for="check-in">Check-in Date</label>
-                            <input type="date" id="check-in">
-                        </div>
-                        <div class="form-group">
-                            <label for="check-out">Check-out Date</label>
-                            <input type="date" id="check-out">
-                        </div>
-                        <div class="form-group">
-                            <label for="guests">Guests</label>
-                            <select id="guests">
-                                <option value="1">1 Adult</option>
-                                <option value="2" selected>2 Adults</option>
-                                <option value="3">2 Adults, 1 Child</option>
-                                <option value="4">2 Adults, 2 Children</option>
-                                <option value="5">3 Adults</option>
-                            </select>
-                        </div>
-                        <button class="btn check-btn">Check Availability</button>
-                    </div>
-                </div>
-            </aside>
+<!-- Image Gallery -->
+<div class="container">
+    <div class="gallery-container">
+        <div class="main-gallery">
+            <div class="main-image">
+                <img src="/2.png" alt="Grand Hotel Paris Lobby">
+                <a href="#" class="view-all-btn">View All Photos (48)</a>
+            </div>
+            <div class="secondary-image">
+                <img src="/2.png" alt="Grand Hotel Paris Room">
+            </div>
+            <div class="secondary-image">
+                <img src="/2.png" alt="Grand Hotel Paris Pool">
+            </div>
+            <div class="secondary-image">
+                <img src="/2.png" alt="Grand Hotel Paris Restaurant">
+            </div>
+            <div class="secondary-image">
+                <img src="/2.png" alt="Grand Hotel Paris Spa">
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-about">
-                    <div class="footer-logo">
-                        <img src="/api/placeholder/40/40" alt="LuxStay Logo">
-                        <div class="footer-logo-text">Lux<span>Stay</span></div>
+    <!-- Hotel Info Container -->
+    <div class="hotel-info-container">
+        <!-- Main Content -->
+        <main class="hotel-main-content">
+            <!-- Description Section -->
+            <section class="info-section">
+                <h2 class="section-title">About Grand Hotel Paris</h2>
+                <p>Located in the heart of Paris, just steps from the Opéra Garnier and the famous Rue de la Paix shopping district, Grand Hotel Paris is a legendary 5-star palace that has been welcoming guests since 1862. This architectural masterpiece combines Haussmannian elegance with contemporary luxury.</p>
+                <p>Our hotel features 180 rooms and suites, each uniquely decorated with period furnishings and modern amenities. The property boasts three gourmet restaurants, including a Michelin-starred dining experience, an expansive spa with indoor pool, and exceptional personalized service that has made us a favorite among discerning travelers for generations.</p>
+                <p>The hotel's historic facade and ornate interiors have been meticulously preserved, while discreetly incorporating all the modern comforts expected by today's luxury travelers. From the moment you step into our marble-floored lobby with its spectacular chandelier, you'll understand why Grand Hotel Paris remains one of the city's most iconic addresses.</p>
+            </section>
+
+            <!-- Room Options -->
+            <section class="info-section">
+                <h2 class="section-title">Room Options</h2>
+
+                <!-- Deluxe Room -->
+                <div class="room-option">
+                    <div class="room-header">
+                        <h3 class="room-title">Deluxe Room</h3>
+                        <div class="room-price">
+                            <div class="price-current">$399</div>
+                            <div class="price-note">per night, includes taxes</div>
+                        </div>
                     </div>
-                    <p class="footer-desc">
-                        LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
-                    </p>
-                    <div class="footer-social">
-                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+
+                    <div class="room-gallery">
+                        <div class="room-thumbnail">
+                            <img src="/2.png" alt="Deluxe Room">
+                        </div>
+                        <div class="room-thumbnail">
+                            <img src="/2.png" alt="Deluxe Room Bathroom">
+                        </div>
+                        <div class="room-thumbnail">
+                            <img src="/2.png" alt="Deluxe Room View">
+                        </div>
+                    </div>
+
+                    <div class="room-details">
+                        <div class="room-detail-col">
+                            <div class="detail-item">
+                                <i class="fas fa-bed"></i>
+                                <span>1 King Bed or 2 Twin Beds</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-user-friends"></i>
+                                <span>Sleeps 2 adults, 1 child</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-ruler-combined"></i>
+                                <span>35 m² (377 sq ft)</span>
+                            </div>
+                        </div>
+                        <div class="room-detail-col">
+                            <div class="detail-item">
+                                <i class="fas fa-window-maximize"></i>
+                                <span>City View</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-door-open"></i>
+                                <span>Non-smoking</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-utensils"></i>
+                                <span>Breakfast not included</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="room-amenities">
+                        <div class="amenity-badge">
+                            <i class="fas fa-wifi"></i> Free WiFi
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-tv"></i> Smart TV
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-coffee"></i> Coffee maker
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-wine-bottle"></i> Minibar
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-snowflake"></i> Air conditioning
+                        </div>
+                    </div>
+
+                    <div class="rate-options">
+                        <h4>Rate Options</h4>
+
+                        <div class="rate-option selected">
+                            <div class="rate-header">
+                                <div class="rate-title">Flexible Rate</div>
+                                <div class="rate-price">$399</div>
+                            </div>
+                            <div class="rate-description">
+                                Free cancellation until 2 days before check-in
+                            </div>
+                            <div class="rate-details">
+                                Includes all taxes • No prepayment needed
+                            </div>
+                        </div>
+
+                        <div class="rate-option">
+                            <div class="rate-header">
+                                <div class="rate-title">Non-Refundable Rate</div>
+                                <div class="rate-price">$359</div>
+                            </div>
+                            <div class="rate-description">
+                                No changes or refunds allowed
+                            </div>
+                            <div class="rate-details">
+                                Includes all taxes • Pay now and save 10%
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn book-now-btn">Book Now</button>
+                </div>
+
+                <!-- Executive Suite -->
+                <div class="room-option">
+                    <div class="room-header">
+                        <h3 class="room-title">Executive Suite</h3>
+                        <div class="room-price">
+                            <div class="price-current">$599</div>
+                            <div class="price-note">per night, includes taxes</div>
+                        </div>
+                    </div>
+
+                    <div class="room-gallery">
+                        <div class="room-thumbnail">
+                            <img src="/2.png" alt="Executive Suite">
+                        </div>
+                        <div class="room-thumbnail">
+                            <img src="/2.png" alt="Executive Suite Living Area">
+                        </div>
+                        <div class="room-thumbnail">
+                            <img src="/2.png" alt="Executive Suite Bathroom">
+                        </div>
+                    </div>
+
+                    <div class="room-details">
+                        <div class="room-detail-col">
+                            <div class="detail-item">
+                                <i class="fas fa-bed"></i>
+                                <span>1 King Bed</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-user-friends"></i>
+                                <span>Sleeps 2 adults, 2 children</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-ruler-combined"></i>
+                                <span>65 m² (700 sq ft)</span>
+                            </div>
+                        </div>
+                        <div class="room-detail-col">
+                            <div class="detail-item">
+                                <i class="fas fa-window-maximize"></i>
+                                <span>Opera View</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-door-open"></i>
+                                <span>Non-smoking</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-utensils"></i>
+                                <span>Breakfast included</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="room-amenities">
+                        <div class="amenity-badge">
+                            <i class="fas fa-wifi"></i> Free WiFi
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-tv"></i> Smart TV
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-coffee"></i> Nespresso machine
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-wine-bottle"></i> Premium minibar
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-snowflake"></i> Air conditioning
+                        </div>
+                        <div class="amenity-badge">
+                            <i class="fas fa-concierge-bell"></i> Butler service
+                        </div>
+                    </div>
+
+                    <div class="rate-options">
+                        <h4>Rate Options</h4>
+
+                        <div class="rate-option selected">
+                            <div class="rate-header">
+                                <div class="rate-title">Flexible Rate</div>
+                                <div class="rate-price">$599</div>
+                            </div>
+                            <div class="rate-description">
+                                Free cancellation until 2 days before check-in
+                            </div>
+                            <div class="rate-details">
+                                Includes all taxes • No prepayment needed
+                            </div>
+                        </div>
+
+                        <div class="rate-option">
+                            <div class="rate-header">
+                                <div class="rate-title">Non-Refundable Rate</div>
+                                <div class="rate-price">$539</div>
+                            </div>
+                            <div class="rate-description">
+                                No changes or refunds allowed
+                            </div>
+                            <div class="rate-details">
+                                Includes all taxes • Pay now and save 10%
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn book-now-btn">Book Now</button>
+                </div>
+            </section>
+
+            <!-- Amenities Section -->
+            <section class="info-section">
+                <h2 class="section-title">Amenities</h2>
+                <div class="amenities-grid">
+                    <div class="amenity-category">
+                        <h3>General</h3>
+                        <div class="amenity-item">
+                            <i class="fas fa-wifi"></i>
+                            <span>Free WiFi</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-parking"></i>
+                            <span>Valet parking</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-swimming-pool"></i>
+                            <span>Indoor pool</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-spa"></i>
+                            <span>Spa & wellness center</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-dumbbell"></i>
+                            <span>Fitness center</span>
+                        </div>
+                    </div>
+
+                    <div class="amenity-category">
+                        <h3>In Your Room</h3>
+                        <div class="amenity-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>Air conditioning</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-tv"></i>
+                            <span>Smart TV</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-wine-bottle"></i>
+                            <span>Minibar</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-coffee"></i>
+                            <span>Coffee/tea maker</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-umbrella-beach"></i>
+                            <span>Bathrobes & slippers</span>
+                        </div>
+                    </div>
+
+                    <div class="amenity-category">
+                        <h3>Dining</h3>
+                        <div class="amenity-item">
+                            <i class="fas fa-utensils"></i>
+                            <span>3 restaurants</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-wine-glass-alt"></i>
+                            <span>Bar/Lounge</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-mug-hot"></i>
+                            <span>Room service (24-hour)</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-bread-slice"></i>
+                            <span>Breakfast available</span>
+                        </div>
+                    </div>
+
+                    <div class="amenity-category">
+                        <h3>Services</h3>
+                        <div class="amenity-item">
+                            <i class="fas fa-concierge-bell"></i>
+                            <span>24-hour front desk</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-bell"></i>
+                            <span>Concierge service</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-suitcase-rolling"></i>
+                            <span>Luggage storage</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-tshirt"></i>
+                            <span>Laundry service</span>
+                        </div>
+                        <div class="amenity-item">
+                            <i class="fas fa-business-time"></i>
+                            <span>Business center</span>
+                        </div>
                     </div>
                 </div>
-                <div class="footer-links">
-                    <h3 class="footer-title">Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Hotels</a></li>
-                        <li><a href="#">Destinations</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
+            </section>
+
+            <!-- Policies Section -->
+            <section class="info-section">
+                <h2 class="section-title">Policies</h2>
+                <div class="policies-grid">
+                    <div class="policy-item">
+                        <h3>Check-in/Check-out</h3>
+                        <p>Check-in: 3:00 PM<br>Check-out: 12:00 PM<br>Early check-in and late check-out subject to availability</p>
+                    </div>
+                    <div class="policy-item">
+                        <h3>Cancellation</h3>
+                        <p>Depends on rate selected. Flexible rates allow free cancellation until 2 days before arrival. Non-refundable rates cannot be changed or cancelled.</p>
+                    </div>
+                    <div class="policy-item">
+                        <h3>Children & Extra Beds</h3>
+                        <p>Children under 12 stay free when using existing bedding. Rollaway/extra beds available for €50 per night. Maximum 1 extra bed per room.</p>
+                    </div>
+                    <div class="policy-item">
+                        <h3>Pets</h3>
+                        <p>Pets allowed (dogs only, max 1 per room) for €50 per stay. Must notify hotel in advance. Pets not allowed in restaurant or pool areas.</p>
+                    </div>
+                    <div class="policy-item">
+                        <h3>Payment</h3>
+                        <p>We accept all major credit cards. Cash payments accepted in EUR only. A valid credit card is required at check-in for incidentals.</p>
+                    </div>
+                    <div class="policy-item">
+                        <h3>Accessibility</h3>
+                        <p>Accessible rooms available. Elevators serve all floors. Public areas wheelchair accessible. Please contact hotel for specific needs.</p>
+                    </div>
                 </div>
-                <div class="footer-links">
-                    <h3 class="footer-title">Support</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">FAQs</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Cancellation Policy</a></li>
-                    </ul>
+            </section>
+
+            <!-- Location Section -->
+            <section class="info-section">
+                <h2 class="section-title">Location</h2>
+                <div class="location-container">
+                    <div class="location-map">
+                        <!-- Map would be embedded here -->
+                        <div style="width:100%;height:100%;background-color:#eee;display:flex;align-items:center;justify-content:center;">
+                            <i class="fas fa-map-marked-alt" style="font-size:48px;color:#666;"></i>
+                        </div>
+                    </div>
+                    <div class="location-info">
+                        <h3>In the Heart of Paris</h3>
+                        <div class="location-details">
+                            <div class="location-detail">
+                                <div class="location-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <p>12 Rue de la Paix, 75002 Paris, France</p>
+                                </div>
+                            </div>
+                            <div class="location-detail">
+                                <div class="location-icon">
+                                    <i class="fas fa-subway"></i>
+                                </div>
+                                <div>
+                                    <p>Opéra Metro Station - 2 minute walk</p>
+                                </div>
+                            </div>
+                            <div class="location-detail">
+                                <div class="location-icon">
+                                    <i class="fas fa-plane"></i>
+                                </div>
+                                <div>
+                                    <p>Charles de Gaulle Airport - 45 minutes by car</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="nearby-places">
+                            <h3>Nearby Attractions</h3>
+                            <div class="place-item">
+                                <span class="place-name">Opéra Garnier</span>
+                                <span class="place-distance">2 min walk</span>
+                            </div>
+                            <div class="place-item">
+                                <span class="place-name">Place Vendôme</span>
+                                <span class="place-distance">5 min walk</span>
+                            </div>
+                            <div class="place-item">
+                                <span class="place-name">Louvre Museum</span>
+                                <span class="place-distance">12 min walk</span>
+                            </div>
+                            <div class="place-item">
+                                <span class="place-name">Tuileries Garden</span>
+                                <span class="place-distance">15 min walk</span>
+                            </div>
+                            <div class="place-item">
+                                <span class="place-name">Eiffel Tower</span>
+                                <span class="place-distance">20 min by metro</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="footer-contact">
-                    <h3 class="footer-title">Contact Us</h3>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-map-marker-alt"></i>
+            </section>
+
+            <!-- Reviews Section -->
+            <section class="info-section">
+                <h2 class="section-title">Guest Reviews</h2>
+
+                <div class="review-summary">
+                    <div class="overall-rating">
+                        <div class="rating-stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
                         </div>
-                        <div class="contact-text">
-                            123 Luxury Avenue, New York, NY 10001, USA
+                        <div class="rating-score">9.2</div>
+                        <div class="rating-count">1,245 reviews</div>
+                    </div>
+
+                    <div class="rating-categories">
+                        <div class="rating-category">
+                            <div class="category-name">Cleanliness</div>
+                            <div class="category-rating">
+                                <span>9.4</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill" style="width: 94%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating-category">
+                            <div class="category-name">Comfort</div>
+                            <div class="category-rating">
+                                <span>9.3</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill" style="width: 93%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating-category">
+                            <div class="category-name">Location</div>
+                            <div class="category-rating">
+                                <span>9.7</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill" style="width: 97%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating-category">
+                            <div class="category-name">Facilities</div>
+                            <div class="category-rating">
+                                <span>9.1</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill" style="width: 91%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating-category">
+                            <div class="category-name">Staff</div>
+                            <div class="category-rating">
+                                <span>9.5</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rating-category">
+                            <div class="category-name">Value</div>
+                            <div class="category-rating">
+                                <span>8.9</span>
+                                <div class="rating-bar">
+                                    <div class="rating-fill" style="width: 89%;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-phone-alt"></i>
+                </div>
+
+                <div class="review-list">
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer">
+                                <div class="reviewer-avatar">
+                                    <img src="/2.png" alt="Sarah Johnson">
+                                </div>
+                                <div class="reviewer-info">
+                                    <h4>Sarah Johnson</h4>
+                                    <p>New York, USA</p>
+                                </div>
+                            </div>
+                            <div class="review-stats">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
                         </div>
-                        <div class="contact-text">
-                            +1 (555) 123-4567
+                        <div class="review-content">
+                            <p>Absolutely stunning hotel with impeccable service. The location couldn't be better - right in the heart of Paris. Our room was spacious and beautifully appointed with a comfortable bed and luxurious bathroom. The concierge was extremely helpful with restaurant reservations and tour recommendations.</p>
+                        </div>
+                        <div class="review-date">
+                            Verified stay • April 2025
+                        </div>
+                        <div class="management-response">
+                            <div class="response-header">Management Response</div>
+                            <p>Dear Sarah, thank you for your wonderful review! We're delighted you enjoyed your stay with us and that our team could make your Parisian experience memorable. We hope to welcome you back soon!</p>
                         </div>
                     </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            <i class="fas fa-envelope"></i>
+
+                    <div class="review-item">
+                        <div class="review-header">
+                            <div class="reviewer">
+                                <div class="reviewer-avatar">
+                                    <img src="/2.png" alt="Michael Chen">
+                                </div>
+                                <div class="reviewer-info">
+                                    <h4>Michael Chen</h4>
+                                    <p>Toronto, Canada</p>
+                                </div>
+                            </div>
+                            <div class="review-stats">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
                         </div>
-                        <div class="contact-text">
-                            info@luxstay.com
+                        <div class="review-content">
+                            <p>Beautiful historic property with modern amenities. The spa was exceptional and the indoor pool was a nice retreat after a day of sightseeing. Only minor complaint was that breakfast service was a bit slow when the hotel was busy.</p>
+                        </div>
+                        <div class="review-date">
+                            Verified stay • March 2025
                         </div>
                     </div>
-                    <div class="footer-form">
-                        <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
-                        <button class="btn">Subscribe</button>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="info-section">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>What time is check-in and check-out?</span>
+                        <i class="fas fa-chevron-down"></i>
                     </div>
+                    <div class="faq-answer">
+                        <p>Check-in is at 3:00 PM and check-out is at 12:00 PM. Early check-in and late check-out may be available upon request, subject to availability and possibly an additional charge.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Is breakfast included in the room rate?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Breakfast is included in some room rates (like our Executive Suite) but not in others. You can see whether breakfast is included when selecting your room type. Breakfast can also be added to your reservation for an additional fee.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Does the hotel have parking?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we offer valet parking service for €50 per night. Due to our central Paris location, self-parking is not available. There is also a public parking garage nearby at Place Vendôme.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>How far is the hotel from the Eiffel Tower?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>The Eiffel Tower is approximately 3.5 km (2.2 miles) from our hotel. It's about a 20-minute drive or you can take Metro line 8 from Opéra to École Militaire, which takes about 25 minutes total.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>Does the hotel offer airport transfers?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we can arrange private airport transfers in luxury vehicles. The cost is €120 from Charles de Gaulle Airport (CDG) and €90 from Orly Airport (ORY). Please contact our concierge at least 48 hours before your arrival to arrange this service.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Booking Sidebar -->
+        <aside class="booking-sidebar">
+            <div class="booking-card">
+                <h3>Your Stay</h3>
+                <div class="price-summary">
+                    <div class="price-row">
+                        <span>Deluxe Room x 2 nights</span>
+                        <span>$798</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Taxes & fees</span>
+                        <span>$72</span>
+                    </div>
+                    <div class="price-total">
+                        <span>Total</span>
+                        <span>$870</span>
+                    </div>
+                </div>
+
+                <div class="check-availability">
+                    <h3>Check Availability</h3>
+                    <div class="form-group">
+                        <label for="check-in">Check-in Date</label>
+                        <input type="date" id="check-in">
+                    </div>
+                    <div class="form-group">
+                        <label for="check-out">Check-out Date</label>
+                        <input type="date" id="check-out">
+                    </div>
+                    <div class="form-group">
+                        <label for="guests">Guests</label>
+                        <select id="guests">
+                            <option value="1">1 Adult</option>
+                            <option value="2" selected>2 Adults</option>
+                            <option value="3">2 Adults, 1 Child</option>
+                            <option value="4">2 Adults, 2 Children</option>
+                            <option value="5">3 Adults</option>
+                        </select>
+                    </div>
+                    <button class="btn check-btn">Check Availability</button>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="container">
-                <p class="footer-bottom-text">
-                    &copy; 2025 LuxStay. All rights reserved.
+        </aside>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">
+                    <div class="footer-logo-text">Lux<span>Stay</span></div>
+                </div>
+                <p class="footer-desc">
+                    LuxStay offers premium accommodation experiences across the globe. With a focus on luxury, comfort, and exceptional service, we ensure every stay is memorable.
                 </p>
+                <div class="footer-social">
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a th:href="@{#}" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-title">Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/about.html}">About Us</a></li>
+                    <li><a th:href="@{/hotellistingpage.html}" >Hotels</a></li>
+                    <li><a th:href="@{/destination.html}" >Destinations</a></li>
+                    <li><a th:href="@{/contact}" onclick="showPage('contact')">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-links-section">
+                <h3 class="footer-title">Support</h3>
+                <ul class="footer-links">
+                    <li><a th:href="@{/#}">Help Center</a></li>
+                    <li><a th:href="@{/#}">FAQs</a></li>
+                    <li><a th:href="@{/#}">Terms of Service</a></li>
+                    <li><a th:href="@{/#}">Privacy Policy</a></li>
+                    <li><a th:href="@{/#}">Cancellation Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3 class="footer-title">Contact Us</h3>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        123 Luxury Avenue, New York, NY 10001, USA
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-text">
+                        +1 (555) 123-4567
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-text">
+                        info@luxstay.com
+                    </div>
+                </div>
+                <div class="footer-form">
+                    <input type="email" class="footer-input" placeholder="Subscribe to newsletter">
+                    <button class="btn">Subscribe</button>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <p class="footer-bottom-text">
+                &copy; 2025 LuxStay. All rights reserved.
+            </p>
+        </div>
+    </div>
+</footer>
 
-    <!-- JavaScript -->
-    <script>
-        // === Header Scroll Effect ===
-        window.addEventListener('scroll', function() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
+<!-- JavaScript -->
+<script>
+    // Mobile menu toggle functionality
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    const navItems = document.querySelectorAll('.nav-links li');
 
-        // === Mobile Menu Toggle ===
-        const hamburger = document.querySelector('.hamburger');
-        const menu = document.querySelector('.menu');
+    mobileMenuBtn.addEventListener('click', function() {
+        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
 
-        hamburger.addEventListener('click', function() {
-            menu.classList.toggle('active');
-            hamburger.innerHTML = menu.classList.contains('active') 
-                ? '<i class="fas fa-times"></i>' 
-                : '<i class="fas fa-bars"></i>';
-        });
+        // Reset animations
+        if (navLinks.style.display === 'flex') {
+            this.innerHTML = '<i class="fas fa-times"></i>';
+            document.body.style.overflow = 'hidden';
 
-        // === FAQ Toggle ===
-        const faqQuestions = document.querySelectorAll('.faq-question');
+            // Reset and replay animations
+            navItems.forEach((item, index) => {
+                item.style.animation = 'none';
+                item.offsetHeight; // Trigger reflow
+                item.style.animation = `fadeIn 0.5s forwards ${index * 0.1}s`;
+            });
+        } else {
+            this.innerHTML = '<i class="fas fa-bars"></i>';
+            document.body.style.overflow = '';
+        }
+    });
 
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', function() {
-                this.classList.toggle('active');
-                const answer = this.nextElementSibling;
-                answer.classList.toggle('active');
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.navbar') && window.innerWidth <= 992) {
+            navLinks.style.display = 'none';
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 992) {
+            navLinks.style.display = 'flex';
+            mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            document.body.style.overflow = '';
+        } else {
+            navLinks.style.display = 'none';
+        }
+    });
+
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+        const header = document.getElementById('main-header');
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // Set active link
+    document.addEventListener('DOMContentLoaded', function() {
+        const navItems = document.querySelectorAll('.nav-links li a');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
             });
         });
+    });
 
-        // === Rate Option Selection ===
-        const rateOptions = document.querySelectorAll('.rate-option');
+    // === Header Scroll Effect ===
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('header');
+        if (window.scrollY > 100) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
 
-        rateOptions.forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelector('.rate-option.selected').classList.remove('selected');
-                this.classList.add('selected');
-            });
+    // === Mobile Menu Toggle ===
+    const hamburger = document.querySelector('.hamburger');
+    const menu = document.querySelector('.menu');
+
+    hamburger.addEventListener('click', function() {
+        menu.classList.toggle('active');
+        hamburger.innerHTML = menu.classList.contains('active')
+            ? '<i class="fas fa-times"></i>'
+            : '<i class="fas fa-bars"></i>';
+    });
+
+    // === FAQ Toggle ===
+    const faqQuestions = document.querySelectorAll('.faq-question');
+
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            this.classList.toggle('active');
+            const answer = this.nextElementSibling;
+            answer.classList.toggle('active');
         });
+    });
 
-        // === Date Picker Defaults ===
-        // Set min dates to today
-        const today = new Date().toISOString().split('T')[0];
-        const checkInInput = document.getElementById('check-in');
-        const checkOutInput = document.getElementById('check-out');
-        
-        checkInInput.setAttribute('min', today);
-        checkOutInput.setAttribute('min', today);
-        
-        // Set default values (today and tomorrow)
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        const tomorrowStr = tomorrow.toISOString().split('T')[0];
-        
-        checkInInput.value = today;
-        checkOutInput.value = tomorrowStr;
-        
-        // Update min checkout date when checkin changes
-        checkInInput.addEventListener('change', function() {
-            const selectedDate = new Date(this.value);
-            selectedDate.setDate(selectedDate.getDate() + 1);
-            const nextDay = selectedDate.toISOString().split('T')[0];
-            
-            checkOutInput.setAttribute('min', nextDay);
-            
-            // If current checkout is before new checkin + 1, update it
-            if (checkOutInput.value < nextDay) {
-                checkOutInput.value = nextDay;
-            }
-        });
+    // === Rate Option Selection ===
+    const rateOptions = document.querySelectorAll('.rate-option');
 
-        // === Check Availability Button ===
-        const checkBtn = document.querySelector('.check-btn');
-        
-        checkBtn.addEventListener('click', function() {
-            const checkIn = document.getElementById('check-in').value;
-            const checkOut = document.getElementById('check-out').value;
-            const guests = document.getElementById('guests').value;
-            
-            alert(`Checking availability for ${guests} guests from ${checkIn} to ${checkOut}`);
+    rateOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            document.querySelector('.rate-option.selected').classList.remove('selected');
+            this.classList.add('selected');
         });
+    });
 
-        // === Book Now Buttons ===
-        const bookNowBtns = document.querySelectorAll('.book-now-btn');
-        
-        bookNowBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                const roomTitle = this.closest('.room-option').querySelector('.room-title').textContent;
-                const roomPrice = this.closest('.room-option').querySelector('.price-current').textContent;
-                
-                alert(`Booking ${roomTitle} for ${roomPrice} per night`);
-            });
+    // === Date Picker Defaults ===
+    // Set min dates to today
+    const today = new Date().toISOString().split('T')[0];
+    const checkInInput = document.getElementById('check-in');
+    const checkOutInput = document.getElementById('check-out');
+
+    checkInInput.setAttribute('min', today);
+    checkOutInput.setAttribute('min', today);
+
+    // Set default values (today and tomorrow)
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+    checkInInput.value = today;
+    checkOutInput.value = tomorrowStr;
+
+    // Update min checkout date when checkin changes
+    checkInInput.addEventListener('change', function() {
+        const selectedDate = new Date(this.value);
+        selectedDate.setDate(selectedDate.getDate() + 1);
+        const nextDay = selectedDate.toISOString().split('T')[0];
+
+        checkOutInput.setAttribute('min', nextDay);
+
+        // If current checkout is before new checkin + 1, update it
+        if (checkOutInput.value < nextDay) {
+            checkOutInput.value = nextDay;
+        }
+    });
+
+    // === Check Availability Button ===
+    const checkBtn = document.querySelector('.check-btn');
+
+    checkBtn.addEventListener('click', function() {
+        const checkIn = document.getElementById('check-in').value;
+        const checkOut = document.getElementById('check-out').value;
+        const guests = document.getElementById('guests').value;
+
+        alert(`Checking availability for ${guests} guests from ${checkIn} to ${checkOut}`);
+    });
+
+    // === Book Now Buttons ===
+    const bookNowBtns = document.querySelectorAll('.book-now-btn');
+
+    bookNowBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const roomTitle = this.closest('.room-option').querySelector('.room-title').textContent;
+            const roomPrice = this.closest('.room-option').querySelector('.price-current').textContent;
+
+            alert(`Booking ${roomTitle} for ${roomPrice} per night`);
         });
-    </script>
+    });
+</script>
 </body>
 </html>
