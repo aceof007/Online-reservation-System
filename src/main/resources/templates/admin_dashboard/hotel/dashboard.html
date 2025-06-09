@@ -1852,31 +1852,31 @@
 
   <div class="menu">
     <div class="menu-title">Main</div>
-    <a th:href="@{/dashboard.html}" class="menu-item active">
+    <a th:href="@{/admin/Dashboard}" class="menu-item active">
       <i class="fas fa-th-large"></i>
       <span class="menu-text">Dashboard</span>
     </a>
-    <a th:href="@{/hotelsmanagement.html}" class="menu-item">
+    <a th:href="@{/admin/HotelManagement}" class="menu-item">
       <i class="fas fa-building"></i>
       <span class="menu-text">Hotel Management</span>
     </a>
-    <a th:href="@{/user_management.html}" class="menu-item">
+    <a th:href="@{/admin/UserManagement}" class="menu-item">
       <i class="fas fa-users"></i>
       <span class="menu-text">User Management</span>
     </a>
 
     <div class="menu-title">Reports</div>
-    <a th:href="@{/reservation_overview.html}" class="menu-item">
+    <a th:href="@{/admin/reservationOverview}" class="menu-item">
       <i class="fas fa-chart-line"></i>
       <span class="menu-text">Reservation Overview</span>
     </a>
 
     <div class="menu-title">Settings</div>
-    <a th:href="@{/system.html}" class="menu-item">
+    <a th:href="@{/admin/system}" class="menu-item">
       <i class="fas fa-cog"></i>
       <span class="menu-text">Settings</span>
     </a>
-    <a th:href="@{/helpandsupport.html}" class="menu-item">
+    <a th:href="@{/admin/helpandsupport}" class="menu-item">
       <i class="fas fa-question-circle"></i>
       <span class="menu-text">Help & Support</span>
     </a>
@@ -1937,15 +1937,16 @@
       </div>
     </div>
 
+
     <div class="stat-cards">
       <div class="stat-card primary fade-in">
         <div class="stat-content">
           <div class="stat-text">
-            <div class="stat-value">152</div>
+            <div class="stat-value" th:text="${totalProperties}">152</div>
             <div class="stat-label">Total Properties</div>
-            <div class="stat-trend trend-up">
-              <i class="fas fa-arrow-up"></i> 12.5% from last month
-            </div>
+<!--            <div class="stat-trend trend-up">-->
+<!--              <i class="fas fa-arrow-up"></i> 12.5% from last month-->
+<!--            </div>-->
           </div>
           <div class="stat-icon">
             <i class="fas fa-building"></i>
@@ -1956,11 +1957,11 @@
       <div class="stat-card success fade-in">
         <div class="stat-content">
           <div class="stat-text">
-            <div class="stat-value">3,245</div>
+            <div class="stat-value" th:text="${totalBookings}">3,245</div>
             <div class="stat-label">Room Bookings</div>
-            <div class="stat-trend trend-up">
-              <i class="fas fa-arrow-up"></i> 8.3% from last month
-            </div>
+<!--            <div class="stat-trend trend-up">-->
+<!--              <i class="fas fa-arrow-up"></i> 8.3% from last month-->
+<!--            </div>-->
           </div>
           <div class="stat-icon">
             <i class="fas fa-calendar-check"></i>
@@ -1971,11 +1972,11 @@
       <div class="stat-card warning fade-in">
         <div class="stat-content">
           <div class="stat-text">
-            <div class="stat-value">5,842</div>
+            <div class="stat-value" th:text="${totalGuests}">5,842</div>
             <div class="stat-label">Total Guests</div>
-            <div class="stat-trend trend-up">
-              <i class="fas fa-arrow-up"></i> 5.1% from last month
-            </div>
+<!--            <div class="stat-trend trend-up">-->
+<!--              <i class="fas fa-arrow-up"></i> 5.1% from last month-->
+<!--            </div>-->
           </div>
           <div class="stat-icon">
             <i class="fas fa-users"></i>
@@ -1986,11 +1987,11 @@
       <div class="stat-card danger fade-in">
         <div class="stat-content">
           <div class="stat-text">
-            <div class="stat-value">78%</div>
+            <div class="stat-value" th:text="${#numbers.formatDecimal(occupancyRate, 1, 2)} + '%'">78%</div>
             <div class="stat-label">Occupancy Rate</div>
-            <div class="stat-trend trend-down">
-              <i class="fas fa-arrow-down"></i> 2.4% from last month
-            </div>
+<!--            <div class="stat-trend trend-down">-->
+<!--              <i class="fas fa-arrow-down"></i> 2.4% from last month-->
+<!--            </div>-->
           </div>
           <div class="stat-icon">
             <i class="fas fa-chart-pie"></i>
@@ -1998,43 +1999,196 @@
         </div>
       </div>
     </div>
+<!--    <div class="stat-cards">-->
+<!--      <div class="stat-card primary fade-in">-->
+<!--        <div class="stat-content">-->
+<!--          <div class="stat-text">-->
+<!--            <div class="stat-value">152</div>-->
+<!--            <div class="stat-label">Total Properties</div>-->
+<!--            <div class="stat-trend trend-up">-->
+<!--              <i class="fas fa-arrow-up"></i> 12.5% from last month-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="stat-icon">-->
+<!--            <i class="fas fa-building"></i>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="stat-card success fade-in">-->
+<!--        <div class="stat-content">-->
+<!--          <div class="stat-text">-->
+<!--            <div class="stat-value">3,245</div>-->
+<!--            <div class="stat-label">Room Bookings</div>-->
+<!--            <div class="stat-trend trend-up">-->
+<!--              <i class="fas fa-arrow-up"></i> 8.3% from last month-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="stat-icon">-->
+<!--            <i class="fas fa-calendar-check"></i>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="stat-card warning fade-in">-->
+<!--        <div class="stat-content">-->
+<!--          <div class="stat-text">-->
+<!--            <div class="stat-value">5,842</div>-->
+<!--            <div class="stat-label">Total Guests</div>-->
+<!--            <div class="stat-trend trend-up">-->
+<!--              <i class="fas fa-arrow-up"></i> 5.1% from last month-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="stat-icon">-->
+<!--            <i class="fas fa-users"></i>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--      <div class="stat-card danger fade-in">-->
+<!--        <div class="stat-content">-->
+<!--          <div class="stat-text">-->
+<!--            <div class="stat-value">78%</div>-->
+<!--            <div class="stat-label">Occupancy Rate</div>-->
+<!--            <div class="stat-trend trend-down">-->
+<!--              <i class="fas fa-arrow-down"></i> 2.4% from last month-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="stat-icon">-->
+<!--            <i class="fas fa-chart-pie"></i>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
 
     <div class="dashboard-grid">
       <div class="card">
         <div class="card-header">
           <div class="card-title">Booking Analytics</div>
           <div class="card-actions">
-            <button class="card-btn active">Weekly</button>
-            <button class="card-btn">Monthly</button>
-            <button class="card-btn">Yearly</button>
+            <button class="card-btn active" onclick="updateChart('bookingChart', 'weekly')">Weekly</button>
+            <button class="card-btn" onclick="updateChart('bookingChart', 'monthly')">Monthly</button>
+            <button class="card-btn" onclick="updateChart('bookingChart', 'yearly')">Yearly</button>
           </div>
         </div>
         <div class="chart-container">
-          <canvas id="bookingChart"></canvas>
+          <canvas id="bookingChart"
+                  th:attr="data-labels=${#strings.listJoin(bookingAnalytics.labels, ',')},
+                   data-data=${#strings.listJoin(bookingAnalytics.data, ',')}">
+          </canvas>
         </div>
+        <!--        <div class="chart-container">-->
+<!--          <canvas id="bookingChart"-->
+<!--                  data-labels='[[${#strings.listJoin(bookingAnalytics.labels, "','")}]]'-->
+<!--          data-data='[[${#strings.listJoin(bookingAnalytics.data, ",")}]]'></canvas>-->
+<!--        </div>-->
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-title">Revenue by Property</div>
           <div class="card-actions">
-            <button class="card-btn active">This Month</button>
-            <button class="card-btn">Quarter</button>
+            <button class="card-btn active" onclick="updateRevenueChart('month')">This Month</button>
+            <button class="card-btn" onclick="updateRevenueChart('quarter')">Quarter</button>
           </div>
         </div>
         <div class="chart-container">
-          <canvas id="revenueChart"></canvas>
+          <canvas id="revenueChart"
+                  th:attr="data-labels=${#strings.listJoin(revenueByProperty.labels, ',')},
+                   data-data=${#strings.listJoin(revenueByProperty.data, ',')}">
+          </canvas>
         </div>
+        <!--        <div class="chart-container">-->
+<!--          <canvas id="revenueChart"-->
+<!--                  data-labels='[[${#strings.listJoin(revenueByProperty.labels, "','")}]]'-->
+<!--          data-data='[[${#strings.listJoin(revenueByProperty.data, ",")}]]'></canvas>-->
+<!--        </div>-->
       </div>
     </div>
+
+
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      // Initialize charts with dynamic data
+      document.addEventListener('DOMContentLoaded', function() {
+        // Booking Chart
+        const bookingCtx = document.getElementById('bookingChart')?.getContext('2d');
+        if (bookingCtx) {
+          const bookingChart = new Chart(bookingCtx, {
+            type: 'line',
+            data: {
+              labels: /*[[${bookingAnalytics.labels}]]*/ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+              datasets: [{
+                label: 'Bookings',
+                data: /*[[${bookingAnalytics.data}]]*/ [65, 59, 80, 81, 56, 55, 40],
+                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                borderColor: 'rgba(79, 70, 229, 1)',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true
+              }]
+            },
+            options: getChartOptions()
+          });
+        }
+
+        // Revenue Chart
+        const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
+        if (revenueCtx) {
+          new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+              labels: /*[[${revenueByProperty.labels}]]*/ ['Grand Royale', 'Sunset Beach', 'Mountain View', 'City Center'],
+              datasets: [{
+                label: 'Revenue',
+                data: /*[[${revenueByProperty.data}]]*/ [125000, 98000, 75000, 60000],
+                backgroundColor: [
+                  'rgba(79, 70, 229, 0.8)',
+                  'rgba(16, 185, 129, 0.8)',
+                  'rgba(59, 130, 246, 0.8)',
+                  'rgba(245, 158, 11, 0.8)'
+                ],
+                borderWidth: 0
+              }]
+            },
+            options: getChartOptions()
+          });
+        }
+
+        // Function to update chart via AJAX
+        function updateChart(chartId, period) {
+          fetch('/admin/dashboard/chart-data?chart=' + chartId + '&period=' + period)
+                  .then(response => response.json())
+                  .then(data => {
+                    // Update chart data
+                    window[chartId + 'Chart'].data.labels = data.labels;
+                    window[chartId + 'Chart'].data.datasets[0].data = data.data;
+                    window[chartId + 'Chart'].update();
+                  });
+        }
+
+        function getChartOptions() {
+          return {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              y: { beginAtZero: true, grid: { drawBorder: false } },
+              x: { grid: { display: false } }
+            }
+          };
+        }
+      });
+      /*]]>*/
+    </script>
 
     <div class="recent-bookings">
       <div class="card-header">
         <div class="card-title">Recent Bookings</div>
         <div class="card-actions">
-          <button class="btn btn-outline">
-            <i class="fas fa-list"></i> View All
-          </button>
+<!--          <a th:href="@{/admin/bookingManagement}" class="btn btn-outline">-->
+<!--            <i class="fas fa-list"></i> View All-->
+<!--          </a>-->
         </div>
       </div>
 
@@ -2053,100 +2207,27 @@
           </tr>
           </thead>
           <tbody>
-          <tr>
-            <td>#BK-1234</td>
-            <td>John Smith</td>
-            <td>Grand Royale</td>
-            <td>Deluxe Suite</td>
-            <td>May 18, 2025</td>
-            <td>May 22, 2025</td>
-            <td><span class="status confirmed"><i class="fas fa-check-circle"></i> Confirmed</span></td>
+          <tr th:each="booking : ${recentBookings}">
+            <td th:text="'#' + ${booking.id}">#BK-1234</td>
+            <td th:text="${booking.customer.firstName + ' ' + booking.customer.lastName}">John Smith</td>
+            <td th:text="${booking.specificRoom.room.hotel.name}">Grand Royale</td>
+            <td th:text="${booking.specificRoom.room.roomType}">Deluxe Suite</td>
+            <td th:text="${#temporals.format(booking.checkInDate, 'MMM d, yyyy')}">May 18, 2025</td>
+            <td th:text="${#temporals.format(booking.checkOutDate, 'MMM d, yyyy')}">May 22, 2025</td>
+            <td>
+            <span th:classappend="'status ' + ${#strings.toLowerCase(booking.status.toString())}">
+              <i th:classappend="${booking.status == T(com.ORS.Online_reservation_System.model.BookingStatus).CONFIRMED} ? 'fas fa-check-circle'
+                : (${booking.status == T(com.ORS.Online_reservation_System.model.BookingStatus).PENDING} ? 'fas fa-clock'
+                : 'fas fa-times-circle')"></i>
+              <span th:text="${booking.status}">Confirmed</span>
+            </span>
+            </td>
             <td>
               <div class="action-btns">
-                <button class="action-btn view tooltip">
+                <a th:href="@{/admin/booking/{id}(id=${booking.id})}" class="action-btn view tooltip">
                   <i class="fas fa-eye"></i>
                   <span class="tooltip-text">View Details</span>
-                </button>
-                <button class="action-btn edit tooltip">
-                  <i class="fas fa-edit"></i>
-                  <span class="tooltip-text">Edit Booking</span>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>#BK-1235</td>
-            <td>Sarah Johnson</td>
-            <td>Sunset Beach</td>
-            <td>Executive Room</td>
-            <td>May 19, 2025</td>
-            <td>May 23, 2025</td>
-            <td><span class="status pending"><i class="fas fa-clock"></i> Pending</span></td>
-            <td>
-              <div class="action-btns">
-                <button class="action-btn view">
-                  <i class="fas fa-eye"></i>
-                </button>
-                <button class="action-btn edit">
-                  <i class="fas fa-edit"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>#BK-1236</td>
-            <td>Michael Brown</td>
-            <td>Mountain View</td>
-            <td>Luxury Suite</td>
-            <td>May 20, 2025</td>
-            <td>May 25, 2025</td>
-            <td><span class="status confirmed"><i class="fas fa-check-circle"></i> Confirmed</span></td>
-            <td>
-              <div class="action-btns">
-                <button class="action-btn view">
-                  <i class="fas fa-eye"></i>
-                </button>
-                <button class="action-btn edit">
-                  <i class="fas fa-edit"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>#BK-1237</td>
-            <td>Emily Davis</td>
-            <td>City Center</td>
-            <td>Standard Room</td>
-            <td>May 18, 2025</td>
-            <td>May 20, 2025</td>
-            <td><span class="status cancelled"><i class="fas fa-times-circle"></i> Cancelled</span></td>
-            <td>
-              <div class="action-btns">
-                <button class="action-btn view">
-                  <i class="fas fa-eye"></i>
-                </button>
-                <button class="action-btn edit">
-                  <i class="fas fa-edit"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>#BK-1238</td>
-            <td>David Wilson</td>
-            <td>Grand Royale</td>
-            <td>Premium Room</td>
-            <td>May 21, 2025</td>
-            <td>May 24, 2025</td>
-            <td><span class="status confirmed"><i class="fas fa-check-circle"></i> Confirmed</span></td>
-            <td>
-              <div class="action-btns">
-                <button class="action-btn view">
-                  <i class="fas fa-eye"></i>
-                </button>
-                <button class="action-btn edit">
-                  <i class="fas fa-edit"></i>
-                </button>
+                </a>
               </div>
             </td>
           </tr>
@@ -2154,225 +2235,133 @@
         </table>
       </div>
     </div>
+
   </div>
 
-  <!-- Booking Management Section -->
   <div id="booking-management-content">
     <div class="page-header">
       <h1 class="page-title"><i class="fas fa-calendar-check"></i> Booking Management</h1>
       <div class="page-actions">
-        <button class="btn btn-outline">
+        <button class="btn btn-outline" id="filter-toggle">
           <i class="fas fa-filter"></i> Advanced Filters
         </button>
-        <button class="btn btn-primary" id="new-booking-btn">
+        <a href="#" class="btn btn-primary" id="new-booking-btn">
           <i class="fas fa-plus"></i> New Booking
-        </button>
+        </a>
       </div>
     </div>
 
-    <div class="booking-filters">
-      <div class="filter-group">
-        <label class="filter-label">Status</label>
-        <select class="filter-select">
-          <option>All Statuses</option>
-          <option>Confirmed</option>
-          <option>Pending</option>
-          <option>Cancelled</option>
-        </select>
-      </div>
+    <div class="booking-filters" id="advanced-filters">
+      <form th:action="@{/admin/bookingManagement}" method="get">
+        <div class="filter-group">
+          <label class="filter-label">Status</label>
+          <select name="status" class="filter-select">
+            <option value="">All Statuses</option>
+            <option th:each="status : ${statuses}"
+                    th:value="${status}"
+                    th:text="${status}"
+                    th:selected="${param.status != null && param.status == status.toString()}">
+            </option>
+          </select>
+        </div>
 
-      <div class="filter-group">
-        <label class="filter-label">Hotel</label>
-        <select class="filter-select">
-          <option>All Hotels</option>
-          <option>Grand Royale</option>
-          <option>Sunset Beach</option>
-          <option>Mountain View</option>
-          <option>City Center</option>
-        </select>
-      </div>
+        <div class="filter-group">
+          <label class="filter-label">Hotel</label>
+          <select name="hotelId" class="filter-select">
+            <option value="">All Hotels</option>
+            <option th:each="hotel : ${hotels}"
+                    th:value="${hotel.hotelId}"
+                    th:text="${hotel.name}"
+                    th:selected="${param.hotelId != null && param.hotelId == hotel.hotelId.toString()}">
+            </option>
+          </select>
+        </div>
 
-      <div class="filter-group">
-        <label class="filter-label">Room Type</label>
-        <select class="filter-select">
-          <option>All Room Types</option>
-          <option>Deluxe Suite</option>
-          <option>Executive Room</option>
-          <option>Luxury Suite</option>
-          <option>Standard Room</option>
-        </select>
-      </div>
+        <div class="filter-group">
+          <label class="filter-label">Room Type</label>
+          <select name="roomType" class="filter-select">
+            <option value="">All Room Types</option>
+            <option th:each="type : ${roomTypes}"
+                    th:value="${type}"
+                    th:text="${type}"
+                    th:selected="${param.roomType != null && param.roomType == type.toString()}">
+            </option>
+          </select>
+        </div>
 
-      <div class="filter-group">
-        <label class="filter-label">Date Range</label>
-        <select class="filter-select">
-          <option>Today</option>
-          <option>This Week</option>
-          <option>This Month</option>
-          <option>Custom Range</option>
-        </select>
-      </div>
+        <div class="filter-group">
+          <label class="filter-label">Date Range</label>
+          <select name="dateRange" class="filter-select">
+            <option value="">All Dates</option>
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+      </form>
     </div>
 
-    <div class="booking-card">
+    <div th:each="booking : ${bookings.content}" class="booking-card">
       <div class="booking-header">
         <div>
-          <span class="booking-id">#BK-1256</span>
-          <span class="booking-date">Created: May 15, 2025</span>
+          <span class="booking-id" th:text="'#' + ${booking.id}">#BK-1256</span>
+          <span class="booking-date" th:text="'Created: ' + ${#temporals.format(booking.createdAt, 'MMM d, yyyy')}">
+          Created: May 15, 2025
+        </span>
         </div>
         <div>
-          <span class="badge badge-success">Confirmed</span>
+        <span th:classappend="'badge ' +
+              (${booking.status == T(com.ORS.Online_reservation_System.model.BookingStatus).CONFIRMED} ? 'badge-success' :
+               ${booking.status == T(com.ORS.Online_reservation_System.model.BookingStatus).PENDING} ? 'badge-warning' : 'badge-danger')"
+              th:text="${booking.status}">
+          Confirmed
+        </span>
         </div>
       </div>
 
       <div class="booking-body">
-        <div>
-          <div class="booking-guest">
-            <div class="booking-guest-avatar">JS</div>
-            <div class="booking-guest-info">
-              <div class="booking-guest-name">John Smith</div>
-              <div class="booking-guest-contact">
-                <i class="fas fa-envelope"></i> john.smith@example.com
-                <i class="fas fa-phone" style="margin-left: 1rem;"></i> +1 555-123-4567
-              </div>
-            </div>
-          </div>
-
-          <div class="booking-details">
-            <div class="booking-detail-label">Check-in:</div>
-            <div class="booking-detail-value">May 18, 2025</div>
-
-            <div class="booking-detail-label">Check-out:</div>
-            <div class="booking-detail-value">May 22, 2025</div>
-
-            <div class="booking-detail-label">Guests:</div>
-            <div class="booking-detail-value">2 Adults</div>
-
-            <div class="booking-detail-label">Special Requests:</div>
-            <div class="booking-detail-value">Late check-in, King bed preferred</div>
-          </div>
-        </div>
-
-        <div>
-          <div class="booking-room">
-            <div class="booking-room-img">
-              <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Room">
-            </div>
-            <div class="booking-room-info">
-              <div class="booking-room-title">Deluxe Suite</div>
-              <div class="booking-room-hotel">Grand Royale Hotel</div>
-              <div class="booking-room-price">$350 / night</div>
-            </div>
-          </div>
-
-          <div class="booking-details">
-            <div class="booking-detail-label">Nights:</div>
-            <div class="booking-detail-value">4</div>
-
-            <div class="booking-detail-label">Room Number:</div>
-            <div class="booking-detail-value">305</div>
-
-            <div class="booking-detail-label">Booking Source:</div>
-            <div class="booking-detail-value">Website Direct</div>
-
-            <div class="booking-detail-label">Payment Method:</div>
-            <div class="booking-detail-value">Credit Card (VISA ****4242)</div>
-          </div>
-        </div>
+        <!-- Booking details similar to recent bookings but more comprehensive -->
       </div>
 
       <div class="booking-footer">
-        <div class="booking-total">Total: $1,400.00</div>
+        <div class="booking-total" th:text="'Total: $' + ${#numbers.formatDecimal(booking.totalPrice, 1, 2, 'COMMA')}">
+          Total: $1,400.00
+        </div>
         <div class="booking-actions">
-          <button class="btn btn-outline">
-            <i class="fas fa-print"></i> Print
-          </button>
-          <button class="btn btn-primary">
-            <i class="fas fa-edit"></i> Edit
-          </button>
+          <a th:href="@{/admin/booking/{id}(id=${booking.id})}" class="btn btn-primary">
+            <i class="fas fa-eye"></i> View Details
+          </a>
         </div>
       </div>
     </div>
 
-    <div class="booking-card">
-      <div class="booking-header">
-        <div>
-          <span class="booking-id">#BK-1255</span>
-          <span class="booking-date">Created: May 14, 2025</span>
-        </div>
-        <div>
-          <span class="badge badge-warning">Pending</span>
-        </div>
-      </div>
+    <!-- Pagination -->
+    <div class="pagination" th:if="${bookings.totalPages > 1}">
+      <a th:href="@{|/admin/bookingManagement?page=0&status=${param.status}&hotelId=${param.hotelId}&roomType=${param.roomType}&dateRange=${param.dateRange}|}"
+         th:classappend="${bookings.first} ? 'disabled' : ''">
+        <i class="fas fa-angle-double-left"></i>
+      </a>
 
-      <div class="booking-body">
-        <div>
-          <div class="booking-guest">
-            <div class="booking-guest-avatar">SJ</div>
-            <div class="booking-guest-info">
-              <div class="booking-guest-name">Sarah Johnson</div>
-              <div class="booking-guest-contact">
-                <i class="fas fa-envelope"></i> sarah.j@example.com
-                <i class="fas fa-phone" style="margin-left: 1rem;"></i> +1 555-987-6543
-              </div>
-            </div>
-          </div>
+      <a th:href="@{|/admin/bookingManagement?page=${bookings.number - 1}&status=${param.status}&hotelId=${param.hotelId}&roomType=${param.roomType}&dateRange=${param.dateRange}|}"
+         th:classappend="${bookings.first} ? 'disabled' : ''">
+        <i class="fas fa-angle-left"></i>
+      </a>
 
-          <div class="booking-details">
-            <div class="booking-detail-label">Check-in:</div>
-            <div class="booking-detail-value">May 19, 2025</div>
+      <span th:text="${bookings.number + 1} + ' of ' + ${bookings.totalPages}"></span>
 
-            <div class="booking-detail-label">Check-out:</div>
-            <div class="booking-detail-value">May 23, 2025</div>
+      <a th:href="@{|/admin/bookingManagement?page=${bookings.number + 1}&status=${param.status}&hotelId=${param.hotelId}&roomType=${param.roomType}&dateRange=${param.dateRange}|}"
+         th:classappend="${bookings.last} ? 'disabled' : ''">
+        <i class="fas fa-angle-right"></i>
+      </a>
 
-            <div class="booking-detail-label">Guests:</div>
-            <div class="booking-detail-value">2 Adults, 1 Child</div>
-
-            <div class="booking-detail-label">Special Requests:</div>
-            <div class="booking-detail-value">High floor, ocean view</div>
-          </div>
-        </div>
-
-        <div>
-          <div class="booking-room">
-            <div class="booking-room-img">
-              <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Room">
-            </div>
-            <div class="booking-room-info">
-              <div class="booking-room-title">Executive Room</div>
-              <div class="booking-room-hotel">Sunset Beach Resort</div>
-              <div class="booking-room-price">$250 / night</div>
-            </div>
-          </div>
-
-          <div class="booking-details">
-            <div class="booking-detail-label">Nights:</div>
-            <div class="booking-detail-value">4</div>
-
-            <div class="booking-detail-label">Room Number:</div>
-            <div class="booking-detail-value">-</div>
-
-            <div class="booking-detail-label">Booking Source:</div>
-            <div class="booking-detail-value">Travel Agency</div>
-
-            <div class="booking-detail-label">Payment Method:</div>
-            <div class="booking-detail-value">Pending</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="booking-footer">
-        <div class="booking-total">Total: $1,000.00</div>
-        <div class="booking-actions">
-          <button class="btn btn-outline">
-            <i class="fas fa-envelope"></i> Send Reminder
-          </button>
-          <button class="btn btn-primary">
-            <i class="fas fa-check"></i> Confirm
-          </button>
-        </div>
-      </div>
+      <a th:href="@{|/admin/bookingManagement?page=${bookings.totalPages - 1}&status=${param.status}&hotelId=${param.hotelId}&roomType=${param.roomType}&dateRange=${param.dateRange}|}"
+         th:classappend="${bookings.last} ? 'disabled' : ''">
+        <i class="fas fa-angle-double-right"></i>
+      </a>
     </div>
+
   </div>
 
 </div>
@@ -2382,99 +2371,135 @@
   <i class="fas fa-plus"></i>
 </div>
 
-<!-- New Booking Modal -->
-<div class="modal" id="booking-modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 class="modal-title">New Booking</h3>
-      <button class="modal-close" id="close-booking-modal">&times;</button>
+<div class="booking-details-container">
+  <div class="booking-details-header">
+    <h2>Booking Details</h2>
+    <a th:href="@{/admin/bookingManagement}" class="btn btn-outline">
+      <i class="fas fa-arrow-left"></i> Back to Bookings
+    </a>
+  </div>
+
+  <div class="booking-details-card">
+    <div class="booking-details-section">
+      <h3>Guest Information</h3>
+      <div class="booking-guest">
+        <div class="booking-guest-avatar"
+             th:text="${#strings.substring(booking.customer.firstName, 0, 1) + #strings.substring(booking.customer.lastName, 0, 1)}">
+          JS
+        </div>
+        <div class="booking-guest-info">
+          <div class="booking-guest-name"
+               th:text="${booking.customer.firstName + ' ' + booking.customer.lastName}">
+            John Smith
+          </div>
+          <div class="booking-guest-contact">
+            <i class="fas fa-envelope"></i>
+            <span th:text="${booking.customer.email}">john.smith@example.com</span>
+            <i class="fas fa-phone" style="margin-left: 1rem;"></i>
+            <span th:text="${booking.customer.phoneNumber}">+1 555-123-4567</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="modal-body">
-      <form id="booking-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Check-in Date</label>
-            <input type="date" class="form-control" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Check-out Date</label>
-            <input type="date" class="form-control" required>
-          </div>
-        </div>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Hotel</label>
-            <select class="form-control" required>
-              <option value="">Select Hotel</option>
-              <option>Grand Royale Hotel</option>
-              <option>Sunset Beach Resort</option>
-              <option>Mountain View Lodge</option>
-              <option>City Center Hotel</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Room Type</label>
-            <select class="form-control" required>
-              <option value="">Select Room Type</option>
-              <option>Deluxe Suite</option>
-              <option>Executive Room</option>
-              <option>Luxury Suite</option>
-              <option>Standard Room</option>
-            </select>
-          </div>
+    <div class="booking-details-section">
+      <h3>Booking Information</h3>
+      <div class="booking-details-grid">
+        <div class="booking-detail-item">
+          <span class="booking-detail-label">Booking ID:</span>
+          <span class="booking-detail-value" th:text="'#' + ${booking.id}">#BK-1256</span>
         </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Adults</label>
-            <select class="form-control" required>
-              <option>1</option>
-              <option selected>2</option>
-              <option>3</option>
-              <option>4</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Children</label>
-            <select class="form-control">
-              <option selected>0</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-            </select>
-          </div>
+        <div class="booking-detail-item">
+          <span class="booking-detail-label">Status:</span>
+          <span class="booking-detail-value"
+                th:classappend="'status-badge ' +
+                (${booking.status == T(com.ORS.Online_reservation_System.model.BookingStatus).CONFIRMED} ? 'confirmed' :
+                 ${booking.status == T(com.ORS.Online_reservation_System.model.BookingStatus).PENDING} ? 'pending' : 'cancelled')"
+                th:text="${booking.status}">
+            Confirmed
+          </span>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Guest Name</label>
-          <input type="text" class="form-control" placeholder="Guest full name" required>
+        <div class="booking-detail-item">
+          <span class="booking-detail-label">Check-in:</span>
+          <span class="booking-detail-value"
+                th:text="${#temporals.format(booking.checkInDate, 'MMM d, yyyy')}">
+            May 18, 2025
+          </span>
         </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" placeholder="guest@example.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Phone</label>
-            <input type="tel" class="form-control" placeholder="+1 555-123-4567" required>
-          </div>
+        <div class="booking-detail-item">
+          <span class="booking-detail-label">Check-out:</span>
+          <span class="booking-detail-value"
+                th:text="${#temporals.format(booking.checkOutDate, 'MMM d, yyyy')}">
+            May 22, 2025
+          </span>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Special Requests</label>
-          <textarea class="form-control" rows="3" placeholder="Any special requests or notes..."></textarea>
+        <div class="booking-detail-item">
+          <span class="booking-detail-label">Guests:</span>
+          <span class="booking-detail-value"
+                th:text="${booking.numberOfAdults} + ' Adults' +
+                (${booking.numberOfChildren > 0} ? ', ' + ${booking.numberOfChildren} + ' Children' : '')">
+            2 Adults
+          </span>
         </div>
-      </form>
+        <div class="booking-detail-item">
+          <span class="booking-detail-label">Special Requests:</span>
+          <span class="booking-detail-value"
+                th:text="${booking.specialRequest != null} ? ${booking.specialRequest} : 'None'">
+            Late check-in, King bed preferred
+          </span>
+        </div>
+      </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" id="cancel-booking">
-        Cancel
-      </button>
-      <button class="btn btn-primary" id="submit-booking">
-        <i class="fas fa-save"></i> Create Booking
-      </button>
+
+    <div class="booking-details-section">
+      <h3>Room Information</h3>
+      <div class="booking-room-details">
+<!--        <div class="booking-room-image">-->
+<!--          <img th:if="${booking.specificRoom.room.roomImages != null && !booking.specificRoom.room.roomImages.empty}"-->
+<!--               th:src="${booking.specificRoom.room.roomImages[0].imageUrl}"-->
+<!--               alt="Room Image">-->
+<!--          <div th:if="${booking.specificRoom.room.roomImages == null || booking.specificRoom.room.roomImages.empty}"-->
+<!--               class="no-image">No Image Available</div>-->
+<!--        </div>-->
+
+        <div class="booking-room-image">
+          <!-- Option 1: Using Thymeleaf's collection size check -->
+          <img th:if="${booking.specificRoom?.room?.roomImages != null and #lists.size(booking.specificRoom.room.roomImages) > 0}"
+               th:src="${booking.specificRoom.room.roomImages[0].imageUrl}"
+               alt="Room Image">
+          <div th:if="${booking.specificRoom?.room?.roomImages == null or #lists.isEmpty(booking.specificRoom.room.roomImages)}"
+               class="no-image">No Image Available</div>
+        </div>
+
+        <div class="booking-room-info">
+          <h4 th:text="${booking.specificRoom.room.roomType}">Deluxe Suite</h4>
+          <p th:text="${booking.specificRoom.room.hotel.name}">Grand Royale Hotel</p>
+          <p th:text="'Room #' + ${booking.specificRoom.roomNumber}">Room #305</p>
+          <p th:text="'$' + ${#numbers.formatDecimal(booking.specificRoom.room.pricePerNight, 1, 2, 'COMMA')} + ' / night'">
+            $350 / night
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-details-section">
+      <h3>Payment Information</h3>
+      <div class="booking-details-grid">
+        <div class="booking-detail-item">
+          <span class="booking-detail-label">Total Amount:</span>
+          <span class="booking-detail-value"
+                th:text="'$' + ${#numbers.formatDecimal(booking.totalPrice, 1, 2, 'COMMA')}">
+            $1,400.00
+          </span>
+        </div>
+        <div class="booking-detail-item">
+          <span class="booking-detail-label">Payment Status:</span>
+          <span class="booking-detail-value"
+                th:text="${booking.payment != null} ? ${booking.payment.status} : 'Not Processed'">
+            Paid
+          </span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -2487,6 +2512,129 @@
 
 <!-- JavaScript -->
 <script>
+  // Add this to your existing JavaScript
+  document.addEventListener('DOMContentLoaded', function() {
+    // Modal functionality
+    const modal = document.getElementById('bookingModal');
+    const modalContent = document.getElementById('modalContent');
+    const closeBtn = document.querySelector('.close-modal');
+
+    // Function to open modal with content
+    function openModal(content) {
+      modalContent.innerHTML = content;
+      modal.style.display = 'block';
+    }
+
+    // Close modal when clicking X
+    closeBtn.onclick = function() {
+      modal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+
+    // Handle view booking clicks
+    document.querySelectorAll('.view-booking').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const bookingId = this.getAttribute('data-booking-id');
+        fetchBookingDetails(bookingId);
+      });
+    });
+
+    // Function to fetch booking details via AJAX
+    function fetchBookingDetails(bookingId) {
+      fetch('/admin/booking/' + bookingId + '/modal')
+              .then(response => response.text())
+              .then(html => {
+                openModal(html);
+              });
+    }
+  });
+
+  // Toggle advanced filters
+  document.getElementById('filter-toggle').addEventListener('click', function() {
+    const filters = document.getElementById('advanced-filters');
+    filters.style.display = filters.style.display === 'none' ? 'block' : 'none';
+  });
+
+  // /*<![CDATA[*/
+  // // Initialize charts with dynamic data
+  // document.addEventListener('DOMContentLoaded', function() {
+  //   // Booking Chart
+  //   const bookingCtx = document.getElementById('bookingChart')?.getContext('2d');
+  //   if (bookingCtx) {
+  //     const bookingChart = new Chart(bookingCtx, {
+  //       type: 'line',
+  //       data: {
+  //         labels: /*[[${bookingAnalytics.labels}]]*/ ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+  //         datasets: [{
+  //           label: 'Bookings',
+  //           data: /*[[${bookingAnalytics.data}]]*/ [65, 59, 80, 81, 56, 55, 40],
+  //           backgroundColor: 'rgba(79, 70, 229, 0.1)',
+  //           borderColor: 'rgba(79, 70, 229, 1)',
+  //           borderWidth: 2,
+  //           tension: 0.4,
+  //           fill: true
+  //         }]
+  //       },
+  //       options: getChartOptions()
+  //     });
+  //   }
+  //
+  //   // Revenue Chart
+  //   const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
+  //   if (revenueCtx) {
+  //     new Chart(revenueCtx, {
+  //       type: 'bar',
+  //       data: {
+  //         labels: /*[[${revenueByProperty.labels}]]*/ ['Grand Royale', 'Sunset Beach', 'Mountain View', 'City Center'],
+  //         datasets: [{
+  //           label: 'Revenue',
+  //           data: /*[[${revenueByProperty.data}]]*/ [125000, 98000, 75000, 60000],
+  //           backgroundColor: [
+  //             'rgba(79, 70, 229, 0.8)',
+  //             'rgba(16, 185, 129, 0.8)',
+  //             'rgba(59, 130, 246, 0.8)',
+  //             'rgba(245, 158, 11, 0.8)'
+  //           ],
+  //           borderWidth: 0
+  //         }]
+  //       },
+  //       options: getChartOptions()
+  //     });
+  //   }
+  //
+  //   // Function to update chart via AJAX
+  //   function updateChart(chartId, period) {
+  //     fetch('/admin/Dashboard/chart-data?chart=' + chartId + '&period=' + period)
+  //             .then(response => response.json())
+  //             .then(data => {
+  //               // Update chart data
+  //               window[chartId + 'Chart'].data.labels = data.labels;
+  //               window[chartId + 'Chart'].data.datasets[0].data = data.data;
+  //               window[chartId + 'Chart'].update();
+  //             });
+  //   }
+  //
+  //   function getChartOptions() {
+  //     return {
+  //       responsive: true,
+  //       maintainAspectRatio: false,
+  //       plugins: { legend: { display: false } },
+  //       scales: {
+  //         y: { beginAtZero: true, grid: { drawBorder: false } },
+  //         x: { grid: { display: false } }
+  //       }
+  //     };
+  //   }
+  // });
+  // /*]]>*/
+
   document.addEventListener('DOMContentLoaded', function() {
     // Toggle Sidebar
     const toggleBtn = document.getElementById('toggle-sidebar');
@@ -2523,7 +2671,7 @@
     //       document.getElementById(`${sectionId}-content`).style.display = 'block';
     //     }
     //   });
-    // });
+    });
 
     // Tab Buttons Click Event
     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -2593,219 +2741,219 @@
       closeBookingModalFunc();
       showToast('Booking created successfully!', 'success');
     });
-
-    // Initialize charts
-    const bookingCtx = document.getElementById('bookingChart')?.getContext('2d');
-    if (bookingCtx) {
-      new Chart(bookingCtx, {
-        type: 'line',
-        data: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-          datasets: [{
-            label: 'Bookings',
-            data: [65, 59, 80, 81, 56, 55, 40],
-            backgroundColor: 'rgba(79, 70, 229, 0.1)',
-            borderColor: 'rgba(79, 70, 229, 1)',
-            borderWidth: 2,
-            tension: 0.4,
-            fill: true
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                drawBorder: false
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              }
-            }
-          }
-        }
-      });
-    }
-
-    const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
-    if (revenueCtx) {
-      new Chart(revenueCtx, {
-        type: 'bar',
-        data: {
-          labels: ['Grand Royale', 'Sunset Beach', 'Mountain View', 'City Center'],
-          datasets: [{
-            label: 'Revenue',
-            data: [125000, 98000, 75000, 60000],
-            backgroundColor: [
-              'rgba(79, 70, 229, 0.8)',
-              'rgba(16, 185, 129, 0.8)',
-              'rgba(59, 130, 246, 0.8)',
-              'rgba(245, 158, 11, 0.8)'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: false
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                drawBorder: false
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              }
-            }
-          }
-        }
-      });
-    }
-
-    const performanceCtx = document.getElementById('performanceChart')?.getContext('2d');
-    if (performanceCtx) {
-      new Chart(performanceCtx, {
-        type: 'line',
-        data: {
-          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-          datasets: [
-            {
-              label: 'Occupancy Rate',
-              data: [65, 59, 80, 81],
-              borderColor: 'rgba(79, 70, 229, 1)',
-              backgroundColor: 'rgba(79, 70, 229, 0.1)',
-              borderWidth: 2,
-              tension: 0.4,
-              fill: true
-            },
-            {
-              label: 'Revenue',
-              data: [45, 40, 65, 70],
-              borderColor: 'rgba(16, 185, 129, 1)',
-              backgroundColor: 'rgba(16, 185, 129, 0.1)',
-              borderWidth: 2,
-              tension: 0.4,
-              fill: true
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top'
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                drawBorder: false
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              }
-            }
-          }
-        }
-      });
-    }
-
-    const sourceCtx = document.getElementById('sourceChart')?.getContext('2d');
-    if (sourceCtx) {
-      new Chart(sourceCtx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Website', 'Travel Agency', 'Phone', 'Walk-in', 'Other'],
-          datasets: [{
-            data: [35, 25, 15, 15, 10],
-            backgroundColor: [
-              'rgba(79, 70, 229, 0.8)',
-              'rgba(16, 185, 129, 0.8)',
-              'rgba(59, 130, 246, 0.8)',
-              'rgba(245, 158, 11, 0.8)',
-              'rgba(156, 163, 175, 0.8)'
-            ],
-            borderWidth: 0
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          cutout: '70%',
-          plugins: {
-            legend: {
-              position: 'right'
-            }
-          }
-        }
-      });
-    }
-
-    const roomPerformanceCtx = document.getElementById('roomPerformanceChart')?.getContext('2d');
-    if (roomPerformanceCtx) {
-      new Chart(roomPerformanceCtx, {
-        type: 'bar',
-        data: {
-          labels: ['Deluxe Suite', 'Executive Room', 'Luxury Suite', 'Standard Room'],
-          datasets: [
-            {
-              label: 'Occupancy',
-              data: [85, 75, 65, 60],
-              backgroundColor: 'rgba(79, 70, 229, 0.8)'
-            },
-            {
-              label: 'Revenue',
-              data: [120000, 95000, 80000, 60000],
-              backgroundColor: 'rgba(16, 185, 129, 0.8)'
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: 'top'
-            }
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-              grid: {
-                drawBorder: false
-              }
-            },
-            x: {
-              grid: {
-                display: false
-              }
-            }
-          }
-        }
-      });
-    }
-  });
+  //
+  //   // Initialize charts
+  //   const bookingCtx = document.getElementById('bookingChart')?.getContext('2d');
+  //   if (bookingCtx) {
+  //     new Chart(bookingCtx, {
+  //       type: 'line',
+  //       data: {
+  //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+  //         datasets: [{
+  //           label: 'Bookings',
+  //           data: [65, 59, 80, 81, 56, 55, 40],
+  //           backgroundColor: 'rgba(79, 70, 229, 0.1)',
+  //           borderColor: 'rgba(79, 70, 229, 1)',
+  //           borderWidth: 2,
+  //           tension: 0.4,
+  //           fill: true
+  //         }]
+  //       },
+  //       options: {
+  //         responsive: true,
+  //         maintainAspectRatio: false,
+  //         plugins: {
+  //           legend: {
+  //             display: false
+  //           }
+  //         },
+  //         scales: {
+  //           y: {
+  //             beginAtZero: true,
+  //             grid: {
+  //               drawBorder: false
+  //             }
+  //           },
+  //           x: {
+  //             grid: {
+  //               display: false
+  //             }
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
+  //
+  //   const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
+  //   if (revenueCtx) {
+  //     new Chart(revenueCtx, {
+  //       type: 'bar',
+  //       data: {
+  //         labels: ['Grand Royale', 'Sunset Beach', 'Mountain View', 'City Center'],
+  //         datasets: [{
+  //           label: 'Revenue',
+  //           data: [125000, 98000, 75000, 60000],
+  //           backgroundColor: [
+  //             'rgba(79, 70, 229, 0.8)',
+  //             'rgba(16, 185, 129, 0.8)',
+  //             'rgba(59, 130, 246, 0.8)',
+  //             'rgba(245, 158, 11, 0.8)'
+  //           ],
+  //           borderWidth: 0
+  //         }]
+  //       },
+  //       options: {
+  //         responsive: true,
+  //         maintainAspectRatio: false,
+  //         plugins: {
+  //           legend: {
+  //             display: false
+  //           }
+  //         },
+  //         scales: {
+  //           y: {
+  //             beginAtZero: true,
+  //             grid: {
+  //               drawBorder: false
+  //             }
+  //           },
+  //           x: {
+  //             grid: {
+  //               display: false
+  //             }
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
+  //
+  //   const performanceCtx = document.getElementById('performanceChart')?.getContext('2d');
+  //   if (performanceCtx) {
+  //     new Chart(performanceCtx, {
+  //       type: 'line',
+  //       data: {
+  //         labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+  //         datasets: [
+  //           {
+  //             label: 'Occupancy Rate',
+  //             data: [65, 59, 80, 81],
+  //             borderColor: 'rgba(79, 70, 229, 1)',
+  //             backgroundColor: 'rgba(79, 70, 229, 0.1)',
+  //             borderWidth: 2,
+  //             tension: 0.4,
+  //             fill: true
+  //           },
+  //           {
+  //             label: 'Revenue',
+  //             data: [45, 40, 65, 70],
+  //             borderColor: 'rgba(16, 185, 129, 1)',
+  //             backgroundColor: 'rgba(16, 185, 129, 0.1)',
+  //             borderWidth: 2,
+  //             tension: 0.4,
+  //             fill: true
+  //           }
+  //         ]
+  //       },
+  //       options: {
+  //         responsive: true,
+  //         maintainAspectRatio: false,
+  //         plugins: {
+  //           legend: {
+  //             position: 'top'
+  //           }
+  //         },
+  //         scales: {
+  //           y: {
+  //             beginAtZero: true,
+  //             grid: {
+  //               drawBorder: false
+  //             }
+  //           },
+  //           x: {
+  //             grid: {
+  //               display: false
+  //             }
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
+  //
+  //   const sourceCtx = document.getElementById('sourceChart')?.getContext('2d');
+  //   if (sourceCtx) {
+  //     new Chart(sourceCtx, {
+  //       type: 'doughnut',
+  //       data: {
+  //         labels: ['Website', 'Travel Agency', 'Phone', 'Walk-in', 'Other'],
+  //         datasets: [{
+  //           data: [35, 25, 15, 15, 10],
+  //           backgroundColor: [
+  //             'rgba(79, 70, 229, 0.8)',
+  //             'rgba(16, 185, 129, 0.8)',
+  //             'rgba(59, 130, 246, 0.8)',
+  //             'rgba(245, 158, 11, 0.8)',
+  //             'rgba(156, 163, 175, 0.8)'
+  //           ],
+  //           borderWidth: 0
+  //         }]
+  //       },
+  //       options: {
+  //         responsive: true,
+  //         maintainAspectRatio: false,
+  //         cutout: '70%',
+  //         plugins: {
+  //           legend: {
+  //             position: 'right'
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
+  //
+  //   const roomPerformanceCtx = document.getElementById('roomPerformanceChart')?.getContext('2d');
+  //   if (roomPerformanceCtx) {
+  //     new Chart(roomPerformanceCtx, {
+  //       type: 'bar',
+  //       data: {
+  //         labels: ['Deluxe Suite', 'Executive Room', 'Luxury Suite', 'Standard Room'],
+  //         datasets: [
+  //           {
+  //             label: 'Occupancy',
+  //             data: [85, 75, 65, 60],
+  //             backgroundColor: 'rgba(79, 70, 229, 0.8)'
+  //           },
+  //           {
+  //             label: 'Revenue',
+  //             data: [120000, 95000, 80000, 60000],
+  //             backgroundColor: 'rgba(16, 185, 129, 0.8)'
+  //           }
+  //         ]
+  //       },
+  //       options: {
+  //         responsive: true,
+  //         maintainAspectRatio: false,
+  //         plugins: {
+  //           legend: {
+  //             position: 'top'
+  //           }
+  //         },
+  //         scales: {
+  //           y: {
+  //             beginAtZero: true,
+  //             grid: {
+  //               drawBorder: false
+  //             }
+  //           },
+  //           x: {
+  //             grid: {
+  //               display: false
+  //             }
+  //           }
+  //         }
+  //       }
+  //     });
+  //   }
+  // });
 </script>
 </body>
 </html>

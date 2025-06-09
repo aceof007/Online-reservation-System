@@ -1,47 +1,16 @@
-package com.ORS.Online_reservation_System.serviceimplementation;
+package com.ORS.Online_reservation_System.services;
 
-import com.ORS.Online_reservation_System.repositories.BookingRepository;
-import com.ORS.Online_reservation_System.repositories.HotelRepository;
-import com.ORS.Online_reservation_System.repositories.UserRepository;
-import com.ORS.Online_reservation_System.services.DashboardService;
-import org.springframework.stereotype.Service;
+import java.util.Map;
 
-import java.time.LocalDate;
+public interface DashboardService {
+    long getTotalProperties();
+    long getTotalBookings();
+    long getTotalGuests();
+    double getOccupancyRate();
 
-@Service
-public class DashboardServiceImpl implements DashboardService {
-
-    private final HotelRepository hotelRepository;
-    private final BookingRepository bookingRepository;
-    private final UserRepository userRepository;
-
-    public DashboardServiceImpl(HotelRepository hotelRepository,
-                                BookingRepository bookingRepository,
-                                UserRepository userRepository) {
-        this.hotelRepository = hotelRepository;
-        this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
-    }
-
-    @Override
-    public long getTotalProperties() {
-        return hotelRepository.count();
-    }
-
-    @Override
-    public long getTotalBookings() {
-        return bookingRepository.count();
-    }
-
-    @Override
-    public long getTotalGuests() {
-        return userRepository.count(); // Or use customerRepository if you have one
-    }
-
-    @Override
-    public double getOccupancyRate() {
-        long totalRooms = hotelRepository.sumAllRooms(); // You'll need to add this method
-        long occupiedRooms = bookingRepository.countActiveBookings(LocalDate.now()); // Add this method
-        return totalRooms > 0 ? (occupiedRooms * 100.0) / totalRooms : 0;
-    }
+    Map<String, Object> getBookingAnalytics(String period);
+    Map<String, Object> getRevenueByProperty(String period);
+    Map<String, Object> getPerformanceMetrics();
+    Map<String, Object> getBookingSources();
+    Map<String, Object> getRoomPerformance();
 }

@@ -1,4 +1,4 @@
-package com.ORS.Online_reservation_System.Controllers.viewcontroller;
+package com.ORS.Online_reservation_System.controllers.viewcontroller;
 
 import com.ORS.Online_reservation_System.DTO.AvailabilityDTO;
 import com.ORS.Online_reservation_System.DTO.LoginDTO;
@@ -37,6 +37,11 @@ public class FrontEndController {
     @GetMapping("/about")
     public String about(Model model) {
         return "/customer/about";
+    }
+
+    @GetMapping("/contact")
+    public String contact(Model model) {
+        return "/customer/contact";
     }
 
     @GetMapping("/hotelDetails/{id}")

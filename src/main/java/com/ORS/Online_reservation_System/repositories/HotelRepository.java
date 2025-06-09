@@ -35,6 +35,9 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
     // Find hotel by name (exact match)
     Optional<Hotel> findByNameIgnoreCase(String name);
 
+    @Query("SELECT SUM(r.totalQuantity) FROM Room r WHERE r.hotel.isActive = true")
+    long sumAllRooms();
+
     // Find hotels by city and star rating
     List<Hotel> findByCityIgnoreCaseAndStarRatingAndIsActiveTrue(String city, Integer starRating);
 

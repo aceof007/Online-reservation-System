@@ -2530,31 +2530,31 @@
 
     <div class="menu">
         <div class="menu-title">Main</div>
-        <a th:href="@{/dashboard.html}" class="menu-item">
+        <a th:href="@{/admin/Dashboard}" class="menu-item">
             <i class="fas fa-th-large"></i>
             <span class="menu-text">Dashboard</span>
         </a>
-        <a th:href="@{/hotelsmanagement.html}" class="menu-item">
+        <a th:href="@{/admin/HotelManagement}" class="menu-item">
             <i class="fas fa-building"></i>
             <span class="menu-text">Hotel Management</span>
         </a>
-        <a th:href="@{/user_management.html}" class="menu-item active">
+        <a th:href="@{/admin/UserManagement}" class="menu-item  active">
             <i class="fas fa-users"></i>
             <span class="menu-text">User Management</span>
         </a>
 
         <div class="menu-title">Reports</div>
-        <a th:href="@{/reservation_overview.html}" class="menu-item">
+        <a th:href="@{/admin/reservationOverview}" class="menu-item">
             <i class="fas fa-chart-line"></i>
             <span class="menu-text">Reservation Overview</span>
         </a>
 
         <div class="menu-title">Settings</div>
-        <a th:href="@{/system.html}" class="menu-item">
+        <a th:href="@{/admin/system}" class="menu-item">
             <i class="fas fa-cog"></i>
             <span class="menu-text">Settings</span>
         </a>
-        <a th:href="@{/helpandsupport.html}" class="menu-item">
+        <a th:href="@{/admin/helpandsupport}" class="menu-item">
             <i class="fas fa-question-circle"></i>
             <span class="menu-text">Help & Support</span>
         </a>
@@ -2621,46 +2621,55 @@
         </div>
 
         <!-- User Search and Filters -->
+        <!-- User Search and Filters -->
         <div class="card">
             <div class="card-header">
                 <div class="card-title">User Search & Filters</div>
             </div>
             <div class="p-4">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="form-label">Search Users</label>
-                            <input type="text" class="form-control" placeholder="Name, email, or user ID">
+                <form th:action="@{/admin/UserManagement}" method="get">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Search Users</label>
+                                <input type="text" class="form-control"
+                                       name="search"
+                                       placeholder="Name, email, or user ID"
+                                       th:value="${searchQuery}">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Role</label>
+                                <select class="form-control" name="role">
+                                    <option value="">All Roles</option>
+                                    <option th:each="role : ${allRoles}"
+                                            th:value="${role}"
+                                            th:text="${role}"
+                                            th:selected="${selectedRole != null && selectedRole == role.toString()}">
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select class="form-control" name="status">
+                                    <option value="">All Statuses</option>
+                                    <option th:each="status : ${allStatuses}"
+                                            th:value="${status}"
+                                            th:text="${status}"
+                                            th:selected="${selectedStatus != null && selectedStatus == status.toString()}">
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="form-label">Role</label>
-                            <select class="form-control">
-                                <option value="">All Roles</option>
-                                <option>Administrator</option>
-                                <option>Manager</option>
-                                <option>Staff</option>
-                                <option>Customer</option>
-                            </select>
-                        </div>
+                    <div class="text-right">
+                        <a th:href="@{/admin/UserManagement}" class="btn btn-outline">Reset</a>
+                        <button type="submit" class="btn btn-primary">Search</button>
                     </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label class="form-label">Status</label>
-                            <select class="form-control">
-                                <option value="">All Statuses</option>
-                                <option>Active</option>
-                                <option>Inactive</option>
-                                <option>Suspended</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <button class="btn btn-outline">Reset</button>
-                    <button class="btn btn-primary">Search</button>
-                </div>
+                </form>
             </div>
         </div>
 
@@ -2669,16 +2678,21 @@
             <div class="card-header">
                 <div class="card-title">User Directory</div>
                 <div class="card-actions">
-                    <div class="bulk-actions" style="display: none;">
-                        <select class="form-control form-control-sm" style="width: 150px;">
-                            <option>Bulk Actions</option>
-                            <option>Activate Selected</option>
-                            <option>Deactivate Selected</option>
-                            <option>Delete Selected</option>
-                        </select>
-                        <button class="btn btn-primary btn-sm">Apply</button>
-                    </div>
-                    <button class="btn btn-outline btn-sm">
+                    <!--                    <div class="bulk-actions" style="display: none;" id="bulkActions">-->
+                    <!--                        <select class="form-control form-control-sm" style="width: 150px;" id="bulkActionSelect">-->
+                    <!--                            <option value="">Bulk Actions</option>-->
+                    <!--                            <option value="ACTIVE">Activate Selected</option>-->
+                    <!--                            <option value="INACTIVE">Deactivate Selected</option>-->
+                    <!--                            <option value="DELETE">Delete Selected</option>-->
+                    <!--                        </select>-->
+                    <!--                        <button class="btn btn-primary btn-sm" id="applyBulkAction">Apply</button>-->
+                    <!--                    </div>-->
+                    <!--                    <form class="search-form" th:action="@{/admin/UserManagement}" method="get">-->
+                    <!--                        <input type="text" name="search" placeholder="Search users..."-->
+                    <!--                               th:value="${searchQuery}">-->
+                    <!--                        <button type="submit"><i class="fas fa-search"></i></button>-->
+                    <!--                    </form>-->
+                    <button class="btn btn-outline btn-sm" id="refreshUsers">
                         <i class="fas fa-sync-alt"></i> Refresh
                     </button>
                 </div>
@@ -2694,34 +2708,37 @@
                         <th>User</th>
                         <th>Email</th>
                         <th>Role</th>
-                        <th>Status</th>
-                        <th>Last Active</th>
+                        <!--                        <th>Status</th>-->
+                        <!--                        <th>Last Active</th>-->
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td><input type="checkbox" class="user-checkbox"></td>
+                    <tr th:each="user : ${users.content}">
+                        <td><input type="checkbox" class="user-checkbox" th:value="${user.userId}"></td>
                         <td>
                             <div class="user-card">
-                                <div class="user-avatar">JD</div>
+                                <div class="user-avatar"
+                                     th:text="${#strings.substring(user.firstName, 0, 1) + #strings.substring(user.lastName, 0, 1)}">
+                                    JD
+                                </div>
                                 <div class="user-details">
-                                    <div class="user-name">John Doe</div>
-                                    <div class="user-email">john.doe@example.com</div>
+                                    <div class="user-name" th:text="${user.firstName + ' ' + user.lastName}">John Doe</div>
+                                    <div class="user-email" th:text="${user.email}">john.doe@example.com</div>
                                 </div>
                             </div>
                         </td>
-                        <td>john.doe@example.com</td>
+                        <td th:text="${user.email}">john.doe@example.com</td>
                         <td>
-                            <span class="user-role">Administrator</span>
+                            <span class="user-role" th:text="${user.role}">Administrator</span>
                         </td>
-                        <td>
-                            <div class="user-status active">
-                                <span class="user-status-dot"></span>
-                                <span>Active</span>
-                            </div>
-                        </td>
-                        <td>2 hours ago</td>
+                        <!--                        <td>-->
+                        <!--                            <div th:classappend="'user-status ' + ${#strings.toLowerCase(user.status)}">-->
+                        <!--                                <span class="user-status-dot"></span>-->
+                        <!--                                <span th:text="${user.status}">Active</span>-->
+                        <!--                            </div>-->
+                        <!--                        </td>-->
+                        <!--                        <td th:text="${#temporals.format(user.lastActiveDate, 'MMM d, yyyy')}">2 hours ago</td>-->
                         <td>
                             <div class="user-actions">
                                 <button class="action-btn view">
@@ -2730,151 +2747,7 @@
                                 <button class="action-btn edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="action-btn delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="user-checkbox"></td>
-                        <td>
-                            <div class="user-card">
-                                <div class="user-avatar">AS</div>
-                                <div class="user-details">
-                                    <div class="user-name">Alice Smith</div>
-                                    <div class="user-email">alice.smith@example.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>alice.smith@example.com</td>
-                        <td>
-                            <span class="user-role">Manager</span>
-                        </td>
-                        <td>
-                            <div class="user-status active">
-                                <span class="user-status-dot"></span>
-                                <span>Active</span>
-                            </div>
-                        </td>
-                        <td>1 day ago</td>
-                        <td>
-                            <div class="user-actions">
-                                <button class="action-btn view">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="user-checkbox"></td>
-                        <td>
-                            <div class="user-card">
-                                <div class="user-avatar">RJ</div>
-                                <div class="user-details">
-                                    <div class="user-name">Robert Johnson</div>
-                                    <div class="user-email">robert.j@example.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>robert.j@example.com</td>
-                        <td>
-                            <span class="user-role">Staff</span>
-                        </td>
-                        <td>
-                            <div class="user-status inactive">
-                                <span class="user-status-dot"></span>
-                                <span>Inactive</span>
-                            </div>
-                        </td>
-                        <td>1 week ago</td>
-                        <td>
-                            <div class="user-actions">
-                                <button class="action-btn view">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="user-checkbox"></td>
-                        <td>
-                            <div class="user-card">
-                                <div class="user-avatar">MB</div>
-                                <div class="user-details">
-                                    <div class="user-name">Maria Brown</div>
-                                    <div class="user-email">maria.b@example.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>maria.b@example.com</td>
-                        <td>
-                            <span class="user-role">Customer</span>
-                        </td>
-                        <td>
-                            <div class="user-status active">
-                                <span class="user-status-dot"></span>
-                                <span>Active</span>
-                            </div>
-                        </td>
-                        <td>3 days ago</td>
-                        <td>
-                            <div class="user-actions">
-                                <button class="action-btn view">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" class="user-checkbox"></td>
-                        <td>
-                            <div class="user-card">
-                                <div class="user-avatar">DW</div>
-                                <div class="user-details">
-                                    <div class="user-name">David Wilson</div>
-                                    <div class="user-email">david.w@example.com</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>david.w@example.com</td>
-                        <td>
-                            <span class="user-role">Customer</span>
-                        </td>
-                        <td>
-                            <div class="user-status suspended">
-                                <span class="user-status-dot"></span>
-                                <span>Suspended</span>
-                            </div>
-                        </td>
-                        <td>2 weeks ago</td>
-                        <td>
-                            <div class="user-actions">
-                                <button class="action-btn view">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="action-btn edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete">
+                                <button class="action-btn delete" th:data-user-id="${user.userId}">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -2887,25 +2760,33 @@
             <!-- Pagination -->
             <div class="card-footer">
                 <div class="pagination">
-                    <button class="btn btn-outline btn-sm" disabled>
+                    <button class="btn btn-outline btn-sm"
+                            th:disabled="${users.first}"
+                            th:attr="onclick=${users.first} ? '' : 'window.location.href=\'/admin/UserManagement?page=' + (${users.number} - 1) + (${searchQuery} != null ? '&search=' + ${searchQuery} : '') + '\''">
                         <i class="fas fa-chevron-left"></i> Previous
                     </button>
                     <div class="page-numbers">
-                        <button class="btn btn-primary btn-sm">1</button>
-                        <button class="btn btn-outline btn-sm">2</button>
-                        <button class="btn btn-outline btn-sm">3</button>
-                        <span>...</span>
-                        <button class="btn btn-outline btn-sm">10</button>
+                        <th:block th:each="i : ${#numbers.sequence(1, users.totalPages)}">
+                            <button th:classappend="${users.number + 1 == i} ? 'btn btn-primary btn-sm' : 'btn btn-outline btn-sm'"
+                                    th:attr="onclick='window.location.href=\'/admin/UserManagement?page=' + (${i} - 1) + (${searchQuery} != null ? '&search=' + ${searchQuery} : '') + '\''"
+                                    th:text="${i}">
+                            </button>
+                        </th:block>
                     </div>
-                    <button class="btn btn-outline btn-sm">
+                    <button class="btn btn-outline btn-sm"
+                            th:disabled="${users.last}"
+                            th:attr="onclick=${users.last} ? '' : 'window.location.href=\'/admin/UserManagement?page=' + (${users.number} + 1) + (${searchQuery} != null ? '&search=' + ${searchQuery} : '') + '\''">
                         Next <i class="fas fa-chevron-right"></i>
                     </button>
                     <div class="page-info">
-                        Showing 1-5 of 25 users
+                        Showing <span th:text="${users.number * users.size + 1}">1</span>-<span
+                            th:text="${users.number * users.size + users.numberOfElements}">5</span> of
+                        <span th:text="${users.totalElements}">25</span> users
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
 </div>
@@ -2916,51 +2797,58 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3 class="modal-title">Add New User</h3>
-            <button class="modal-close">&times;</button>
+            <button type="button" class="modal-close">&times;</button>
         </div>
         <div class="modal-body">
-            <form id="add-user-form">
+            <form id="add-user-form" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
                             <label class="form-label">First Name*</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" name="firstName" class="form-control" required>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
                             <label class="form-label">Last Name*</label>
-                            <input type="text" class="form-control" required>
+                            <input type="text" name="lastName" class="form-control" required>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
+                    <label class="form-label">Username*</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+
+                <div class="form-group">
                     <label class="form-label">Email Address*</label>
-                    <input type="email" class="form-control" required>
+                    <input type="email" name="email" class="form-control" required>
                 </div>
 
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
                             <label class="form-label">Role*</label>
-                            <select class="form-control" required>
+                            <select name="role" class="form-control" required>
                                 <option value="">Select Role</option>
-                                <option>Administrator</option>
-                                <option>Manager</option>
-                                <option>Staff</option>
-                                <option>Customer</option>
+                                <option th:each="role : ${allRoles}"
+                                        th:value="${role}"
+                                        th:text="${role}">
+                                </option>
                             </select>
                         </div>
                     </div>
+
                     <div class="col">
                         <div class="form-group">
                             <label class="form-label">Status*</label>
-                            <select class="form-control" required>
+                            <select name="status" class="form-control" required>
                                 <option value="">Select Status</option>
-                                <option>Active</option>
-                                <option>Inactive</option>
-                                <option>Pending</option>
+                                <option th:each="status : ${allStatuses}"
+                                        th:value="${status}"
+                                        th:text="${status}">
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -2968,32 +2856,107 @@
 
                 <div class="form-group">
                     <label class="form-label">Password*</label>
-                    <input type="password" class="form-control" required>
+                    <input type="password" name="password" class="form-control" required>
                 </div>
 
                 <div class="form-group">
                     <label class="form-label">Confirm Password*</label>
-                    <input type="password" class="form-control" required>
+                    <input type="password" name="confirmPassword" class="form-control" required>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">Profile Photo</label>
-                    <div class="image-upload">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Drag & drop photo here or click to browse</p>
-                        <input type="file" accept="image/*" style="display: none;">
-                    </div>
-                </div>
             </form>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-outline" id="cancel-add-user">Cancel</button>
-            <button class="btn btn-primary" id="save-user">
+            <button type="button" class="btn btn-outline" id="cancel-add-user">Cancel</button>
+            <button type="button" class="btn btn-primary" id="save-user">
                 <i class="fas fa-save"></i> Save User
             </button>
         </div>
     </div>
 </div>
+<!--&lt;!&ndash; Add User Modal &ndash;&gt;-->
+<!--<div class="modal" id="add-user-modal">-->
+<!--    <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--            <h3 class="modal-title">Add New User</h3>-->
+<!--            <button class="modal-close">&times;</button>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
+<!--            <form id="add-user-form">-->
+<!--                <div class="row">-->
+<!--                    <div class="col">-->
+<!--                        <div class="form-group">-->
+<!--                            <label class="form-label">First Name*</label>-->
+<!--                            <input type="text" class="form-control" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col">-->
+<!--                        <div class="form-group">-->
+<!--                            <label class="form-label">Last Name*</label>-->
+<!--                            <input type="text" class="form-control" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label class="form-label">Email Address*</label>-->
+<!--                    <input type="email" class="form-control" required>-->
+<!--                </div>-->
+
+<!--                <div class="row">-->
+<!--                    <div class="col">-->
+<!--                        <div class="form-group">-->
+<!--                            <label class="form-label">Role*</label>-->
+<!--                            <select class="form-control" required>-->
+<!--                                <option value="">Select Role</option>-->
+<!--                                <option>Administrator</option>-->
+<!--                                <option>Manager</option>-->
+<!--                                <option>Staff</option>-->
+<!--                                <option>Customer</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="col">-->
+<!--                        <div class="form-group">-->
+<!--                            <label class="form-label">Status*</label>-->
+<!--                            <select class="form-control" required>-->
+<!--                                <option value="">Select Status</option>-->
+<!--                                <option>Active</option>-->
+<!--                                <option>Inactive</option>-->
+<!--                                <option>Pending</option>-->
+<!--                            </select>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label class="form-label">Password*</label>-->
+<!--                    <input type="password" class="form-control" required>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label class="form-label">Confirm Password*</label>-->
+<!--                    <input type="password" class="form-control" required>-->
+<!--                </div>-->
+
+<!--                <div class="form-group">-->
+<!--                    <label class="form-label">Profile Photo</label>-->
+<!--                    <div class="image-upload">-->
+<!--                        <i class="fas fa-cloud-upload-alt"></i>-->
+<!--                        <p>Drag & drop photo here or click to browse</p>-->
+<!--                        <input type="file" accept="image/*" style="display: none;">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--        <div class="modal-footer">-->
+<!--            <button class="btn btn-outline" id="cancel-add-user">Cancel</button>-->
+<!--            <button class="btn btn-primary" id="save-user">-->
+<!--                <i class="fas fa-save"></i> Save User-->
+<!--            </button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <!-- Floating Action Button -->
 <div class="fab" id="quick-action-btn">
@@ -3009,388 +2972,190 @@
 <!-- JavaScript -->
 <script>
 
+    // Add this to your existing JavaScript
+    document.querySelector('input[name="search"]').addEventListener('input', function(e) {
+        const searchValue = e.target.value;
+        const role = document.querySelector('select[name="role"]').value;
+        const status = document.querySelector('select[name="status"]').value;
+
+        // Debounce the search to avoid too many requests
+        clearTimeout(window.searchTimeout);
+        window.searchTimeout = setTimeout(() => {
+            const url = `/admin/UserManagement?search=${encodeURIComponent(searchValue)}` +
+                (role ? `&role=${encodeURIComponent(role)}` : '') +
+                (status ? `&status=${encodeURIComponent(status)}` : '');
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    document.querySelector('.table-container').innerHTML =
+                        doc.querySelector('.table-container').innerHTML;
+                    document.querySelector('.card-footer').innerHTML =
+                        doc.querySelector('.card-footer').innerHTML;
+                });
+        }, 300);
+    });
+
+    // Add similar event listeners for role and status select changes
+    document.querySelectorAll('select[name="role"], select[name="status"]').forEach(select => {
+        select.addEventListener('change', function() {
+            document.querySelector('button[type="submit"]').click();
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
-        // Add User Modal
+        // Modal handling
         const addUserBtn = document.getElementById('add-user-btn');
         const addUserModal = document.getElementById('add-user-modal');
         const cancelAddUser = document.getElementById('cancel-add-user');
+        const closeButtons = document.querySelectorAll('.modal-close');
 
+        // // Image preview functionality
+        // const profilePhotoInput = document.getElementById('profilePhoto');
+        // const imagePreview = document.getElementById('imagePreview');
+        //
+        // profilePhotoInput.addEventListener('change', function(e) {
+        //     if (e.target.files.length > 0) {
+        //         const file = e.target.files[0];
+        //         const reader = new FileReader();
+        //
+        //         reader.onload = function(event) {
+        //             imagePreview.innerHTML = `
+        //             <img src="${event.target.result}"
+        //                  style="max-width: 150px; max-height: 150px; border-radius: 50%;">
+        //         `;
+        //         };
+        //
+        //         reader.readAsDataURL(file);
+        //     }
+        // });
+
+        // Open modal
         if (addUserBtn) {
             addUserBtn.addEventListener('click', function() {
                 addUserModal.classList.add('active');
             });
         }
 
-        if (cancelAddUser) {
-            cancelAddUser.addEventListener('click', function() {
-                addUserModal.classList.remove('active');
-            });
+        // Close modal
+        function closeModal() {
+            addUserModal.classList.remove('active');
+            document.getElementById('add-user-form').reset();
+            imagePreview.innerHTML = '';
         }
 
-        // Close modal when clicking outside
+        if (cancelAddUser) cancelAddUser.addEventListener('click', closeModal);
+
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', closeModal);
+        });
+
+        // Close when clicking outside modal
         addUserModal.addEventListener('click', function(e) {
-            if (e.target === this) {
-                addUserModal.classList.remove('active');
-            }
+            if (e.target === this) closeModal();
         });
-
-        // Bulk actions
-        const selectAll = document.getElementById('select-all-users');
-        const userCheckboxes = document.querySelectorAll('.user-checkbox');
-        const bulkActions = document.querySelector('.bulk-actions');
-
-        if (selectAll) {
-            selectAll.addEventListener('change', function() {
-                userCheckboxes.forEach(checkbox => {
-                    checkbox.checked = this.checked;
-                });
-                updateBulkActions();
-            });
-        }
-
-        userCheckboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateBulkActions);
-        });
-
-        function updateBulkActions() {
-            const anyChecked = Array.from(userCheckboxes).some(checkbox => checkbox.checked);
-            bulkActions.style.display = anyChecked ? 'flex' : 'none';
-
-            if (selectAll) {
-                selectAll.checked = Array.from(userCheckboxes).every(checkbox => checkbox.checked);
-            }
-        }
 
         // Save user
         const saveUser = document.getElementById('save-user');
         if (saveUser) {
-            saveUser.addEventListener('click', function() {
-                // In a real app, you would save the user data here
-                addUserModal.classList.remove('active');
-                alert('User added successfully!');
-            });
-        }
-    });
+            saveUser.addEventListener('click', async function() {
+                const form = document.getElementById('add-user-form');
+                const formData = new FormData(form);
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Toggle Sidebar
-        const toggleBtn = document.getElementById('toggle-sidebar');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-
-        toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-        });
-
-        // // Menu Items Click Event
-        // const menuItems = document.querySelectorAll('.menu-item');
-        //
-        // menuItems.forEach(item => {
-        //     item.addEventListener('click', function(e) {
-        //
-        //         // Remove active class from all menu items
-        //         menuItems.forEach(i => i.classList.remove('active'));
-        //
-        //         // Add active class to clicked menu item
-        //         this.classList.add('active');
-        //
-        //         // Get the section to show
-        //         const sectionId = this.getAttribute('data-section');
-        //
-        //         // Hide all sections
-        //         document.querySelectorAll('[id$="-content"]').forEach(section => {
-        //             section.style.display = 'none';
-        //         });
-        //
-        //         // Show the selected section
-        //         if (sectionId) {
-        //             document.getElementById(`${sectionId}-content`).style.display = 'block';
-        //         }
-        //     });
-        // });
-
-        // Tab Buttons Click Event
-        const tabButtons = document.querySelectorAll('.tab-btn');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Remove active class from all tab buttons in the same container
-                this.parentElement.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-
-                // Add active class to clicked tab button
-                this.classList.add('active');
-            });
-        });
-
-        // Show toast notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-
-            toast.className = `toast ${type}`;
-            toastMessage.textContent = message;
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // Modal Handling
-        const bookingModal = document.getElementById('booking-modal');
-        const quickBookingBtn = document.getElementById('quick-booking-btn');
-        const newBookingBtn = document.getElementById('new-booking-btn');
-        const quickActionBtn = document.getElementById('quick-action-btn');
-        const closeBookingModal = document.getElementById('close-booking-modal');
-        const cancelBooking = document.getElementById('cancel-booking');
-
-        function openBookingModal() {
-            bookingModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeBookingModalFunc() {
-            bookingModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        quickBookingBtn?.addEventListener('click', openBookingModal);
-        newBookingBtn?.addEventListener('click', openBookingModal);
-        quickActionBtn?.addEventListener('click', openBookingModal);
-        closeBookingModal?.addEventListener('click', closeBookingModalFunc);
-        cancelBooking?.addEventListener('click', closeBookingModalFunc);
-
-        // Close modal when clicking outside
-        bookingModal?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeBookingModalFunc();
-            }
-        });
-
-        // Submit booking form
-        const submitBooking = document.getElementById('submit-booking');
-        submitBooking?.addEventListener('click', function() {
-            // Here you would normally submit the form data to your backend
-            // For this example, we'll just show a success message
-            closeBookingModalFunc();
-            showToast('Booking created successfully!', 'success');
-        });
-
-        // Initialize charts
-        const bookingCtx = document.getElementById('bookingChart')?.getContext('2d');
-        if (bookingCtx) {
-            new Chart(bookingCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                    datasets: [{
-                        label: 'Bookings',
-                        data: [65, 59, 80, 81, 56, 55, 40],
-                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        borderColor: 'rgba(79, 70, 229, 1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
+                // Client-side validation
+                if (formData.get('password') !== formData.get('confirmPassword')) {
+                    alert('Passwords do not match!');
+                    return;
                 }
-            });
-        }
 
-        const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
-        if (revenueCtx) {
-            new Chart(revenueCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Grand Royale', 'Sunset Beach', 'Mountain View', 'City Center'],
-                    datasets: [{
-                        label: 'Revenue',
-                        data: [125000, 98000, 75000, 60000],
-                        backgroundColor: [
-                            'rgba(79, 70, 229, 0.8)',
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(59, 130, 246, 0.8)',
-                            'rgba(245, 158, 11, 0.8)'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-        }
+                try {
+                    const response = await fetch('/api/users', {
+                        method: 'POST',
+                        body: formData
+                    });
 
-        const performanceCtx = document.getElementById('performanceChart')?.getContext('2d');
-        if (performanceCtx) {
-            new Chart(performanceCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                    datasets: [
-                        {
-                            label: 'Occupancy Rate',
-                            data: [65, 59, 80, 81],
-                            borderColor: 'rgba(79, 70, 229, 1)',
-                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            fill: true
-                        },
-                        {
-                            label: 'Revenue',
-                            data: [45, 40, 65, 70],
-                            borderColor: 'rgba(16, 185, 129, 1)',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            fill: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
+                    if (response.ok) {
+                        const result = await response.json();
+                        alert('User created successfully!');
+                        closeModal();
+                        window.location.reload(); // Refresh to show new user
+                    } else {
+                        const error = await response.json();
+                        alert(`Error: ${error.message}`);
                     }
-                }
-            });
-        }
-
-        const sourceCtx = document.getElementById('sourceChart')?.getContext('2d');
-        if (sourceCtx) {
-            new Chart(sourceCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Website', 'Travel Agency', 'Phone', 'Walk-in', 'Other'],
-                    datasets: [{
-                        data: [35, 25, 15, 15, 10],
-                        backgroundColor: [
-                            'rgba(79, 70, 229, 0.8)',
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(59, 130, 246, 0.8)',
-                            'rgba(245, 158, 11, 0.8)',
-                            'rgba(156, 163, 175, 0.8)'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: {
-                        legend: {
-                            position: 'right'
-                        }
-                    }
-                }
-            });
-        }
-
-        const roomPerformanceCtx = document.getElementById('roomPerformanceChart')?.getContext('2d');
-        if (roomPerformanceCtx) {
-            new Chart(roomPerformanceCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Deluxe Suite', 'Executive Room', 'Luxury Suite', 'Standard Room'],
-                    datasets: [
-                        {
-                            label: 'Occupancy',
-                            data: [85, 75, 65, 60],
-                            backgroundColor: 'rgba(79, 70, 229, 0.8)'
-                        },
-                        {
-                            label: 'Revenue',
-                            data: [120000, 95000, 80000, 60000],
-                            backgroundColor: 'rgba(16, 185, 129, 0.8)'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Failed to create user');
                 }
             });
         }
     });
+
+    //    document.addEventListener('DOMContentLoaded', function() {
+    //        // Add User Modal
+    //        const addUserBtn = document.getElementById('add-user-btn');
+    //        const addUserModal = document.getElementById('add-user-modal');
+    //        const cancelAddUser = document.getElementById('cancel-add-user');
+    //
+    //        if (addUserBtn) {
+    //            addUserBtn.addEventListener('click', function() {
+    //                addUserModal.classList.add('active');
+    //            });
+    //        }
+    //
+    //        if (cancelAddUser) {
+    //            cancelAddUser.addEventListener('click', function() {
+    //                addUserModal.classList.remove('active');
+    //            });
+    //        }
+    //
+    //        // Close modal when clicking outside
+    //        addUserModal.addEventListener('click', function(e) {
+    //            if (e.target === this) {
+    //                addUserModal.classList.remove('active');
+    //            }
+    //        });
+    //
+    //        // Bulk actions
+    //        const selectAll = document.getElementById('select-all-users');
+    //        const userCheckboxes = document.querySelectorAll('.user-checkbox');
+    //        const bulkActions = document.querySelector('.bulk-actions');
+    //
+    //        if (selectAll) {
+    //            selectAll.addEventListener('change', function() {
+    //                userCheckboxes.forEach(checkbox => {
+    //                    checkbox.checked = this.checked;
+    //                });
+    //                updateBulkActions();
+    //            });
+    //        }
+    //
+    //        userCheckboxes.forEach(checkbox => {
+    //            checkbox.addEventListener('change', updateBulkActions);
+    //        });
+    //
+    //        function updateBulkActions() {
+    //            const anyChecked = Array.from(userCheckboxes).some(checkbox => checkbox.checked);
+    //            bulkActions.style.display = anyChecked ? 'flex' : 'none';
+    //
+    //            if (selectAll) {
+    //                selectAll.checked = Array.from(userCheckboxes).every(checkbox => checkbox.checked);
+    //            }
+    //        }
+    //
+    //        // Save user
+    //        const saveUser = document.getElementById('save-user');
+    //        if (saveUser) {
+    //            saveUser.addEventListener('click', function() {
+    //                // In a real app, you would save the user data here
+    //                addUserModal.classList.remove('active');
+    //                alert('User added successfully!');
+    //            });
+    //        }
+    //    });
+
 </script>
 </body>
 </html>

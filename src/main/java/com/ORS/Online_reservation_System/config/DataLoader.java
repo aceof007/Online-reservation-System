@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.math.BigDecimal;
@@ -526,6 +527,28 @@ public class DataLoader {
                 roomRepository.saveAll(List.of(h5Room1, h5Room2, h5Room3));
 
             System.out.println("Rooms and SpecificRooms created for each hotel.");
+
+            User customer= Customer.builder()
+                    .phoneNumber("651425635")
+                    .email("lou@gmail.com")
+                    .firstName("lou")
+                    .lastName("max")
+                    .role("CUSTOMER")
+                    .password("123456789")
+                    .build();
+
+            Booking book1 =Booking.builder()
+                    .additionalAmenities(List.of(am17))
+                    .checkInDate(LocalDate.ofEpochDay(2024-5-22))
+                    .checkOutDate(LocalDate.ofEpochDay(2024-5-24))
+                    .customer(customer)
+                    .estimatedArrivalTime("hjhjl")
+                    .specialRequest("hhjjh")
+                    .specificRoom(room1.getSpecific().get(0))
+                    .numberOfAdults(2)
+                    .numberOfChildren(2)
+                    .totalPrice(BigDecimal.valueOf(2000))
+                    .build();
 
                 RateOption rateOption1 = RateOption.builder()
                         .name("Standard Rate")
