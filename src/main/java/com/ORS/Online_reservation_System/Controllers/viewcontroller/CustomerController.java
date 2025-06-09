@@ -1,17 +1,21 @@
 package com.ORS.Online_reservation_System.Controllers.viewcontroller;
 
+import com.ORS.Online_reservation_System.DTO.BookingDTO;
 import com.ORS.Online_reservation_System.DTO.LoginDTO;
 import com.ORS.Online_reservation_System.model.Customer;
 import com.ORS.Online_reservation_System.serviceimplementation.CustomerServiceImpl;
 import com.ORS.Online_reservation_System.serviceimplementation.HotelServiceImpl;
 import com.ORS.Online_reservation_System.serviceimplementation.RoomServiceImpl;
 import com.ORS.Online_reservation_System.serviceimplementation.UserServiceImpl;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Controller
@@ -59,9 +63,17 @@ public class CustomerController {
     }
 
 
-    @GetMapping("/bookingFlow/{roomid}/{hotelid}")
-    public String bookingFlow(Model model, @PathVariable(required = false) Long roomid, @PathVariable(required = false) Long hotelid) {
-        model.addAttribute("room", roomService.getRoomById(roomid));
+    @GetMapping("/bookingFlow")
+    public String bookingFlow(Model model, @RequestParam Long roomId,
+                              @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
+                              @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
+                              Principal principal) {
+        model.addAttribute("room", roomService.getRoomById(roomId));
+        model.addAttribute("checkIn", checkIn);
+        model.addAttribute("checkOut", checkOut);
+        model.addAttribute("roomService", roomService);
+        model.addAttribute("bookingForm", new BookingDTO());
+
         return "/customer/bookingflow";
     }
 

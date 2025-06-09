@@ -1092,14 +1092,14 @@
                 <div class="logo-text">Lux<span>Stay</span></div>
             </div>
             <ul class="menu">
-                <li><a th:href="@{/homepage.html}">Home</a></li>
-                <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
-                <li><a th:href="@{/about.html}">About Us</a></li>
-                <li><a th:href="@{/contact.html}">contact</a></li>
+                <li><a th:href="@{/homepage}">Home</a></li>
+                <li><a th:href="@{/hotelListingpage}">Hotels</a></li>
+                <li><a th:href="@{/about}">About Us</a></li>
+                <li><a th:href="@{/contact}">contact</a></li>
             </ul>
             <div class="user-actions">
-                <a th:href="@{/registrationpage.html}" class="btn btn-outline">Login</a>
-                <a th:href="@{/registrationpage.html}" class="btn">Sign Up</a>
+                <a th:href="@{/login}" class="btn btn-outline">Login</a>
+                <a th:href="@{/login}" class="btn">Sign Up</a>
             </div>
             <button class="hamburger">
                 <i class="fas fa-bars"></i>
@@ -1180,7 +1180,7 @@
                     <h2 class="section-title">Room Options</h2>
                     
                     <!-- Deluxe Room -->
-                    <div class="room-option" th:each="room : ${hotel.getRooms()}" th:attr="data-room-id=${room.getRoomId()}">
+                    <div class="room-option" th:each="room : ${hotel.getRooms()}" th:attr="data-room-id=${room.getRoomId()}" th:id="'room-id-'+${room.getRoomId()}">
                         <div class="room-header">
                             <h3 class="room-title" th:text="${room.getRoomName()}"></h3>
                             <div class="room-price">
@@ -1237,7 +1237,7 @@
                             </div>
 
                         </div>
-                        <button class="btn book-now-btn" th:href="@{/bookingFlow/{roomid}(roomid=${room.getRoomId()})/{hotelid}(hotelid=${hotel.getHotelId()})}">Book Now</button>
+                        <button class="btn book-now-btn" th:onclick="'makeBooking(' + ${room.roomId} + ')'">Book Now</button>
                     </div>
                 </section>
 
@@ -1624,6 +1624,30 @@
         });
         });
         });
+            async function makeBooking(roomId) {
+                console.log(roomId);
+                const checkIn = document.getElementById('check-in').value;
+                const checkOut = document.getElementById('check-out').value;
+                console.log(checkOut);
+                console.log(checkIn);
+
+                // Validate fields
+                if (!checkIn || !checkOut) {
+                alert("Please fill in check-in, check-out ");
+                return;
+                }
+
+                // Build query params
+                const params = new URLSearchParams({
+                roomId: roomId,
+                checkIn: checkIn,
+                checkOut: checkOut,
+            });
+
+                // Redirect normally
+                window.location.href = `/customer/bookingFlow?${params.toString()}`;
+            }
+
 
 // === Header Scroll Effect ===
         window.addEventListener('scroll', function() {
@@ -1699,7 +1723,7 @@
         });
 
         // === Check Availability Button ===
-        const checkBtn = document.querySelector('.check-btn');
+        /*const checkBtn = document.querySelector('.check-btn');
         
         checkBtn.addEventListener('click', function() {
             const checkIn = document.getElementById('check-in').value;
@@ -1707,19 +1731,19 @@
             const guests = document.getElementById('guests').value;
             
             alert(`Checking availability for ${guests} guests from ${checkIn} to ${checkOut}`);
-        });
+        });*/
 
         // === Book Now Buttons ===
         const bookNowBtns = document.querySelectorAll('.book-now-btn');
         
-        bookNowBtns.forEach(btn => {
+        /*bookNowBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 const roomTitle = this.closest('.room-option').querySelector('.room-title').textContent;
                 const roomPrice = this.closest('.room-option').querySelector('.price-current').textContent;
                 
                 alert(`Booking ${roomTitle} for ${roomPrice} per night`);
             });
-        });
+        });*/
 
                 document.addEventListener("DOMContentLoaded", function () {
                 const checkBtn = document.querySelector(".check-btn");

@@ -18,36 +18,24 @@ public class Payment {
     @OneToOne
     private Booking booking;
 
-    private double amount;
+    public double amount;
 
     private Date paymentDate;
 
     @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod;
+    public PaymentMethod paymentMethod;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
-    private String transactionId;
+    public String transactionId;
 
-    private String billingAddress;
+    public String cvv;
 
-    // Constructors
-    public Payment() {
-    }
+    public String cardNumber;
 
-    public Payment(int paymentId, Booking booking, double amount, Date paymentDate,
-                   PaymentMethod paymentMethod, PaymentStatus status, String transactionId,
-                   String billingAddress) {
-        this.paymentId = paymentId;
-        this.booking = booking;
-        this.amount = amount;
-        this.paymentDate = paymentDate;
-        this.paymentMethod = paymentMethod;
-        this.status = status;
-        this.transactionId = transactionId != null ? transactionId : generateTransactionId();
-        this.billingAddress = billingAddress;
-    }
+    public String cardName;
+
 
     // Business methods
     private String generateTransactionId() {

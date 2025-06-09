@@ -1,6 +1,7 @@
 package com.ORS.Online_reservation_System.repositories;
 
 import com.ORS.Online_reservation_System.model.Booking;
+import com.ORS.Online_reservation_System.model.SpecificRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,5 +24,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             @Param("checkOut") LocalDate checkOut
     );
 
+        boolean existsBySpecificRoomAndCheckOutDateAfterAndCheckInDateBefore(
+                SpecificRoom specificRoom, LocalDate checkIn, LocalDate checkOut
+        );
 
 }

@@ -20,5 +20,8 @@ public class CustomerServiceImpl {
         customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         customerRepository.save(customer);
     }
+    public Customer getCustomer(String email) {
+        return customerRepository.findByEmail(email);
+    }
 
 }

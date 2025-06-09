@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -76,6 +78,41 @@ public class RoomServiceImpl implements RoomService {
         return availableCount > 0
                 ? availableCount + " room(s) available for the selected dates."
                 : "No rooms available for the selected dates.";
+    }
+
+    public static String formatLocalDate(LocalDate date) {
+        if (date == null) return "";
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy");
+        return date.format(formatter);
+    }
+
+    public static long getDaysBetween(LocalDate startDate, LocalDate endDate) {
+        return ChronoUnit.DAYS.between(startDate, endDate);
+    }
+
+    public String formatDateRange(LocalDate startDate, LocalDate endDate) {
+        // Validate inputs
+        if (startDate == null || endDate == null) {
+            throw new IllegalArgumentException("Dates cannot be null");
+        }
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("End date must be after start date");
+        }
+
+        // Create formatters
+        DateTimeFormatter monthDayFormatter = DateTimeFormatter.ofPattern("MMM d");
+        DateTimeFormatter monthDayYearFormatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+
+        // Format dates
+        String startFormatted = startDate.format(monthDayFormatter);
+        String endFormatted = endDate.format(monthDayYearFormatter);
+
+        // Calculate number of nights
+        long nights = ChronoUnit.DAYS.between(startDate, endDate);
+
+        // Return formatted string
+        return String.format("%s - %s (%d nights)", startFormatted, endFormatted, nights);
     }
 
 
@@ -147,10 +184,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
 
-    @Override
     @Transactional(readOnly = true)
-    public Optional<Room> getRoomById(Long roomId) {
-        return roomRepository.findById(roomId);
+    public Room getRoomById(Long roomId) {
+        List<Room> rooms = roomRepository.findAll();
+        for (Room room : rooms) {
+            if (room.getRoomId().equals(roomId)) {
+                return room;
+            }
+        }
+        return null;
     }
 
     @Override

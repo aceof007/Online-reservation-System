@@ -16,7 +16,6 @@ public interface RoomService {
     Room createRoom(Room room);
     Room updateRoom(Long roomId, Room room);
     void deleteRoom(Long roomId);
-    Optional<Room> getRoomById(Long roomId);
     List<Room> getAllRooms();
 
     // Room queries

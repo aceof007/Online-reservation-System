@@ -26,13 +26,13 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             if (role.equals("ROLE_ADMIN")) {
                 response.sendRedirect("/admin/Dashboard");
                 return;
-            } else if (role.equals("ROLE_USER")) {
+            } else if (role.equals("ROLE_USER") || role.equals("ROLE_CUSTOMER")) {
                 // Redirect to originally requested URL or home
-                String redirectUrl = (String) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
+                String redirectUrl = null;
                 if (redirectUrl != null) {
                     response.sendRedirect(redirectUrl);
                 } else {
-                    response.sendRedirect("/");
+                    response.sendRedirect("/ProfileManegement");
                 }
                 return;
             }

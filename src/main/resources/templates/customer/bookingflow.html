@@ -1058,14 +1058,14 @@
                 <div class="logo-text">Lux<span>Stay</span></div>
             </div>
             <ul class="menu">
-                <li><a th:href="@{/homepage.html}">Home</a></li>
-                <li><a th:href="@{/hotellistingpage.html}">Hotels</a></li>
-                <li><a th:href="@{/about.html}">About Us</a></li>
-                <li><a th:href="@{/contact.html}">contact</a></li>
+                <li><a th:href="@{/homepage}">Home</a></li>
+                <li><a th:href="@{/hotelListingpage}">Hotels</a></li>
+                <li><a th:href="@{/about}">About Us</a></li>
+                <li><a th:href="@{/contact}">contact</a></li>
             </ul>
             <div class="user-actions">
-                <a th:href="@{/registrationpage.html}" class="btn btn-outline">Login</a>
-                <a th:href="@{/registrationpage.html}" class="btn">Sign Up</a>
+                <a th:href="@{/login}" class="btn btn-outline">Login</a>
+                <a th:href="@{/login}" class="btn">Sign Up</a>
             </div>
             <button class="hamburger">
                 <i class="fas fa-bars"></i>
@@ -1103,7 +1103,7 @@
                 </div>
             </div>
         </div>
-
+        <form id="guestForm" th:object="${bookingForm}" method="post" th:action="@{/booking/submit/{roomId}/{checkIn}/{checkOut}(roomId=${room.getRoomId()},checkIn=${checkIn}, checkOut=${checkOut})}">
         <div class="booking-container">
             <main class="booking-main">
                 <!-- Step 1: Room Selection -->
@@ -1116,21 +1116,21 @@
                                 <img src="/2.png" alt="Deluxe Room">
                             </div>
                             <div class="room-details">
-                                <h3 class="room-name">Deluxe Ocean View Room</h3>
+                                <h3 class="room-name" th:text="${room.getRoomName()}">Deluxe Ocean View Room</h3>
                                 <div class="room-features">
-                                    <span class="room-feature"><i class="fas fa-bed"></i> 1 King Bed</span>
-                                    <span class="room-feature"><i class="fas fa-user"></i> 2 Adults</span>
-                                    <span class="room-feature"><i class="fas fa-expand"></i> 450 sq ft</span>
+                                    <span class="room-feature" th:text="${room.getBedType()}"><i class="fas fa-bed"></i></span>
+                                    <span class="room-feature"><i class="fas fa-user"  th:text="${room.getMaxAdults()} + ' adults , ' +${room.getMaxChildren()} +' child'"></i> </span>
+                                    <span class="room-feature" th:text="${room.getRoomSizeInSquareMeters()} + ' m²' +' (' +${room.convertSquareMetersToSquareFeet(room.getRoomSizeInSquareMeters())} + ' sq ft)'"><i class="fas fa-expand"></i></span>
                                     <span class="room-feature"><i class="fas fa-wifi"></i> Free WiFi</span>
                                 </div>
                                 <div class="room-dates">
                                     <div class="date-group">
                                         <i class="fas fa-calendar-check"></i>
-                                        <span class="date-text">May 15, 2025</span>
+                                        <span class="date-text" th:text="${roomService.formatLocalDate(checkIn)}"></span>
                                     </div>
                                     <div class="date-group">
                                         <i class="fas fa-calendar-times"></i>
-                                        <span class="date-text">May 20, 2025</span>
+                                        <span class="date-text" th:text="${roomService.formatLocalDate(checkOut)}"></span>
                                     </div>
                                 </div>
                                 <span class="change-link">Change dates or room</span>
@@ -1141,12 +1141,12 @@
 
                         <table class="price-breakdown">
                             <tr>
-                                <td>Deluxe Ocean View Room (5 nights)</td>
-                                <td>$1,250.00</td>
+                                <td th:text="${room.getRoomName()}+' ('+${roomService.getDaysBetween(checkIn, checkOut)}+' nights)'"></td>
+                                <td th:text="'$'+${room.getPricePerNight()*roomService.getDaysBetween(checkIn, checkOut)}"></td>
                             </tr>
                             <tr>
                                 <td>Taxes and fees</td>
-                                <td>$187.50</td>
+                                <td th:text="'$'+${(15.00/100)*room.getPricePerNight()*roomService.getDaysBetween(checkIn, checkOut)}"></td>
                             </tr>
                             <tr>
                                 <td>Resort fee</td>
@@ -1154,7 +1154,7 @@
                             </tr>
                             <tr class="price-total">
                                 <td>Total</td>
-                                <td>$1,512.50</td>
+                                <td></td>
                             </tr>
                         </table>
                     </div>
@@ -1165,48 +1165,54 @@
                     <div class="booking-card">
                         <h2 class="card-title"><i class="fas fa-user-circle"></i> Guest Information</h2>
 
-                        <form id="guestForm">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="firstName" class="form-label">First Name</label>
-                                    <input type="text" id="firstName" class="form-control" required>
+                                    <input type="text" id="firstName" class="form-control" required th:field="${bookingForm.firstName}">
                                     <div class="invalid-feedback">Please enter your first name</div>
                                 </div>
                                 <div class="form-group">
                                     <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" id="lastName" class="form-control" required>
+                                    <input type="text" id="lastName" class="form-control" required th:field="${bookingForm.lastName}">
                                     <div class="invalid-feedback">Please enter your last name</div>
                                 </div>
                             </div>
 
                             <div class="form-group">
                                 <label for="email" class="form-label">Email Address</label>
-                                <input type="email" id="email" class="form-control" required>
+                                <input type="email" id="email" class="form-control" required th:field="${bookingForm.email}">
                                 <div class="invalid-feedback">Please enter a valid email address</div>
                             </div>
 
+                        <div class="form-group">
+                            <label for="password" class="form-label">password</label>
+                            <input type="password" id="password" class="form-control" required th:field="${bookingForm.password}">
+                            <div class="invalid-feedback">Please enter a better password</div>
+                        </div>
+
                             <div class="form-group">
                                 <label for="phone" class="form-label">Phone Number</label>
-                                <input type="tel" id="phone" class="form-control" required>
+                                <input type="tel" id="phone" class="form-control" required th:field="${bookingForm.phone}">
                                 <div class="invalid-feedback">Please enter your phone number</div>
                             </div>
 
                             <div class="form-group">
                                 <label for="specialRequests" class="form-label">Special Requests (Optional)</label>
-                                <textarea id="specialRequests" class="form-control" placeholder="Please let us know if you have any special requests or needs"></textarea>
+                                <textarea id="specialRequests" class="form-control" placeholder="Please let us know if you have any special requests or needs" th:field="${bookingForm.specialRequest}"></textarea>
                             </div>
 
                             <div class="form-group">
                                 <label for="arrivalTime" class="form-label">Estimated Arrival Time</label>
-                                <select id="arrivalTime" class="form-control">
+                                <select id="arrivalTime" class="form-control" th:field="${bookingForm.estimatedArrivalTime}">
                                     <option value="">I don't know</option>
                                     <option value="morning">Morning (8AM - 12PM)</option>
                                     <option value="afternoon">Afternoon (12PM - 5PM)</option>
                                     <option value="evening">Evening (5PM - 10PM)</option>
                                     <option value="late">Late Night (After 10PM)</option>
                                 </select>
+
                             </div>
-                        </form>
+
                     </div>
                 </div>
 
@@ -1232,7 +1238,7 @@
                             <div class="addon-card">
                                 <div class="addon-header">
                                     <h3 class="addon-title">Breakfast Package</h3>
-                                    <span class="addon-price">$20/day</span>
+                                    <span class="addon-price">$20</span>
                                 </div>
                                 <p class="addon-desc">Daily breakfast buffet for two at our signature restaurant</p>
                                 <div class="addon-select">
@@ -1328,24 +1334,24 @@
 
                             <div class="form-group">
                                 <label for="cardNumber" class="form-label">Card Number</label>
-                                <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" required>
+                                <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" th:field="${bookingForm.cardNumber}">
                                 <div class="invalid-feedback">Please enter a valid card number</div>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="cardName" class="form-label">Name on Card</label>
-                                    <input type="text" id="cardName" class="form-control" required>
+                                    <input type="text" id="cardName" class="form-control"  th:field="${bookingForm.cardName}">
                                     <div class="invalid-feedback">Please enter the name on your card</div>
                                 </div>
                                 <div class="form-group">
                                     <label for="cardExpiry" class="form-label">Expiry Date</label>
-                                    <input type="text" id="cardExpiry" class="form-control" placeholder="MM/YY" required>
+                                    <input type="text" id="cardExpiry" class="form-control" placeholder="MM/YY" >
                                     <div class="invalid-feedback">Please enter a valid expiry date</div>
                                 </div>
                                 <div class="form-group">
                                     <label for="cardCvv" class="form-label">CVV</label>
-                                    <input type="text" id="cardCvv" class="form-control" placeholder="123" required>
+                                    <input type="text" id="cardCvv" class="form-control" placeholder="123"  th:field="${bookingForm.cvv}">
                                     <div class="invalid-feedback">Please enter a valid CVV</div>
                                 </div>
                             </div>
@@ -1362,6 +1368,10 @@
                                 <i class="fab fa-paypal"></i> Continue with PayPal
                             </button>
                         </div>
+
+                        <input type="hidden"  th:value="${room.getRoomId()}" id="roomId" th:field="*{roomId}">
+                        <input type="hidden"  th:value="${checkIn}" id="check-in" th:field="*{checkInDate}">
+                        <input type="hidden"  id="check-out" th:value="${checkOut}" th:field="*{checkOutDate}">
 
                         <div class="card-form" id="applePayForm">
                             <p>Complete your payment with Apple Pay for a fast and secure checkout.</p>
@@ -1406,7 +1416,7 @@
                     <button class="btn" id="nextBtn">
                         Continue <i class="fas fa-arrow-right"></i>
                     </button>
-                    <button class="btn" id="submitBtn" style="display: none; background-color: #28a745;">
+                    <button type="submit" class="btn" id="submitBtn" style="display: none; background-color: #28a745;">
                         Complete Booking <i class="fas fa-check"></i>
                     </button>
                 </div>
@@ -1418,28 +1428,28 @@
                     <h3 class="summary-title">Booking Summary</h3>
 
                     <div class="summary-item">
-                        <span class="summary-label">Room</span>
-                        <span class="summary-value">Deluxe Ocean View</span>
+                        <span class="summary-label" >Room</span>
+                        <span class="summary-value" th:text="${room.getRoomName()}"></span>
                     </div>
 
                     <div class="summary-item">
                         <span class="summary-label">Dates</span>
-                        <span class="summary-value">May 15 - 20, 2025 (5 nights)</span>
+                        <span class="summary-value" th:text="${roomService.formatDateRange(checkIn, checkOut)}"></span>
                     </div>
 
                     <div class="summary-item">
                         <span class="summary-label">Guests</span>
-                        <span class="summary-value">2 Adults</span>
+                        <span class="summary-value" th:text="${room.getMaxAdults()} + ' adults , ' +${room.getMaxChildren()} +' child'">2 Adults</span>
                     </div>
 
                     <div class="summary-item">
                         <span class="summary-label">Room rate</span>
-                        <span class="summary-value">$1,250.00</span>
+                        <span class="summary-value" th:text="'$'+${room.getPricePerNight()*roomService.getDaysBetween(checkIn, checkOut)}">></span>
                     </div>
 
                     <div class="summary-item">
                         <span class="summary-label">Taxes & fees</span>
-                        <span class="summary-value">$187.50</span>
+                        <span class="summary-value" th:text="'$'+${(15.0/100)*room.getPricePerNight()*roomService.getDaysBetween(checkIn, checkOut)}"></span>
                     </div>
 
                     <div class="summary-item">
@@ -1447,14 +1457,11 @@
                         <span class="summary-value">$75.00</span>
                     </div>
 
-                    <div class="summary-item">
-                        <span class="summary-label">Breakfast package</span>
-                        <span class="summary-value">$100.00</span>
-                    </div>
+                    <div id="dynamic-summary-items"></div>
 
                     <div class="summary-item summary-total">
                         <span class="summary-label">Total</span>
-                        <span class="summary-value">$1,612.50</span>
+                        <span class="summary-value" th:field="${bookingForm.totalPrice}"></span>
                     </div>
 
                     <p class="summary-note">
@@ -1463,6 +1470,7 @@
                 </div>
             </aside>
         </div>
+        </form>
     </div>
 </section>
 
@@ -1706,7 +1714,121 @@
         }
     });
 
-    // === Mobile Menu Toggle ===
+    async function calculateInitialTotal() {
+        let total = 0;
+
+        // Get all summary values excluding the first item and the total
+        const summaryItems = document.querySelectorAll('.summary-item:not(.summary-total) .summary-value');
+
+        // Skip the first item (index 0) by slicing the NodeList
+        const itemsToSum = Array.from(summaryItems).slice(3);
+
+        itemsToSum.forEach(item => {
+            const text = item.textContent.trim().replace('$', '');
+            const value = parseFloat(text);
+
+            if (!isNaN(value)) {
+                total += value;
+            }
+        });
+
+        // Update the Total display
+        const totalElement = document.querySelector('.summary-total .summary-value');
+        if (totalElement) {
+            totalElement.textContent = `$${total.toFixed(2)}`;
+        }
+
+        return total;
+    }
+
+
+    async function calculateTotal() {
+        const table = document.getElementsByClassName("price-breakdown");
+        let total = 0;
+        console.log("table: "+table)
+       console.log("total: "+total)
+
+        // Sum second <td> of first 3 rows
+        for (let i = 0; i < 3; i++) {
+            let cellText = table.rows[i].cells[1].innerText.trim();
+
+            // Remove $ sign if present and convert to float
+            cellText = cellText.replace(/\$/g, '');
+            let value = parseFloat(cellText);
+            console.log("value"+i+":"+value)
+
+            if (!isNaN(value)) {
+                total += value;
+            }
+        }
+
+        // Format total as currency (e.g. $1,267.50)
+        const formattedTotal = total.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+        console.log(formattedTotal);
+        // Set total in last row second cell
+        table.rows[3].cells[1].innerText = formattedTotal;
+    }
+
+    // Call on page load or when values change
+    calculateTotal();
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            calculateInitialTotal();
+
+        const checkboxes = document.querySelectorAll('.addon-checkbox');
+        const container = document.getElementById('dynamic-summary-items');
+
+        checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+        const addonCard = this.closest('.addon-card');
+        const label = addonCard.querySelector('.addon-title').innerText;
+        const value = addonCard.querySelector('.addon-price').innerText;
+        const itemId = label.toLowerCase().replace(/\s+/g, '-') + '-item';
+            calculateInitialTotal();
+
+        if (this.checked) {
+        // Create new summary item
+        const item = document.createElement('div');
+        item.classList.add('summary-item');
+        item.id = itemId;
+
+        const labelSpan = document.createElement('span');
+        labelSpan.classList.add('summary-label');
+        labelSpan.innerText = label;
+
+        const valueSpan = document.createElement('span');
+        valueSpan.classList.add('summary-value');
+        valueSpan.innerText = value;
+
+        item.appendChild(labelSpan);
+        item.appendChild(valueSpan);
+
+        container.appendChild(item);
+            calculateInitialTotal();
+    } else {
+        // Remove summary item
+        const existingItem = document.getElementById(itemId);
+            calculateInitialTotal();
+        if (existingItem) {
+        container.removeChild(existingItem);
+            calculateInitialTotal();
+    }
+    }
+    });
+    });
+    });
+
+        let roomid = document.getElementById('roomId').value;
+        console.log(roomid);
+    let checkin = document.getElementById('check-in').value;
+    console.log(checkin);
+    let checkout = document.getElementById('check-out').value;
+    console.log(checkout);
+
+
+
+// === Mobile Menu Toggle ===
     const hamburger = document.querySelector('.hamburger');
     const menu = document.querySelector('.menu');
 
