@@ -68,9 +68,48 @@ public class AdminController {
         return "/admin_dashboard/hotel/dashboard";
     }
 
+//    @GetMapping("/HotelManagement")
+//    public String adminHotelManagement(Model model) {
+//        model.addAttribute("activePage", "dashboard");
+//        return "/admin_dashboard/hotel/hotelsmanagement";
+//    }
+
     @GetMapping("/HotelManagement")
-    public String adminHotelManagement(Model model) {
-        model.addAttribute("activePage", "dashboard");
+    public String adminHotelManagement(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) Integer starRating,
+            @RequestParam(required = false) String status,
+            Model model) {
+
+        // Get paginated and filtered hotels
+        Page<Hotel> hotels;
+        if (search != null && !search.isEmpty()) {
+            hotels = hotelRepository.findByNameContainingIgnoreCaseAndIsActiveTrue(
+                    search, PageRequest.of(page, 10));
+        } else if (city != null && !city.isEmpty()) {
+            hotels = hotelRepository.findByCityIgnoreCaseAndIsActiveTrue(
+                    city, PageRequest.of(page, 10));
+        } else if (starRating != null) {
+            hotels = hotelRepository.findByStarRatingAndIsActiveTrue(
+                    starRating, PageRequest.of(page, 10));
+        } else {
+            hotels = hotelRepository.findByIsActiveTrue(PageRequest.of(page, 10));
+        }
+
+        model.addAttribute("hotels", hotels);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", hotels.getTotalPages());
+        model.addAttribute("searchQuery", search);
+        model.addAttribute("selectedCity", city);
+        model.addAttribute("selectedStarRating", starRating);
+        model.addAttribute("activePage", "hotel_management");
+
+        // For filter dropdowns
+        model.addAttribute("cities", hotelRepository.findDistinctCities());
+        model.addAttribute("starRatings", List.of(1, 2, 3, 4, 5));
+
         return "/admin_dashboard/hotel/hotelsmanagement";
     }
 

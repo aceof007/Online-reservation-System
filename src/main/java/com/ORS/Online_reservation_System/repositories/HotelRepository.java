@@ -3,16 +3,31 @@
 package com.ORS.Online_reservation_System.repositories;
 
 import com.ORS.Online_reservation_System.model.Hotel;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Long> {
+
+    // Method for searching by name with pagination
+    Page<Hotel> findByNameContainingIgnoreCaseAndIsActiveTrue(String name, Pageable pageable);
+
+    // Method for filtering by city with pagination
+    Page<Hotel> findByCityIgnoreCaseAndIsActiveTrue(String city, Pageable pageable);
+
+    // Method for filtering by star rating with pagination
+    Page<Hotel> findByStarRatingAndIsActiveTrue(Integer starRating, Pageable pageable);
+
+    // Method for getting all active hotels with pagination
+    Page<Hotel> findByIsActiveTrue(Pageable pageable);
 
     // Find active hotels
     List<Hotel> findByIsActiveTrue();
@@ -34,6 +49,9 @@ public interface HotelRepository extends JpaRepository<Hotel, Long> {
 
     // Find hotel by name (exact match)
     Optional<Hotel> findByNameIgnoreCase(String name);
+
+    @Query("SELECT DISTINCT h.city FROM Hotel h WHERE h.city IS NOT NULL")
+    List<String> findDistinctCities();
 
     @Query("SELECT SUM(r.totalQuantity) FROM Room r WHERE r.hotel.isActive = true")
     long sumAllRooms();

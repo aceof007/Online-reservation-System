@@ -2838,12 +2838,44 @@
                     <div class="card-header">
                         <div class="card-title">Hotel Properties</div>
                         <div class="card-actions">
-                            <button class="btn btn-outline btn-sm">
+                            <button class="btn btn-outline btn-sm" onclick="window.location.reload()">
                                 <i class="fas fa-sync-alt"></i> Refresh
                             </button>
-                            <button class="btn btn-outline btn-sm">
-                                <i class="fas fa-filter"></i> Filter
-                            </button>
+                            <div class="dropdown">
+                                <button class="btn btn-outline btn-sm dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fas fa-filter"></i> Filter
+                                </button>
+                                <div class="dropdown-menu p-3">
+                                    <form id="filterForm" th:action="@{/admin/HotelManagement}" method="get">
+                                        <div class="form-group">
+                                            <label>Search by Name</label>
+                                            <input type="text" class="form-control" name="search"
+                                                   th:value="${searchQuery}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>City</label>
+                                            <select class="form-control" name="city">
+                                                <option value="">All Cities</option>
+                                                <option th:each="city : ${cities}"
+                                                        th:value="${city}"
+                                                        th:text="${city}"
+                                                        th:selected="${city == selectedCity}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Star Rating</label>
+                                            <select class="form-control" name="starRating">
+                                                <option value="">All Ratings</option>
+                                                <option th:each="rating : ${starRatings}"
+                                                        th:value="${rating}"
+                                                        th:text="${rating} + ' Stars'"
+                                                        th:selected="${rating == selectedStarRating}"></option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-block">Apply Filters</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -2861,48 +2893,35 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>#HTL-1001</td>
-                                <td>Grand Royale Hotel</td>
-                                <td>New York, USA</td>
-                                <td><i class="fas fa-star text-yellow-500"></i> 5</td>
-                                <td>12</td>
-                                <td><span class="badge badge-success">Active</span></td>
+                            <tr th:each="hotel : ${hotels.content}">
+                                <td th:text="'#HTL-' + ${hotel.hotelId}"></td>
+                                <td th:text="${hotel.name}"></td>
                                 <td>
-                                    <div class="action-btns">
-                                        <button class="action-btn view tooltip" onclick="viewHotelDetails('HTL-1001')">
-                                            <i class="fas fa-eye"></i>
-                                            <span class="tooltip-text">View Details</span>
-                                        </button>
-                                        <button class="action-btn edit tooltip" onclick="editHotel('HTL-1001')">
-                                            <i class="fas fa-edit"></i>
-                                            <span class="tooltip-text">Edit Property</span>
-                                        </button>
-                                        <button class="action-btn delete tooltip">
-                                            <i class="fas fa-cog"></i>
-                                            <span class="tooltip-text">Configure</span>
-                                        </button>
-                                    </div>
+                                    <span th:text="${hotel.city} + ', ' + ${hotel.country}"></span>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td>#HTL-1002</td>
-                                <td>Beachfront Resort</td>
-                                <td>Miami, USA</td>
-                                <td><i class="fas fa-star text-yellow-500"></i> 4</td>
-                                <td>8</td>
-                                <td><span class="badge badge-success">Active</span></td>
+                                <td>
+                                    <i class="fas fa-star text-yellow-500"></i>
+                                    <span th:text="${hotel.starRating}"></span>
+                                </td>
+                                <td th:text="${hotel.rooms != null ? hotel.rooms.size() : 0}"></td>
+                                <td>
+                                    <span th:if="${hotel.isActive}" class="badge badge-success">Active</span>
+                                    <span th:unless="${hotel.isActive}" class="badge badge-danger">Inactive</span>
+                                </td>
                                 <td>
                                     <div class="action-btns">
-                                        <button class="action-btn view tooltip" onclick="viewHotelDetails('HTL-1002')">
+                                        <button class="action-btn view tooltip"
+                                                th:onclick="'viewHotelDetails(\'' + ${hotel.hotelId} + '\')'">
                                             <i class="fas fa-eye"></i>
                                             <span class="tooltip-text">View Details</span>
                                         </button>
-                                        <button class="action-btn edit tooltip" onclick="editHotel('HTL-1002')">
+                                        <button class="action-btn edit tooltip"
+                                                th:onclick="'editHotel(\'' + ${hotel.hotelId} + '\')'">
                                             <i class="fas fa-edit"></i>
                                             <span class="tooltip-text">Edit Property</span>
                                         </button>
-                                        <button class="action-btn delete tooltip">
+                                        <button class="action-btn delete tooltip"
+                                                th:onclick="'configureHotel(\'' + ${hotel.hotelId} + '\')'">
                                             <i class="fas fa-cog"></i>
                                             <span class="tooltip-text">Configure</span>
                                         </button>
@@ -2911,9 +2930,113 @@
                             </tr>
                             </tbody>
                         </table>
+
+                        <!-- Pagination -->
+                        <div class="pagination" th:if="${totalPages > 1}">
+                            <a th:href="@{/admin/HotelManagement(page=0, search=${searchQuery}, city=${selectedCity}, starRating=${selectedStarRating})}"
+                               th:classappend="${currentPage == 0} ? 'disabled' : ''">First</a>
+
+                            <a th:href="@{/admin/HotelManagement(page=${currentPage - 1}, search=${searchQuery}, city=${selectedCity}, starRating=${selectedStarRating})}"
+                               th:classappend="${currentPage == 0} ? 'disabled' : ''">Previous</a>
+
+                            <span th:each="i : ${#numbers.sequence(1, totalPages)}">
+                    <a th:href="@{/admin/HotelManagement(page=${i - 1}, search=${searchQuery}, city=${selectedCity}, starRating=${selectedStarRating})}"
+                       th:text="${i}"
+                       th:classappend="${currentPage == i - 1} ? 'active' : ''"></a>
+                </span>
+
+                            <a th:href="@{/admin/HotelManagement(page=${currentPage + 1}, search=${searchQuery}, city=${selectedCity}, starRating=${selectedStarRating})}"
+                               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">Next</a>
+
+                            <a th:href="@{/admin/HotelManagement(page=${totalPages - 1}, search=${searchQuery}, city=${selectedCity}, starRating=${selectedStarRating})}"
+                               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">Last</a>
+                        </div>
                     </div>
                 </div>
             </div>
+
+<!--            &lt;!&ndash; Property Management Tab &ndash;&gt;-->
+<!--            <div class="tab-content active" id="property-management">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-header">-->
+<!--                        <div class="card-title">Hotel Properties</div>-->
+<!--                        <div class="card-actions">-->
+<!--                            <button class="btn btn-outline btn-sm">-->
+<!--                                <i class="fas fa-sync-alt"></i> Refresh-->
+<!--                            </button>-->
+<!--                            <button class="btn btn-outline btn-sm">-->
+<!--                                <i class="fas fa-filter"></i> Filter-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <div class="table-container">-->
+<!--                        <table class="table">-->
+<!--                            <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Property ID</th>-->
+<!--                                <th>Hotel Name</th>-->
+<!--                                <th>Location</th>-->
+<!--                                <th>Star Rating</th>-->
+<!--                                <th>Room Types</th>-->
+<!--                                <th>Status</th>-->
+<!--                                <th>Actions</th>-->
+<!--                            </tr>-->
+<!--                            </thead>-->
+<!--                            <tbody>-->
+<!--                            <tr>-->
+<!--                                <td>#HTL-1001</td>-->
+<!--                                <td>Grand Royale Hotel</td>-->
+<!--                                <td>New York, USA</td>-->
+<!--                                <td><i class="fas fa-star text-yellow-500"></i> 5</td>-->
+<!--                                <td>12</td>-->
+<!--                                <td><span class="badge badge-success">Active</span></td>-->
+<!--                                <td>-->
+<!--                                    <div class="action-btns">-->
+<!--                                        <button class="action-btn view tooltip" onclick="viewHotelDetails('HTL-1001')">-->
+<!--                                            <i class="fas fa-eye"></i>-->
+<!--                                            <span class="tooltip-text">View Details</span>-->
+<!--                                        </button>-->
+<!--                                        <button class="action-btn edit tooltip" onclick="editHotel('HTL-1001')">-->
+<!--                                            <i class="fas fa-edit"></i>-->
+<!--                                            <span class="tooltip-text">Edit Property</span>-->
+<!--                                        </button>-->
+<!--                                        <button class="action-btn delete tooltip">-->
+<!--                                            <i class="fas fa-cog"></i>-->
+<!--                                            <span class="tooltip-text">Configure</span>-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            <tr>-->
+<!--                                <td>#HTL-1002</td>-->
+<!--                                <td>Beachfront Resort</td>-->
+<!--                                <td>Miami, USA</td>-->
+<!--                                <td><i class="fas fa-star text-yellow-500"></i> 4</td>-->
+<!--                                <td>8</td>-->
+<!--                                <td><span class="badge badge-success">Active</span></td>-->
+<!--                                <td>-->
+<!--                                    <div class="action-btns">-->
+<!--                                        <button class="action-btn view tooltip" onclick="viewHotelDetails('HTL-1002')">-->
+<!--                                            <i class="fas fa-eye"></i>-->
+<!--                                            <span class="tooltip-text">View Details</span>-->
+<!--                                        </button>-->
+<!--                                        <button class="action-btn edit tooltip" onclick="editHotel('HTL-1002')">-->
+<!--                                            <i class="fas fa-edit"></i>-->
+<!--                                            <span class="tooltip-text">Edit Property</span>-->
+<!--                                        </button>-->
+<!--                                        <button class="action-btn delete tooltip">-->
+<!--                                            <i class="fas fa-cog"></i>-->
+<!--                                            <span class="tooltip-text">Configure</span>-->
+<!--                                        </button>-->
+<!--                                    </div>-->
+<!--                                </td>-->
+<!--                            </tr>-->
+<!--                            </tbody>-->
+<!--                        </table>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
 
             <!-- Room Configuration Tab -->
             <div class="tab-content" id="room-configuration">
@@ -3991,486 +4114,498 @@ Child policy: Children under 12 stay free with parents</textarea>
 <!-- JavaScript -->
 <script>
 
-    // Hotel Management Application
-    class HotelManagementApp {
-        constructor() {
-            this.hotels = [
-                {
-                    id: "HTL-1001",
-                    name: "Grand Royale Hotel",
-                    location: "New York, USA",
-                    rating: 5,
-                    roomTypes: 12,
-                    status: "Active",
-                    address: "123 Park Avenue, New York, NY 10017, USA",
-                    description: "The Grand Royale Hotel offers luxurious accommodations in the heart of Manhattan.",
-                    amenities: ["Free WiFi", "Pool", "Restaurant", "Spa"],
-                    images: [
-                        "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-                        "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                    ]
-                },
-                {
-                    id: "HTL-1002",
-                    name: "Beachfront Resort",
-                    location: "Miami, USA",
-                    rating: 4,
-                    roomTypes: 8,
-                    status: "Active",
-                    address: "456 Ocean Drive, Miami, FL 33139, USA",
-                    description: "A luxurious beachfront property with stunning ocean views.",
-                    amenities: ["Free WiFi", "Beach Access", "Pool", "Restaurant"],
-                    images: [
-                        "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                    ]
-                }
-            ];
-
-            this.rooms = [
-                {
-                    id: "DLX-KING",
-                    hotelId: "HTL-1001",
-                    name: "Deluxe King Room",
-                    bed: "1 King Bed",
-                    maxOccupancy: 2,
-                    size: 350,
-                    rate: 299,
-                    description: "Our Deluxe King Room features a comfortable king-size bed with premium linens.",
-                    amenities: ["Free WiFi", "Air Conditioning", "TV", "Mini Bar"],
-                    cancellation: "Free cancellation up to 48 hours before check-in",
-                    mealPlan: "Breakfast included",
-                    image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                },
-                {
-                    id: "EXEC-SUIT",
-                    hotelId: "HTL-1001",
-                    name: "Executive Suite",
-                    bed: "1 King Bed",
-                    maxOccupancy: 2,
-                    size: 650,
-                    rate: 499,
-                    description: "The Executive Suite offers a spacious living area separate from the bedroom.",
-                    amenities: ["Free WiFi", "Air Conditioning", "TV", "Mini Bar", "Separate Living Area"],
-                    cancellation: "Free cancellation up to 72 hours before check-in",
-                    mealPlan: "Breakfast and evening cocktails included",
-                    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                }
-            ];
-
-            this.currentHotelId = "HTL-1001";
-            this.init();
-        }
-
-        init() {
-            this.cacheDomElements();
-            this.bindEvents();
-            this.renderHotelsTable();
-            this.renderRoomsList();
-        }
-
-        cacheDomElements() {
-            // Modals
-            this.hotelModal = document.getElementById('hotel-modal');
-            this.editHotelModal = document.getElementById('edit-hotel-modal');
-            this.viewHotelModal = document.getElementById('view-hotel-modal');
-            this.roomTypeModal = document.getElementById('room-type-modal');
-            this.editRoomTypeModal = document.getElementById('edit-room-type-modal');
-            this.editRateModal = document.getElementById('edit-rate-modal');
-
-            // Buttons
-            this.addHotelBtn = document.getElementById('add-hotel-btn');
-            this.addRoomTypeBtn = document.getElementById('add-room-type-btn');
-            this.addNewRoomBtn = document.getElementById('add-new-room-btn');
-
-            // Containers
-            this.hotelsTableBody = document.querySelector('.table tbody');
-            this.roomsList = document.getElementById('rooms-list');
-            this.hotelSelect = document.getElementById('hotel-select');
-        }
-
-        bindEvents() {
-            // Sidebar toggle
-            document.getElementById('toggle-sidebar').addEventListener('click', this.toggleSidebar.bind(this));
-
-            // Menu navigation
-            document.querySelectorAll('.menu-item[data-section]').forEach(item => {
-                item.addEventListener('click', this.handleMenuNavigation.bind(this));
-            });
-
-            // Tab navigation
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', this.handleTabNavigation.bind(this));
-            });
-
-            // Hotel actions
-            this.addHotelBtn.addEventListener('click', () => this.openModal(this.hotelModal));
-            document.getElementById('cancel-hotel').addEventListener('click', () => this.closeModal(this.hotelModal));
-            document.getElementById('save-hotel').addEventListener('click', this.saveHotel.bind(this));
-
-            // Room actions
-            this.addRoomTypeBtn.addEventListener('click', () => this.openModal(this.roomTypeModal));
-            this.addNewRoomBtn.addEventListener('click', () => this.openModal(this.roomTypeModal));
-            document.getElementById('cancel-room-type').addEventListener('click', () => this.closeModal(this.roomTypeModal));
-            document.getElementById('save-room-type').addEventListener('click', this.saveRoomType.bind(this));
-
-            // Hotel selection
-            this.hotelSelect.addEventListener('change', (e) => {
-                this.currentHotelId = e.target.value;
-                this.renderRoomsList();
-            });
-
-            // Modal close handlers
-            [this.hotelModal, this.editHotelModal, this.viewHotelModal, this.roomTypeModal, this.editRoomTypeModal, this.editRateModal].forEach(modal => {
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) this.closeModal(modal);
-                });
-                modal.querySelector('.modal-close').addEventListener('click', () => this.closeModal(modal));
-            });
-
-            // Image upload handlers
-            document.querySelectorAll('.image-upload').forEach(upload => {
-                this.setupImageUpload(upload);
-            });
-        }
-
-        // DOM Manipulation Methods
-        renderHotelsTable() {
-            this.hotelsTableBody.innerHTML = this.hotels.map(hotel => `
-                <tr>
-                    <td>#${hotel.id}</td>
-                    <td>${hotel.name}</td>
-                    <td>${hotel.location}</td>
-                    <td>${this.renderStars(hotel.rating)}</td>
-                    <td>${hotel.roomTypes}</td>
-                    <td><span class="badge badge-success">${hotel.status}</span></td>
-                    <td>
-                        <div class="action-btns">
-                            <button class="action-btn view tooltip" data-hotel-id="${hotel.id}">
-                                <i class="fas fa-eye"></i>
-                                <span class="tooltip-text">View Details</span>
-                            </button>
-                            <button class="action-btn edit tooltip" data-hotel-id="${hotel.id}">
-                                <i class="fas fa-edit"></i>
-                                <span class="tooltip-text">Edit Property</span>
-                            </button>
-                            <button class="action-btn delete tooltip">
-                                <i class="fas fa-cog"></i>
-                                <span class="tooltip-text">Configure</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            `).join('');
-
-            // Add event listeners to the newly created buttons
-            document.querySelectorAll('.action-btn.view').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const hotelId = e.currentTarget.getAttribute('data-hotel-id');
-                    this.viewHotelDetails(hotelId);
-                });
-            });
-
-            document.querySelectorAll('.action-btn.edit').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const hotelId = e.currentTarget.getAttribute('data-hotel-id');
-                    this.editHotel(hotelId);
-                });
-            });
-        }
-
-        renderRoomsList() {
-            const currentHotelRooms = this.rooms.filter(room => room.hotelId === this.currentHotelId);
-            this.roomsList.innerHTML = currentHotelRooms.map(room => `
-                <div class="room-card">
-                    <div class="room-header">
-                        <div class="room-image">
-                            <img src="${room.image}" alt="${room.name}">
-                        </div>
-                        <div class="room-info">
-                            <div class="room-name">${room.name}</div>
-                            <div class="room-features">
-                                <span class="room-feature"><i class="fas fa-bed"></i> ${room.bed}</span>
-                                <span class="room-feature"><i class="fas fa-user-friends"></i> ${room.maxOccupancy} Adults</span>
-                                ${room.size ? `<span class="room-feature"><i class="fas fa-ruler-combined"></i> ${room.size} sq ft</span>` : ''}
-                            </div>
-                            <div class="room-amenities">
-                                ${room.amenities.map(amenity => `<span class="room-amenity">${amenity}</span>`).join('')}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="room-body">
-                        <div class="room-details">
-                            <div class="room-policies">
-                                <p><strong>Cancellation Policy:</strong> ${room.cancellation}</p>
-                                <p><strong>Meal Plan:</strong> ${room.mealPlan}</p>
-                            </div>
-                            <div class="room-description">
-                                ${room.description}
-                            </div>
-                        </div>
-                        <div class="room-price">
-                            <div class="price-amount">$${room.rate}</div>
-                            <div class="price-description">per night (excl. taxes)</div>
-                            <button class="btn btn-outline btn-sm" data-room-id="${room.id}">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <button class="btn btn-danger btn-sm" data-room-id="${room.id}">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-
-            // Add event listeners to room action buttons
-            document.querySelectorAll('.room-price .btn-outline').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const roomId = e.currentTarget.getAttribute('data-room-id');
-                    this.editRoom(roomId);
-                });
-            });
-
-            document.querySelectorAll('.room-price .btn-danger').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const roomId = e.currentTarget.getAttribute('data-room-id');
-                    this.deleteRoom(roomId);
-                });
-            });
-        }
-
-        renderStars(count) {
-            return '<i class="fas fa-star text-yellow-500"></i> '.repeat(count);
-        }
-
-        // Modal Handling Methods
-        openModal(modal) {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        closeModal(modal) {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Event Handlers
-        toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
-            document.getElementById('main-content').classList.toggle('expanded');
-        }
-
-        handleMenuNavigation(e) {
-            const sectionId = e.currentTarget.getAttribute('data-section') + '-content';
-
-            // Update active menu item
-            document.querySelectorAll('.menu-item[data-section]').forEach(item => {
-                item.classList.remove('active');
-            });
-            e.currentTarget.classList.add('active');
-
-            // Show selected section
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
-            document.getElementById(sectionId).classList.add('active');
-        }
-
-        handleTabNavigation(e) {
-            const tabId = e.currentTarget.getAttribute('data-tab');
-            const tabGroup = e.currentTarget.parentElement;
-
-            // Update active tab
-            tabGroup.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            e.currentTarget.classList.add('active');
-
-            // Show selected tab content
-            const section = e.currentTarget.closest('.content-section');
-            section.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        // Business Logic Methods
-        saveHotel() {
-            // In a real app, you would collect form data and save to database
-            const newHotel = {
-                id: "HTL-" + (1000 + this.hotels.length + 1),
-                name: document.querySelector('#hotel-form input[type="text"]').value,
-                location: "New Location",
-                rating: 5,
-                roomTypes: 0,
-                status: "Active",
-                address: document.querySelector('#hotel-form input[placeholder="Street address"]').value,
-                description: document.querySelector('#hotel-form textarea').value,
-                amenities: Array.from(document.querySelectorAll('#hotel-form input[type="checkbox"]:checked')).map(cb => cb.nextElementSibling.textContent),
-                images: []
-            };
-
-            this.hotels.push(newHotel);
-            this.renderHotelsTable();
-            this.closeModal(this.hotelModal);
-            alert('Hotel property saved successfully!');
-        }
-
-        saveRoomType() {
-            // In a real app, you would collect form data and save to database
-            const newRoom = {
-                id: "RM-" + Math.floor(Math.random() * 10000),
-                hotelId: this.currentHotelId,
-                name: document.querySelector('#room-type-form input[type="text"]').value,
-                bed: document.querySelector('#room-type-form select').value,
-                maxOccupancy: document.querySelector('#room-type-form input[type="number"]').value,
-                size: document.querySelectorAll('#room-type-form input[type="number"]')[1].value,
-                rate: document.querySelector('#room-type-form .input-group input').value,
-                description: document.querySelector('#room-type-form textarea').value,
-                amenities: Array.from(document.querySelectorAll('#room-type-form input[type="checkbox"]:checked')).map(cb => cb.nextElementSibling.textContent),
-                cancellation: document.querySelectorAll('#room-type-form select')[1].value,
-                mealPlan: document.querySelectorAll('#room-type-form select')[2].value,
-                image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-            };
-
-            this.rooms.push(newRoom);
-            this.renderRoomsList();
-            this.closeModal(this.roomTypeModal);
-            alert('Room type saved successfully!');
-        }
-
-        viewHotelDetails(hotelId) {
-            const hotel = this.hotels.find(h => h.id === hotelId);
-            if (!hotel) return;
-
-            // Populate the view modal with hotel data
-            const modal = this.viewHotelModal;
-            modal.querySelector('.hotel-name').textContent = hotel.name;
-            modal.querySelector('.hotel-rating').innerHTML = this.renderStars(hotel.rating);
-            modal.querySelector('.hotel-address').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${hotel.address}`;
-            modal.querySelector('.hotel-description').textContent = hotel.description;
-
-            // Set amenities
-            const amenitiesContainer = modal.querySelector('.hotel-amenities');
-            amenitiesContainer.innerHTML = hotel.amenities.map(amenity =>
-                `<span class="amenity-tag">${amenity}</span>`
-            ).join('');
-
-            this.openModal(modal);
-        }
-
-        editHotel(hotelId) {
-            const hotel = this.hotels.find(h => h.id === hotelId);
-            if (!hotel) return;
-
-            // Populate the edit form with hotel data
-            const form = this.editHotelModal.querySelector('form');
-            form.querySelector('input[type="text"]').value = hotel.name;
-            form.querySelector('textarea').value = hotel.description;
-
-            // Set amenities checkboxes
-            form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                const amenityText = checkbox.nextElementSibling.textContent;
-                checkbox.checked = hotel.amenities.includes(amenityText);
-            });
-
-            this.openModal(this.editHotelModal);
-        }
-
-        editRoom(roomId) {
-            const room = this.rooms.find(r => r.id === roomId);
-            if (!room) return;
-
-            // Populate the edit form with room data
-            const form = this.editRoomTypeModal.querySelector('form');
-            form.querySelector('input[type="text"]').value = room.name;
-            form.querySelector('select').value = room.bed;
-            form.querySelector('input[type="number"]').value = room.maxOccupancy;
-            form.querySelectorAll('input[type="number"]')[1].value = room.size;
-            form.querySelector('.input-group input').value = room.rate;
-            form.querySelector('textarea').value = room.description;
-
-            // Set amenities checkboxes
-            form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-                const amenityText = checkbox.nextElementSibling.textContent;
-                checkbox.checked = room.amenities.includes(amenityText);
-            });
-
-            this.openModal(this.editRoomTypeModal);
-        }
-
-        deleteRoom(roomId) {
-            if (confirm('Are you sure you want to delete this room type?')) {
-                const index = this.rooms.findIndex(room => room.id === roomId);
-                if (index !== -1) {
-                    this.rooms.splice(index, 1);
-                    this.renderRoomsList();
-                    alert('Room type deleted successfully!');
-                }
-            }
-        }
-
-        editRoomRate(roomId) {
-            const room = this.rooms.find(r => r.id === roomId);
-            if (!room) return;
-
-            // Populate the rate edit form
-            const form = this.editRateModal.querySelector('form');
-            form.querySelector('input[type="text"]').value = room.name;
-            form.querySelector('.input-group input').value = room.rate;
-
-            this.openModal(this.editRateModal);
-        }
-
-        // Utility Methods
-        setupImageUpload(uploadElement) {
-            const fileInput = uploadElement.querySelector('input[type="file"]');
-            const previewContainer = uploadElement.nextElementSibling;
-
-            uploadElement.addEventListener('click', () => fileInput.click());
-
-            fileInput.addEventListener('change', () => {
-                previewContainer.innerHTML = '';
-                Array.from(fileInput.files).forEach(file => {
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            const previewImage = document.createElement('div');
-                            previewImage.className = 'preview-image';
-                            previewImage.innerHTML = `
-                                <img src="${e.target.result}" alt="Preview">
-                                <div class="remove-image"><i class="fas fa-times"></i></div>
-                            `;
-                            previewContainer.appendChild(previewImage);
-
-                            previewImage.querySelector('.remove-image').addEventListener('click', (e) => {
-                                e.stopPropagation();
-                                previewImage.remove();
-                            });
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            });
-
-            // Handle drag and drop
-            uploadElement.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                uploadElement.style.borderColor = 'var(--primary)';
-            });
-
-            uploadElement.addEventListener('dragleave', () => {
-                uploadElement.style.borderColor = '#ddd';
-            });
-
-            uploadElement.addEventListener('drop', (e) => {
-                e.preventDefault();
-                uploadElement.style.borderColor = '#ddd';
-                fileInput.files = e.dataTransfer.files;
-                const event = new Event('change');
-                fileInput.dispatchEvent(event);
-            });
-        }
+        function viewHotelDetails(hotelId) {
+        window.location.href = '/admin/hotel/' + hotelId;
     }
+
+        function editHotel(hotelId) {
+        window.location.href = '/admin/hotel/' + hotelId + '/edit';
+    }
+
+        function configureHotel(hotelId) {
+        window.location.href = '/admin/hotel/' + hotelId + '/configure';
+    }
+    //
+    // // Hotel Management Application
+    // class HotelManagementApp {
+    //     constructor() {
+    //         this.hotels = [
+    //             {
+    //                 id: "HTL-1001",
+    //                 name: "Grand Royale Hotel",
+    //                 location: "New York, USA",
+    //                 rating: 5,
+    //                 roomTypes: 12,
+    //                 status: "Active",
+    //                 address: "123 Park Avenue, New York, NY 10017, USA",
+    //                 description: "The Grand Royale Hotel offers luxurious accommodations in the heart of Manhattan.",
+    //                 amenities: ["Free WiFi", "Pool", "Restaurant", "Spa"],
+    //                 images: [
+    //                     "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    //                     "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+    //                 ]
+    //             },
+    //             {
+    //                 id: "HTL-1002",
+    //                 name: "Beachfront Resort",
+    //                 location: "Miami, USA",
+    //                 rating: 4,
+    //                 roomTypes: 8,
+    //                 status: "Active",
+    //                 address: "456 Ocean Drive, Miami, FL 33139, USA",
+    //                 description: "A luxurious beachfront property with stunning ocean views.",
+    //                 amenities: ["Free WiFi", "Beach Access", "Pool", "Restaurant"],
+    //                 images: [
+    //                     "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+    //                 ]
+    //             }
+    //         ];
+    //
+    //         this.rooms = [
+    //             {
+    //                 id: "DLX-KING",
+    //                 hotelId: "HTL-1001",
+    //                 name: "Deluxe King Room",
+    //                 bed: "1 King Bed",
+    //                 maxOccupancy: 2,
+    //                 size: 350,
+    //                 rate: 299,
+    //                 description: "Our Deluxe King Room features a comfortable king-size bed with premium linens.",
+    //                 amenities: ["Free WiFi", "Air Conditioning", "TV", "Mini Bar"],
+    //                 cancellation: "Free cancellation up to 48 hours before check-in",
+    //                 mealPlan: "Breakfast included",
+    //                 image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+    //             },
+    //             {
+    //                 id: "EXEC-SUIT",
+    //                 hotelId: "HTL-1001",
+    //                 name: "Executive Suite",
+    //                 bed: "1 King Bed",
+    //                 maxOccupancy: 2,
+    //                 size: 650,
+    //                 rate: 499,
+    //                 description: "The Executive Suite offers a spacious living area separate from the bedroom.",
+    //                 amenities: ["Free WiFi", "Air Conditioning", "TV", "Mini Bar", "Separate Living Area"],
+    //                 cancellation: "Free cancellation up to 72 hours before check-in",
+    //                 mealPlan: "Breakfast and evening cocktails included",
+    //                 image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+    //             }
+    //         ];
+    //
+    //         this.currentHotelId = "HTL-1001";
+    //         this.init();
+    //     }
+    //
+    //     init() {
+    //         this.cacheDomElements();
+    //         this.bindEvents();
+    //         this.renderHotelsTable();
+    //         this.renderRoomsList();
+    //     }
+    //
+    //     cacheDomElements() {
+    //         // Modals
+    //         this.hotelModal = document.getElementById('hotel-modal');
+    //         this.editHotelModal = document.getElementById('edit-hotel-modal');
+    //         this.viewHotelModal = document.getElementById('view-hotel-modal');
+    //         this.roomTypeModal = document.getElementById('room-type-modal');
+    //         this.editRoomTypeModal = document.getElementById('edit-room-type-modal');
+    //         this.editRateModal = document.getElementById('edit-rate-modal');
+    //
+    //         // Buttons
+    //         this.addHotelBtn = document.getElementById('add-hotel-btn');
+    //         this.addRoomTypeBtn = document.getElementById('add-room-type-btn');
+    //         this.addNewRoomBtn = document.getElementById('add-new-room-btn');
+    //
+    //         // Containers
+    //         this.hotelsTableBody = document.querySelector('.table tbody');
+    //         this.roomsList = document.getElementById('rooms-list');
+    //         this.hotelSelect = document.getElementById('hotel-select');
+    //     }
+    //
+    //     bindEvents() {
+    //         // Sidebar toggle
+    //         document.getElementById('toggle-sidebar').addEventListener('click', this.toggleSidebar.bind(this));
+    //
+    //         // Menu navigation
+    //         document.querySelectorAll('.menu-item[data-section]').forEach(item => {
+    //             item.addEventListener('click', this.handleMenuNavigation.bind(this));
+    //         });
+    //
+    //         // Tab navigation
+    //         document.querySelectorAll('.tab-btn').forEach(btn => {
+    //             btn.addEventListener('click', this.handleTabNavigation.bind(this));
+    //         });
+    //
+    //         // Hotel actions
+    //         this.addHotelBtn.addEventListener('click', () => this.openModal(this.hotelModal));
+    //         document.getElementById('cancel-hotel').addEventListener('click', () => this.closeModal(this.hotelModal));
+    //         document.getElementById('save-hotel').addEventListener('click', this.saveHotel.bind(this));
+    //
+    //         // Room actions
+    //         this.addRoomTypeBtn.addEventListener('click', () => this.openModal(this.roomTypeModal));
+    //         this.addNewRoomBtn.addEventListener('click', () => this.openModal(this.roomTypeModal));
+    //         document.getElementById('cancel-room-type').addEventListener('click', () => this.closeModal(this.roomTypeModal));
+    //         document.getElementById('save-room-type').addEventListener('click', this.saveRoomType.bind(this));
+    //
+    //         // Hotel selection
+    //         this.hotelSelect.addEventListener('change', (e) => {
+    //             this.currentHotelId = e.target.value;
+    //             this.renderRoomsList();
+    //         });
+    //
+    //         // Modal close handlers
+    //         [this.hotelModal, this.editHotelModal, this.viewHotelModal, this.roomTypeModal, this.editRoomTypeModal, this.editRateModal].forEach(modal => {
+    //             modal.addEventListener('click', (e) => {
+    //                 if (e.target === modal) this.closeModal(modal);
+    //             });
+    //             modal.querySelector('.modal-close').addEventListener('click', () => this.closeModal(modal));
+    //         });
+    //
+    //         // Image upload handlers
+    //         document.querySelectorAll('.image-upload').forEach(upload => {
+    //             this.setupImageUpload(upload);
+    //         });
+    //     }
+    //
+    //     // DOM Manipulation Methods
+    //     renderHotelsTable() {
+    //         this.hotelsTableBody.innerHTML = this.hotels.map(hotel => `
+    //             <tr>
+    //                 <td>#${hotel.id}</td>
+    //                 <td>${hotel.name}</td>
+    //                 <td>${hotel.location}</td>
+    //                 <td>${this.renderStars(hotel.rating)}</td>
+    //                 <td>${hotel.roomTypes}</td>
+    //                 <td><span class="badge badge-success">${hotel.status}</span></td>
+    //                 <td>
+    //                     <div class="action-btns">
+    //                         <button class="action-btn view tooltip" data-hotel-id="${hotel.id}">
+    //                             <i class="fas fa-eye"></i>
+    //                             <span class="tooltip-text">View Details</span>
+    //                         </button>
+    //                         <button class="action-btn edit tooltip" data-hotel-id="${hotel.id}">
+    //                             <i class="fas fa-edit"></i>
+    //                             <span class="tooltip-text">Edit Property</span>
+    //                         </button>
+    //                         <button class="action-btn delete tooltip">
+    //                             <i class="fas fa-cog"></i>
+    //                             <span class="tooltip-text">Configure</span>
+    //                         </button>
+    //                     </div>
+    //                 </td>
+    //             </tr>
+    //         `).join('');
+    //
+    //         // Add event listeners to the newly created buttons
+    //         document.querySelectorAll('.action-btn.view').forEach(btn => {
+    //             btn.addEventListener('click', (e) => {
+    //                 const hotelId = e.currentTarget.getAttribute('data-hotel-id');
+    //                 this.viewHotelDetails(hotelId);
+    //             });
+    //         });
+    //
+    //         document.querySelectorAll('.action-btn.edit').forEach(btn => {
+    //             btn.addEventListener('click', (e) => {
+    //                 const hotelId = e.currentTarget.getAttribute('data-hotel-id');
+    //                 this.editHotel(hotelId);
+    //             });
+    //         });
+    //     }
+    //
+    //     renderRoomsList() {
+    //         const currentHotelRooms = this.rooms.filter(room => room.hotelId === this.currentHotelId);
+    //         this.roomsList.innerHTML = currentHotelRooms.map(room => `
+    //             <div class="room-card">
+    //                 <div class="room-header">
+    //                     <div class="room-image">
+    //                         <img src="${room.image}" alt="${room.name}">
+    //                     </div>
+    //                     <div class="room-info">
+    //                         <div class="room-name">${room.name}</div>
+    //                         <div class="room-features">
+    //                             <span class="room-feature"><i class="fas fa-bed"></i> ${room.bed}</span>
+    //                             <span class="room-feature"><i class="fas fa-user-friends"></i> ${room.maxOccupancy} Adults</span>
+    //                             ${room.size ? `<span class="room-feature"><i class="fas fa-ruler-combined"></i> ${room.size} sq ft</span>` : ''}
+    //                         </div>
+    //                         <div class="room-amenities">
+    //                             ${room.amenities.map(amenity => `<span class="room-amenity">${amenity}</span>`).join('')}
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <div class="room-body">
+    //                     <div class="room-details">
+    //                         <div class="room-policies">
+    //                             <p><strong>Cancellation Policy:</strong> ${room.cancellation}</p>
+    //                             <p><strong>Meal Plan:</strong> ${room.mealPlan}</p>
+    //                         </div>
+    //                         <div class="room-description">
+    //                             ${room.description}
+    //                         </div>
+    //                     </div>
+    //                     <div class="room-price">
+    //                         <div class="price-amount">$${room.rate}</div>
+    //                         <div class="price-description">per night (excl. taxes)</div>
+    //                         <button class="btn btn-outline btn-sm" data-room-id="${room.id}">
+    //                             <i class="fas fa-edit"></i> Edit
+    //                         </button>
+    //                         <button class="btn btn-danger btn-sm" data-room-id="${room.id}">
+    //                             <i class="fas fa-trash"></i> Delete
+    //                         </button>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         `).join('');
+    //
+    //         // Add event listeners to room action buttons
+    //         document.querySelectorAll('.room-price .btn-outline').forEach(btn => {
+    //             btn.addEventListener('click', (e) => {
+    //                 const roomId = e.currentTarget.getAttribute('data-room-id');
+    //                 this.editRoom(roomId);
+    //             });
+    //         });
+    //
+    //         document.querySelectorAll('.room-price .btn-danger').forEach(btn => {
+    //             btn.addEventListener('click', (e) => {
+    //                 const roomId = e.currentTarget.getAttribute('data-room-id');
+    //                 this.deleteRoom(roomId);
+    //             });
+    //         });
+    //     }
+    //
+    //     renderStars(count) {
+    //         return '<i class="fas fa-star text-yellow-500"></i> '.repeat(count);
+    //     }
+    //
+    //     // Modal Handling Methods
+    //     openModal(modal) {
+    //         modal.classList.add('active');
+    //         document.body.style.overflow = 'hidden';
+    //     }
+    //
+    //     closeModal(modal) {
+    //         modal.classList.remove('active');
+    //         document.body.style.overflow = '';
+    //     }
+    //
+    //     // Event Handlers
+    //     toggleSidebar() {
+    //         document.getElementById('sidebar').classList.toggle('collapsed');
+    //         document.getElementById('main-content').classList.toggle('expanded');
+    //     }
+    //
+    //     handleMenuNavigation(e) {
+    //         const sectionId = e.currentTarget.getAttribute('data-section') + '-content';
+    //
+    //         // Update active menu item
+    //         document.querySelectorAll('.menu-item[data-section]').forEach(item => {
+    //             item.classList.remove('active');
+    //         });
+    //         e.currentTarget.classList.add('active');
+    //
+    //         // Show selected section
+    //         document.querySelectorAll('.content-section').forEach(section => {
+    //             section.classList.remove('active');
+    //         });
+    //         document.getElementById(sectionId).classList.add('active');
+    //     }
+    //
+    //     handleTabNavigation(e) {
+    //         const tabId = e.currentTarget.getAttribute('data-tab');
+    //         const tabGroup = e.currentTarget.parentElement;
+    //
+    //         // Update active tab
+    //         tabGroup.querySelectorAll('.tab-btn').forEach(btn => {
+    //             btn.classList.remove('active');
+    //         });
+    //         e.currentTarget.classList.add('active');
+    //
+    //         // Show selected tab content
+    //         const section = e.currentTarget.closest('.content-section');
+    //         section.querySelectorAll('.tab-content').forEach(content => {
+    //             content.classList.remove('active');
+    //         });
+    //         document.getElementById(tabId).classList.add('active');
+    //     }
+    //
+    //     // Business Logic Methods
+    //     saveHotel() {
+    //         // In a real app, you would collect form data and save to database
+    //         const newHotel = {
+    //             id: "HTL-" + (1000 + this.hotels.length + 1),
+    //             name: document.querySelector('#hotel-form input[type="text"]').value,
+    //             location: "New Location",
+    //             rating: 5,
+    //             roomTypes: 0,
+    //             status: "Active",
+    //             address: document.querySelector('#hotel-form input[placeholder="Street address"]').value,
+    //             description: document.querySelector('#hotel-form textarea').value,
+    //             amenities: Array.from(document.querySelectorAll('#hotel-form input[type="checkbox"]:checked')).map(cb => cb.nextElementSibling.textContent),
+    //             images: []
+    //         };
+    //
+    //         this.hotels.push(newHotel);
+    //         this.renderHotelsTable();
+    //         this.closeModal(this.hotelModal);
+    //         alert('Hotel property saved successfully!');
+    //     }
+    //
+    //     saveRoomType() {
+    //         // In a real app, you would collect form data and save to database
+    //         const newRoom = {
+    //             id: "RM-" + Math.floor(Math.random() * 10000),
+    //             hotelId: this.currentHotelId,
+    //             name: document.querySelector('#room-type-form input[type="text"]').value,
+    //             bed: document.querySelector('#room-type-form select').value,
+    //             maxOccupancy: document.querySelector('#room-type-form input[type="number"]').value,
+    //             size: document.querySelectorAll('#room-type-form input[type="number"]')[1].value,
+    //             rate: document.querySelector('#room-type-form .input-group input').value,
+    //             description: document.querySelector('#room-type-form textarea').value,
+    //             amenities: Array.from(document.querySelectorAll('#room-type-form input[type="checkbox"]:checked')).map(cb => cb.nextElementSibling.textContent),
+    //             cancellation: document.querySelectorAll('#room-type-form select')[1].value,
+    //             mealPlan: document.querySelectorAll('#room-type-form select')[2].value,
+    //             image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+    //         };
+    //
+    //         this.rooms.push(newRoom);
+    //         this.renderRoomsList();
+    //         this.closeModal(this.roomTypeModal);
+    //         alert('Room type saved successfully!');
+    //     }
+    //
+    //     viewHotelDetails(hotelId) {
+    //         const hotel = this.hotels.find(h => h.id === hotelId);
+    //         if (!hotel) return;
+    //
+    //         // Populate the view modal with hotel data
+    //         const modal = this.viewHotelModal;
+    //         modal.querySelector('.hotel-name').textContent = hotel.name;
+    //         modal.querySelector('.hotel-rating').innerHTML = this.renderStars(hotel.rating);
+    //         modal.querySelector('.hotel-address').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${hotel.address}`;
+    //         modal.querySelector('.hotel-description').textContent = hotel.description;
+    //
+    //         // Set amenities
+    //         const amenitiesContainer = modal.querySelector('.hotel-amenities');
+    //         amenitiesContainer.innerHTML = hotel.amenities.map(amenity =>
+    //             `<span class="amenity-tag">${amenity}</span>`
+    //         ).join('');
+    //
+    //         this.openModal(modal);
+    //     }
+    //
+    //     editHotel(hotelId) {
+    //         const hotel = this.hotels.find(h => h.id === hotelId);
+    //         if (!hotel) return;
+    //
+    //         // Populate the edit form with hotel data
+    //         const form = this.editHotelModal.querySelector('form');
+    //         form.querySelector('input[type="text"]').value = hotel.name;
+    //         form.querySelector('textarea').value = hotel.description;
+    //
+    //         // Set amenities checkboxes
+    //         form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    //             const amenityText = checkbox.nextElementSibling.textContent;
+    //             checkbox.checked = hotel.amenities.includes(amenityText);
+    //         });
+    //
+    //         this.openModal(this.editHotelModal);
+    //     }
+    //
+    //     editRoom(roomId) {
+    //         const room = this.rooms.find(r => r.id === roomId);
+    //         if (!room) return;
+    //
+    //         // Populate the edit form with room data
+    //         const form = this.editRoomTypeModal.querySelector('form');
+    //         form.querySelector('input[type="text"]').value = room.name;
+    //         form.querySelector('select').value = room.bed;
+    //         form.querySelector('input[type="number"]').value = room.maxOccupancy;
+    //         form.querySelectorAll('input[type="number"]')[1].value = room.size;
+    //         form.querySelector('.input-group input').value = room.rate;
+    //         form.querySelector('textarea').value = room.description;
+    //
+    //         // Set amenities checkboxes
+    //         form.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    //             const amenityText = checkbox.nextElementSibling.textContent;
+    //             checkbox.checked = room.amenities.includes(amenityText);
+    //         });
+    //
+    //         this.openModal(this.editRoomTypeModal);
+    //     }
+    //
+    //     deleteRoom(roomId) {
+    //         if (confirm('Are you sure you want to delete this room type?')) {
+    //             const index = this.rooms.findIndex(room => room.id === roomId);
+    //             if (index !== -1) {
+    //                 this.rooms.splice(index, 1);
+    //                 this.renderRoomsList();
+    //                 alert('Room type deleted successfully!');
+    //             }
+    //         }
+    //     }
+    //
+    //     editRoomRate(roomId) {
+    //         const room = this.rooms.find(r => r.id === roomId);
+    //         if (!room) return;
+    //
+    //         // Populate the rate edit form
+    //         const form = this.editRateModal.querySelector('form');
+    //         form.querySelector('input[type="text"]').value = room.name;
+    //         form.querySelector('.input-group input').value = room.rate;
+    //
+    //         this.openModal(this.editRateModal);
+    //     }
+    //
+    //     // Utility Methods
+    //     setupImageUpload(uploadElement) {
+    //         const fileInput = uploadElement.querySelector('input[type="file"]');
+    //         const previewContainer = uploadElement.nextElementSibling;
+    //
+    //         uploadElement.addEventListener('click', () => fileInput.click());
+    //
+    //         fileInput.addEventListener('change', () => {
+    //             previewContainer.innerHTML = '';
+    //             Array.from(fileInput.files).forEach(file => {
+    //                 if (file.type.startsWith('image/')) {
+    //                     const reader = new FileReader();
+    //                     reader.onload = (e) => {
+    //                         const previewImage = document.createElement('div');
+    //                         previewImage.className = 'preview-image';
+    //                         previewImage.innerHTML = `
+    //                             <img src="${e.target.result}" alt="Preview">
+    //                             <div class="remove-image"><i class="fas fa-times"></i></div>
+    //                         `;
+    //                         previewContainer.appendChild(previewImage);
+    //
+    //                         previewImage.querySelector('.remove-image').addEventListener('click', (e) => {
+    //                             e.stopPropagation();
+    //                             previewImage.remove();
+    //                         });
+    //                     };
+    //                     reader.readAsDataURL(file);
+    //                 }
+    //             });
+    //         });
+    //
+    //         // Handle drag and drop
+    //         uploadElement.addEventListener('dragover', (e) => {
+    //             e.preventDefault();
+    //             uploadElement.style.borderColor = 'var(--primary)';
+    //         });
+    //
+    //         uploadElement.addEventListener('dragleave', () => {
+    //             uploadElement.style.borderColor = '#ddd';
+    //         });
+    //
+    //         uploadElement.addEventListener('drop', (e) => {
+    //             e.preventDefault();
+    //             uploadElement.style.borderColor = '#ddd';
+    //             fileInput.files = e.dataTransfer.files;
+    //             const event = new Event('change');
+    //             fileInput.dispatchEvent(event);
+    //         });
+    //     }
+    // }
 
     // Initialize the application
     document.addEventListener('DOMContentLoaded', () => {
@@ -4487,325 +4622,325 @@ Child policy: Children under 12 stay free with parents</textarea>
         window.deleteRoom = (roomId) => app.deleteRoom(roomId);
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Toggle Sidebar
-        const toggleBtn = document.getElementById('toggle-sidebar');
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('main-content');
-
-        toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-        });
-        //
-        // // Menu Items Click Event
-        // const menuItems = document.querySelectorAll('.menu-item');
-        //
-        // menuItems.forEach(item => {
-        //     item.addEventListener('click', function(e) {
-        //
-        //         // Remove active class from all menu items
-        //         menuItems.forEach(i => i.classList.remove('active'));
-        //
-        //         // Add active class to clicked menu item
-        //         this.classList.add('active');
-        //
-        //         // Get the section to show
-        //         const sectionId = this.getAttribute('data-section');
-        //
-        //         // Hide all sections
-        //         document.querySelectorAll('[id$="-content"]').forEach(section => {
-        //             section.style.display = 'none';
-        //         });
-        //
-        //         // Show the selected section
-        //         if (sectionId) {
-        //             document.getElementById(`${sectionId}-content`).style.display = 'block';
-        //         }
-        //     });
-        // });
-
-        // Tab Buttons Click Event
-        const tabButtons = document.querySelectorAll('.tab-btn');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Remove active class from all tab buttons in the same container
-                this.parentElement.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-
-                // Add active class to clicked tab button
-                this.classList.add('active');
-            });
-        });
-
-        // Show toast notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-
-            toast.className = `toast ${type}`;
-            toastMessage.textContent = message;
-            toast.classList.add('show');
-
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // Modal Handling
-        const bookingModal = document.getElementById('booking-modal');
-        const quickBookingBtn = document.getElementById('quick-booking-btn');
-        const newBookingBtn = document.getElementById('new-booking-btn');
-        const quickActionBtn = document.getElementById('quick-action-btn');
-        const closeBookingModal = document.getElementById('close-booking-modal');
-        const cancelBooking = document.getElementById('cancel-booking');
-
-        function openBookingModal() {
-            bookingModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeBookingModalFunc() {
-            bookingModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        quickBookingBtn?.addEventListener('click', openBookingModal);
-        newBookingBtn?.addEventListener('click', openBookingModal);
-        quickActionBtn?.addEventListener('click', openBookingModal);
-        closeBookingModal?.addEventListener('click', closeBookingModalFunc);
-        cancelBooking?.addEventListener('click', closeBookingModalFunc);
-
-        // Close modal when clicking outside
-        bookingModal?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeBookingModalFunc();
-            }
-        });
-
-        // Submit booking form
-        const submitBooking = document.getElementById('submit-booking');
-        submitBooking?.addEventListener('click', function() {
-            // Here you would normally submit the form data to your backend
-            // For this example, we'll just show a success message
-            closeBookingModalFunc();
-            showToast('Booking created successfully!', 'success');
-        });
-
-        // Initialize charts
-        const bookingCtx = document.getElementById('bookingChart')?.getContext('2d');
-        if (bookingCtx) {
-            new Chart(bookingCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-                    datasets: [{
-                        label: 'Bookings',
-                        data: [65, 59, 80, 81, 56, 55, 40],
-                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        borderColor: 'rgba(79, 70, 229, 1)',
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
-        if (revenueCtx) {
-            new Chart(revenueCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Grand Royale', 'Sunset Beach', 'Mountain View', 'City Center'],
-                    datasets: [{
-                        label: 'Revenue',
-                        data: [125000, 98000, 75000, 60000],
-                        backgroundColor: [
-                            'rgba(79, 70, 229, 0.8)',
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(59, 130, 246, 0.8)',
-                            'rgba(245, 158, 11, 0.8)'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        const performanceCtx = document.getElementById('performanceChart')?.getContext('2d');
-        if (performanceCtx) {
-            new Chart(performanceCtx, {
-                type: 'line',
-                data: {
-                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-                    datasets: [
-                        {
-                            label: 'Occupancy Rate',
-                            data: [65, 59, 80, 81],
-                            borderColor: 'rgba(79, 70, 229, 1)',
-                            backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            fill: true
-                        },
-                        {
-                            label: 'Revenue',
-                            data: [45, 40, 65, 70],
-                            borderColor: 'rgba(16, 185, 129, 1)',
-                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                            borderWidth: 2,
-                            tension: 0.4,
-                            fill: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        const sourceCtx = document.getElementById('sourceChart')?.getContext('2d');
-        if (sourceCtx) {
-            new Chart(sourceCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Website', 'Travel Agency', 'Phone', 'Walk-in', 'Other'],
-                    datasets: [{
-                        data: [35, 25, 15, 15, 10],
-                        backgroundColor: [
-                            'rgba(79, 70, 229, 0.8)',
-                            'rgba(16, 185, 129, 0.8)',
-                            'rgba(59, 130, 246, 0.8)',
-                            'rgba(245, 158, 11, 0.8)',
-                            'rgba(156, 163, 175, 0.8)'
-                        ],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: {
-                        legend: {
-                            position: 'right'
-                        }
-                    }
-                }
-            });
-        }
-
-        const roomPerformanceCtx = document.getElementById('roomPerformanceChart')?.getContext('2d');
-        if (roomPerformanceCtx) {
-            new Chart(roomPerformanceCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Deluxe Suite', 'Executive Room', 'Luxury Suite', 'Standard Room'],
-                    datasets: [
-                        {
-                            label: 'Occupancy',
-                            data: [85, 75, 65, 60],
-                            backgroundColor: 'rgba(79, 70, 229, 0.8)'
-                        },
-                        {
-                            label: 'Revenue',
-                            data: [120000, 95000, 80000, 60000],
-                            backgroundColor: 'rgba(16, 185, 129, 0.8)'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: {
-                                drawBorder: false
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    });
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     // Toggle Sidebar
+    //     const toggleBtn = document.getElementById('toggle-sidebar');
+    //     const sidebar = document.getElementById('sidebar');
+    //     const mainContent = document.getElementById('main-content');
+    //
+    //     toggleBtn.addEventListener('click', function() {
+    //         sidebar.classList.toggle('collapsed');
+    //         mainContent.classList.toggle('expanded');
+    //     });
+    //     //
+    //     // // Menu Items Click Event
+    //     // const menuItems = document.querySelectorAll('.menu-item');
+    //     //
+    //     // menuItems.forEach(item => {
+    //     //     item.addEventListener('click', function(e) {
+    //     //
+    //     //         // Remove active class from all menu items
+    //     //         menuItems.forEach(i => i.classList.remove('active'));
+    //     //
+    //     //         // Add active class to clicked menu item
+    //     //         this.classList.add('active');
+    //     //
+    //     //         // Get the section to show
+    //     //         const sectionId = this.getAttribute('data-section');
+    //     //
+    //     //         // Hide all sections
+    //     //         document.querySelectorAll('[id$="-content"]').forEach(section => {
+    //     //             section.style.display = 'none';
+    //     //         });
+    //     //
+    //     //         // Show the selected section
+    //     //         if (sectionId) {
+    //     //             document.getElementById(`${sectionId}-content`).style.display = 'block';
+    //     //         }
+    //     //     });
+    //     // });
+    //
+    //     // Tab Buttons Click Event
+    //     const tabButtons = document.querySelectorAll('.tab-btn');
+    //
+    //     tabButtons.forEach(button => {
+    //         button.addEventListener('click', function() {
+    //             // Remove active class from all tab buttons in the same container
+    //             this.parentElement.querySelectorAll('.tab-btn').forEach(btn => {
+    //                 btn.classList.remove('active');
+    //             });
+    //
+    //             // Add active class to clicked tab button
+    //             this.classList.add('active');
+    //         });
+    //     });
+    //
+    //     // Show toast notification
+    //     function showToast(message, type = 'success') {
+    //         const toast = document.getElementById('toast');
+    //         const toastMessage = document.getElementById('toast-message');
+    //
+    //         toast.className = `toast ${type}`;
+    //         toastMessage.textContent = message;
+    //         toast.classList.add('show');
+    //
+    //         setTimeout(() => {
+    //             toast.classList.remove('show');
+    //         }, 3000);
+    //     }
+    //
+    //     // Modal Handling
+    //     const bookingModal = document.getElementById('booking-modal');
+    //     const quickBookingBtn = document.getElementById('quick-booking-btn');
+    //     const newBookingBtn = document.getElementById('new-booking-btn');
+    //     const quickActionBtn = document.getElementById('quick-action-btn');
+    //     const closeBookingModal = document.getElementById('close-booking-modal');
+    //     const cancelBooking = document.getElementById('cancel-booking');
+    //
+    //     function openBookingModal() {
+    //         bookingModal.classList.add('active');
+    //         document.body.style.overflow = 'hidden';
+    //     }
+    //
+    //     function closeBookingModalFunc() {
+    //         bookingModal.classList.remove('active');
+    //         document.body.style.overflow = '';
+    //     }
+    //
+    //     quickBookingBtn?.addEventListener('click', openBookingModal);
+    //     newBookingBtn?.addEventListener('click', openBookingModal);
+    //     quickActionBtn?.addEventListener('click', openBookingModal);
+    //     closeBookingModal?.addEventListener('click', closeBookingModalFunc);
+    //     cancelBooking?.addEventListener('click', closeBookingModalFunc);
+    //
+    //     // Close modal when clicking outside
+    //     bookingModal?.addEventListener('click', function(e) {
+    //         if (e.target === this) {
+    //             closeBookingModalFunc();
+    //         }
+    //     });
+    //
+    //     // Submit booking form
+    //     const submitBooking = document.getElementById('submit-booking');
+    //     submitBooking?.addEventListener('click', function() {
+    //         // Here you would normally submit the form data to your backend
+    //         // For this example, we'll just show a success message
+    //         closeBookingModalFunc();
+    //         showToast('Booking created successfully!', 'success');
+    //     });
+    //
+    //     // Initialize charts
+    //     const bookingCtx = document.getElementById('bookingChart')?.getContext('2d');
+    //     if (bookingCtx) {
+    //         new Chart(bookingCtx, {
+    //             type: 'line',
+    //             data: {
+    //                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+    //                 datasets: [{
+    //                     label: 'Bookings',
+    //                     data: [65, 59, 80, 81, 56, 55, 40],
+    //                     backgroundColor: 'rgba(79, 70, 229, 0.1)',
+    //                     borderColor: 'rgba(79, 70, 229, 1)',
+    //                     borderWidth: 2,
+    //                     tension: 0.4,
+    //                     fill: true
+    //                 }]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 maintainAspectRatio: false,
+    //                 plugins: {
+    //                     legend: {
+    //                         display: false
+    //                     }
+    //                 },
+    //                 scales: {
+    //                     y: {
+    //                         beginAtZero: true,
+    //                         grid: {
+    //                             drawBorder: false
+    //                         }
+    //                     },
+    //                     x: {
+    //                         grid: {
+    //                             display: false
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     }
+    //
+    //     const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
+    //     if (revenueCtx) {
+    //         new Chart(revenueCtx, {
+    //             type: 'bar',
+    //             data: {
+    //                 labels: ['Grand Royale', 'Sunset Beach', 'Mountain View', 'City Center'],
+    //                 datasets: [{
+    //                     label: 'Revenue',
+    //                     data: [125000, 98000, 75000, 60000],
+    //                     backgroundColor: [
+    //                         'rgba(79, 70, 229, 0.8)',
+    //                         'rgba(16, 185, 129, 0.8)',
+    //                         'rgba(59, 130, 246, 0.8)',
+    //                         'rgba(245, 158, 11, 0.8)'
+    //                     ],
+    //                     borderWidth: 0
+    //                 }]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 maintainAspectRatio: false,
+    //                 plugins: {
+    //                     legend: {
+    //                         display: false
+    //                     }
+    //                 },
+    //                 scales: {
+    //                     y: {
+    //                         beginAtZero: true,
+    //                         grid: {
+    //                             drawBorder: false
+    //                         }
+    //                     },
+    //                     x: {
+    //                         grid: {
+    //                             display: false
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     }
+    //
+    //     const performanceCtx = document.getElementById('performanceChart')?.getContext('2d');
+    //     if (performanceCtx) {
+    //         new Chart(performanceCtx, {
+    //             type: 'line',
+    //             data: {
+    //                 labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+    //                 datasets: [
+    //                     {
+    //                         label: 'Occupancy Rate',
+    //                         data: [65, 59, 80, 81],
+    //                         borderColor: 'rgba(79, 70, 229, 1)',
+    //                         backgroundColor: 'rgba(79, 70, 229, 0.1)',
+    //                         borderWidth: 2,
+    //                         tension: 0.4,
+    //                         fill: true
+    //                     },
+    //                     {
+    //                         label: 'Revenue',
+    //                         data: [45, 40, 65, 70],
+    //                         borderColor: 'rgba(16, 185, 129, 1)',
+    //                         backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    //                         borderWidth: 2,
+    //                         tension: 0.4,
+    //                         fill: true
+    //                     }
+    //                 ]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 maintainAspectRatio: false,
+    //                 plugins: {
+    //                     legend: {
+    //                         position: 'top'
+    //                     }
+    //                 },
+    //                 scales: {
+    //                     y: {
+    //                         beginAtZero: true,
+    //                         grid: {
+    //                             drawBorder: false
+    //                         }
+    //                     },
+    //                     x: {
+    //                         grid: {
+    //                             display: false
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     }
+    //
+    //     const sourceCtx = document.getElementById('sourceChart')?.getContext('2d');
+    //     if (sourceCtx) {
+    //         new Chart(sourceCtx, {
+    //             type: 'doughnut',
+    //             data: {
+    //                 labels: ['Website', 'Travel Agency', 'Phone', 'Walk-in', 'Other'],
+    //                 datasets: [{
+    //                     data: [35, 25, 15, 15, 10],
+    //                     backgroundColor: [
+    //                         'rgba(79, 70, 229, 0.8)',
+    //                         'rgba(16, 185, 129, 0.8)',
+    //                         'rgba(59, 130, 246, 0.8)',
+    //                         'rgba(245, 158, 11, 0.8)',
+    //                         'rgba(156, 163, 175, 0.8)'
+    //                     ],
+    //                     borderWidth: 0
+    //                 }]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 maintainAspectRatio: false,
+    //                 cutout: '70%',
+    //                 plugins: {
+    //                     legend: {
+    //                         position: 'right'
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     }
+    //
+    //     const roomPerformanceCtx = document.getElementById('roomPerformanceChart')?.getContext('2d');
+    //     if (roomPerformanceCtx) {
+    //         new Chart(roomPerformanceCtx, {
+    //             type: 'bar',
+    //             data: {
+    //                 labels: ['Deluxe Suite', 'Executive Room', 'Luxury Suite', 'Standard Room'],
+    //                 datasets: [
+    //                     {
+    //                         label: 'Occupancy',
+    //                         data: [85, 75, 65, 60],
+    //                         backgroundColor: 'rgba(79, 70, 229, 0.8)'
+    //                     },
+    //                     {
+    //                         label: 'Revenue',
+    //                         data: [120000, 95000, 80000, 60000],
+    //                         backgroundColor: 'rgba(16, 185, 129, 0.8)'
+    //                     }
+    //                 ]
+    //             },
+    //             options: {
+    //                 responsive: true,
+    //                 maintainAspectRatio: false,
+    //                 plugins: {
+    //                     legend: {
+    //                         position: 'top'
+    //                     }
+    //                 },
+    //                 scales: {
+    //                     y: {
+    //                         beginAtZero: true,
+    //                         grid: {
+    //                             drawBorder: false
+    //                         }
+    //                     },
+    //                     x: {
+    //                         grid: {
+    //                             display: false
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     }
+    // });
 </script>
 </body>
 </html>
